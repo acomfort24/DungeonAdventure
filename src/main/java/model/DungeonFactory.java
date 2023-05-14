@@ -19,37 +19,23 @@ import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 
 public class DungeonFactory implements EntityFactory {
 
-    @Spawns("dungeonSideWall")
-    public Entity newDungeonSideWall(SpawnData data){
+    @Spawns("wall")
+    public Entity newDungeonWall(SpawnData data){
         return entityBuilder(data)
-                .type(TerrainType.DUNGEONSIDEWALL)
+                .type(TerrainType.DUNGEONWALL)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
                 .build();
     }
 
-    @Spawns("dungeonBottomWall")
-    public Entity newSideWall(SpawnData data){
-        return entityBuilder(data)
-                .type(TerrainType.DUNGEONBOTTOMWALL)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
-                .with(new CollidableComponent(true))
-                .build();
-    }
-    @Spawns("dungeonTopWall")
-    public Entity newDungeonTopWall(SpawnData data){
-        return entityBuilder(data)
-                .type(TerrainType.DUNGEONTOPWALL)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
-                .with(new CollidableComponent(true))
-                .build();
-    }
-    @Spawns("dungeonDoor")
+    @Spawns("door")
     public Entity newDungeonDoor(SpawnData data){
         return entityBuilder(data)
-                .type(TerrainType.DUNGEONTOPWALL)
+                .type(TerrainType.DUNGEONDOOR)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
-                .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
+
                 .build();
     }
     @Spawns("player")

@@ -31,6 +31,7 @@ public class DungeonApp extends GameApplication {
         gameSettings.setHeight(768);
         gameSettings.setTitle("Dungeon Adventure");
         gameSettings.setVersion("0.1");
+        gameSettings.setDeveloperMenuEnabled(true);
 
     }
 
@@ -46,6 +47,7 @@ public class DungeonApp extends GameApplication {
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
+
     }
 
 

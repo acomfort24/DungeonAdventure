@@ -60,11 +60,11 @@
 </data>
  </layer>
  <objectgroup id="3" name="Object Layer 1">
-  <object id="1" type="dungeonTopWall" x="63.6364" y="19.6667" width="896.273" height="44.6969"/>
-  <object id="2" type="dungeonSideWall" x="32.4091" y="26.3636" width="32.5909" height="647.636"/>
-  <object id="3" type="dungeonSideWall" x="961" y="26" width="31.0909" height="646"/>
-  <object id="4" type="dungeonBottomWall" x="60" y="671.667" width="906.667" height="27.0606"/>
-  <object id="5" type="dungeonDoor" x="474" y="22" width="46" height="46"/>
+  <object id="1" type="wall" x="63.6364" y="19.6667" width="896.273" height="44.6969"/>
+  <object id="2" type="wall" x="32.4091" y="26.3636" width="32.5909" height="647.636"/>
+  <object id="3" type="wall" x="961" y="27" width="31.0909" height="646"/>
+  <object id="4" type="wall" x="60" y="671.667" width="906.667" height="27.0606"/>
+  <object id="5" type="door" x="474" y="19" width="46" height="46"/>
   <object id="6" type="player" x="453.333" y="549.333" width="67.3333" height="60"/>
  </objectgroup>
 </map>
