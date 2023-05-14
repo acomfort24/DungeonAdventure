@@ -2,6 +2,7 @@ package controller;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
@@ -32,8 +33,9 @@ public class DungeonApp extends GameApplication {
         gameSettings.setVersion("0.1");
 
     }
+
     @Override
-    protected void initGame(){
+    protected void initGame() {
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
         FXGL.setLevelFromMap("dungeonRoom2.tmx");
@@ -42,57 +44,60 @@ public class DungeonApp extends GameApplication {
     }
 
     @Override
-    protected void initPhysics(){
-        getPhysicsWorld().setGravity(0,0);
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, 0);
     }
 
 
     @Override
-    protected void initInput(){
-    getInput().addAction(new UserAction("Left") {
-        @Override
-        protected void onAction() {
-            player.getComponent(PlayerComponent.class).left();
-        }
-        @Override
-        protected void onActionEnd(){
-            player.getComponent(PlayerComponent.class).stop();
-        }
-    },KeyCode.A);
+    protected void initInput() {
+        getInput().addAction(new UserAction("Left") {
+            @Override
+            protected void onAction() {
+                player.getComponent(PlayerComponent.class).left();
+            }
+
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stop();
+            }
+        }, KeyCode.A);
 
         getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).right();
             }
+
             @Override
-            protected void onActionEnd(){
+            protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
             }
-        },KeyCode.D);
+        }, KeyCode.D);
 
         getInput().addAction(new UserAction("Up") {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).up();
             }
+
             @Override
-            protected void onActionEnd(){
+            protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
             }
-        },KeyCode.W);
+        }, KeyCode.W);
 
         getInput().addAction(new UserAction("Down") {
             @Override
             protected void onAction() {
                 player.getComponent(PlayerComponent.class).down();
             }
+
             @Override
-            protected void onActionEnd(){
+            protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stop();
             }
-        },KeyCode.S);
-
+        }, KeyCode.S);
 
 
     }
@@ -101,4 +106,5 @@ public class DungeonApp extends GameApplication {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
