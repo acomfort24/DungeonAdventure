@@ -35,7 +35,6 @@ public class DungeonFactory implements EntityFactory {
                 .type(TerrainType.DUNGEONDOOR)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
-
                 .build();
     }
     @Spawns("player")
@@ -51,6 +50,5 @@ public class DungeonFactory implements EntityFactory {
                 .with(new PlayerComponent())
                 .build();
     }
-
 
 }

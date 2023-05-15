@@ -3,6 +3,8 @@ package controller;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.level.Level;
@@ -17,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import model.CharacterType;
 import model.DungeonFactory;
 import model.TerrainType;
+import view.DungeonMainMenu;
 
 import java.util.Map;
 
@@ -32,6 +35,13 @@ public class DungeonApp extends GameApplication {
         gameSettings.setTitle("Dungeon Adventure");
         gameSettings.setVersion("0.1");
         gameSettings.setDeveloperMenuEnabled(true);
+        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setSceneFactory(new SceneFactory(){
+            @Override
+            public FXGLMenu newMainMenu(){
+                return new DungeonMainMenu();
+            }
+        });
 
     }
 
@@ -49,7 +59,6 @@ public class DungeonApp extends GameApplication {
         getPhysicsWorld().setGravity(0, 0);
 
     }
-
 
     @Override
     protected void initInput() {
@@ -103,7 +112,6 @@ public class DungeonApp extends GameApplication {
 
 
     }
-
 
     public static void main(String[] args) {
         launch(args);
