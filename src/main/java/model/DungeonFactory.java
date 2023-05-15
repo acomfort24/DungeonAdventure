@@ -1,6 +1,5 @@
 package model;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -11,10 +10,11 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import controller.PlayerComponent;
+import controller.PotionComponent;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.texture;
 
 
 public class DungeonFactory implements EntityFactory {
@@ -22,7 +22,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("wall")
     public Entity newDungeonWall(SpawnData data){
         return entityBuilder(data)
-                .type(TerrainType.DUNGEONWALL)
+                .type(EntityType.DUNGEON_WALL)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
@@ -32,7 +32,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("door")
     public Entity newDungeonDoor(SpawnData data){
         return entityBuilder(data)
-                .type(TerrainType.DUNGEONDOOR)
+                .type(EntityType.DUNGEON_DOOR)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .build();
@@ -43,7 +43,7 @@ public class DungeonFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
 
         return entityBuilder()
-                .type(CharacterType.PLAYER)
+                .type(EntityType.PLAYER)
                 .viewWithBBox("player.png")
                 .with(physics)
                 .with(new CollidableComponent(true))
@@ -51,4 +51,18 @@ public class DungeonFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("item")
+    public Entity newItem(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+        
+        return entityBuilder()
+                .type(EntityType.ITEM)
+                .at(500, 500)
+                .viewWithBBox("healthpotion.png")
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(new PotionComponent())
+                .build();
+    }
 }

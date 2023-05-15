@@ -16,7 +16,7 @@ import java.awt.*;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
-    public class PlayerComponent extends com.almasb.fxgl.entity.component.Component {
+    public class PlayerComponent extends Component {
 
 
         protected PhysicsComponent physics;
@@ -48,7 +48,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
         public void stop() {
             physics.setLinearVelocity(0, 0);
         }
-
-
+        
     }
 

@@ -5,28 +5,24 @@ import com.almasb.fxgl.app.GameSettings;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.level.Level;
-import com.almasb.fxgl.input.Input;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.texture.Texture;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import model.CharacterType;
+import model.EntityType;
 import model.DungeonFactory;
-import model.TerrainType;
+import model.PlayerItemHandler;
 import view.DungeonMainMenu;
-
-import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class DungeonApp extends GameApplication {
     private Entity player;
+    
+    private Entity potion;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -50,14 +46,14 @@ public class DungeonApp extends GameApplication {
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
         FXGL.setLevelFromMap("dungeonRoom2.tmx");
-        player = FXGL.getGameWorld().getEntitiesByType(CharacterType.PLAYER).get(0);
-
+        player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+        potion = spawn("item",getAppWidth() / 2, getAppHeight() / 2);
     }
-
+    
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
-
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler());
     }
 
     @Override

@@ -32,11 +32,7 @@ public class DungeonMainMenu extends FXGLMenu {
         DungeonAdventureButton btnPlayGame = new DungeonAdventureButton("Play Game","Start a new game", () -> fireNewGame());
         DungeonAdventureButton btnOptions = new DungeonAdventureButton("Options","Change in-game settings", () -> {});
         DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit Game", "Quit to desktop",() -> fireExit());
-
-
-
-
-
+        
         var box = new VBox(15,
                 btnPlayGame,
                 btnOptions,
