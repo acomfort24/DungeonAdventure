@@ -1,4 +1,4 @@
-package controller;
+package model.components;
 
 import com.almasb.fxgl.entity.component.Component;
 import javafx.scene.image.Image;

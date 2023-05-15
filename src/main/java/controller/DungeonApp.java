@@ -3,26 +3,20 @@ package controller;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 
-import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.input.UserAction;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import model.EntityType;
 import model.DungeonFactory;
+import model.components.PlayerComponent;
 import model.PlayerItemHandler;
-import view.DungeonMainMenu;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class DungeonApp extends GameApplication {
     private Entity player;
-    
-    private Entity potion;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -31,13 +25,13 @@ public class DungeonApp extends GameApplication {
         gameSettings.setTitle("Dungeon Adventure");
         gameSettings.setVersion("0.1");
         gameSettings.setDeveloperMenuEnabled(true);
-        gameSettings.setMainMenuEnabled(true);
-        gameSettings.setSceneFactory(new SceneFactory(){
-            @Override
-            public FXGLMenu newMainMenu(){
-                return new DungeonMainMenu();
-            }
-        });
+//        gameSettings.setMainMenuEnabled(true);
+//        gameSettings.setSceneFactory(new SceneFactory(){
+//            @Override
+//            public FXGLMenu newMainMenu(){
+//                return new DungeonMainMenu();
+//            }
+//        });
 
     }
 
@@ -45,9 +39,9 @@ public class DungeonApp extends GameApplication {
     protected void initGame() {
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
-        FXGL.setLevelFromMap("dungeonRoom2.tmx");
+        FXGL.setLevelFromMap("entrance.tmx");
         player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-        potion = spawn("item",getAppWidth() / 2, getAppHeight() / 2);
+        
     }
     
     @Override
@@ -105,8 +99,6 @@ public class DungeonApp extends GameApplication {
                 player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
-
-
     }
 
     public static void main(String[] args) {

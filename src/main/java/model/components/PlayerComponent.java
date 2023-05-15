@@ -1,4 +1,4 @@
-package controller;
+package model.components;
 
 import com.almasb.fxgl.entity.components.TransformComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
