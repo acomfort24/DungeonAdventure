@@ -1,5 +1,7 @@
 package model;
 
+import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -13,33 +15,34 @@ import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
 
-import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.texture;
-
 
 public class DungeonFactory implements EntityFactory {
 
+    public DungeonFactory() { }
+    
     @Spawns("wall")
-    public Entity newDungeonWall(SpawnData data){
-        return entityBuilder(data)
+    public Entity newDungeonWall(final SpawnData theData) {
+        return entityBuilder(theData)
                 .type(EntityType.DUNGEON_WALL)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
+                .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
+                        theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
                 .build();
     }
 
     @Spawns("door")
-    public Entity newDungeonDoor(SpawnData data){
-        return entityBuilder(data)
+    public Entity newDungeonDoor(final SpawnData theData) {
+        return entityBuilder(theData)
                 .type(EntityType.DUNGEON_DOOR)
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"),data.<Integer>get("height"))))
+                .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
+                        theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .build();
     }
     @Spawns("player")
-    public Entity newPlayer(SpawnData data){
-        PhysicsComponent physics = new PhysicsComponent();
+    public Entity newPlayer(final SpawnData theData) {
+        final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
@@ -53,8 +56,8 @@ public class DungeonFactory implements EntityFactory {
     }
 
     @Spawns("item")
-    public Entity newItem(SpawnData data) {
-        PhysicsComponent physics = new PhysicsComponent();
+    public Entity newItem(final SpawnData theData) {
+        final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
         
         return entityBuilder()

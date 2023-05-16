@@ -1,6 +1,5 @@
 package model;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
@@ -12,16 +11,16 @@ public class PlayerItemHandler extends CollisionHandler {
     }
     
     @Override
-    protected void onHitBoxTrigger(Entity p, Entity i, HitBox
-            boxA, HitBox boxB) { }
+    protected void onHitBoxTrigger(final Entity theP, final Entity theI, final HitBox
+            theBoxA, final HitBox theBoxB) { }
     
     @Override
-    protected void onCollisionBegin(Entity p, Entity i) {
-        i.removeFromWorld();
+    protected void onCollisionBegin(final Entity theP, final Entity theI) {
+        theI.removeFromWorld();
     }
     
     @Override
-    protected void onCollision(Entity p, Entity i) { }
+    protected void onCollision(final Entity theP, final Entity theI) { }
     @Override
-    protected void onCollisionEnd(Entity p, Entity i) { }
+    protected void onCollisionEnd(final Entity theP, final Entity theI) { }
 }

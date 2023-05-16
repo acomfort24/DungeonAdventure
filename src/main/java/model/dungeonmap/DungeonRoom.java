@@ -4,39 +4,41 @@ import com.almasb.fxgl.core.collection.grid.Cell;
 
 public class DungeonRoom extends Cell {
     
-    private boolean topWall = false;
-    private boolean leftWall = false;
+    /** */
+    private boolean myTopWall;
+    /** */
+    private boolean myLeftWall;
     
-    public DungeonRoom(int x, int y) {
-        super(x, y);
+    public DungeonRoom(final int theX, final int theY) {
+        super(theX, theY);
     }
     
     /**
-     * @param leftWall left wall for this cell
+     * @param theLeftWall left wall for this cell
      */
-    public void setLeftWall(boolean leftWall) {
-        this.leftWall = leftWall;
+    public void setLeftWall(final boolean theLeftWall) {
+        myLeftWall = theLeftWall;
     }
     
     /**
-     * @param topWall top wall for this cell
+     * @param theTopWall top wall for this cell
      */
-    public void setTopWall(boolean topWall) {
-        this.topWall = topWall;
+    public void setTopWall(final boolean theTopWall) {
+        myTopWall = theTopWall;
     }
     
     /**
      * @return if left wall is present
      */
     public boolean hasLeftWall() {
-        return leftWall;
+        return myLeftWall;
     }
     
     /**
      * @return if top wall is present
      */
     public boolean hasTopWall() {
-        return topWall;
+        return myTopWall;
     }
     
 }
