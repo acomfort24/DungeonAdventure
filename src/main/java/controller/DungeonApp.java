@@ -5,20 +5,13 @@ import com.almasb.fxgl.app.GameSettings;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.level.Level;
-import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.texture.Texture;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import model.CharacterType;
+import model.EntityType;
 import model.DungeonFactory;
-import model.TerrainType;
-
-import java.util.Map;
+import model.components.PlayerComponent;
+import model.PlayerItemHandler;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
@@ -31,6 +24,14 @@ public class DungeonApp extends GameApplication {
         gameSettings.setHeight(768);
         gameSettings.setTitle("Dungeon Adventure");
         gameSettings.setVersion("0.1");
+        gameSettings.setDeveloperMenuEnabled(true);
+//        gameSettings.setMainMenuEnabled(true);
+//        gameSettings.setSceneFactory(new SceneFactory(){
+//            @Override
+//            public FXGLMenu newMainMenu(){
+//                return new DungeonMainMenu();
+//            }
+//        });
 
     }
 
@@ -38,16 +39,16 @@ public class DungeonApp extends GameApplication {
     protected void initGame() {
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
-        FXGL.setLevelFromMap("dungeonRoom2.tmx");
-        player = FXGL.getGameWorld().getEntitiesByType(CharacterType.PLAYER).get(0);
-
+        FXGL.setLevelFromMap("entrance.tmx");
+        player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+        
     }
-
+    
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler());
     }
-
 
     @Override
     protected void initInput() {
@@ -98,10 +99,7 @@ public class DungeonApp extends GameApplication {
                 player.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
-
-
     }
-
 
     public static void main(String[] args) {
         launch(args);
