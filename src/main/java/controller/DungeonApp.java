@@ -22,8 +22,6 @@ import view.DungeonMainMenu;
 public final class DungeonApp extends GameApplication {
     /** */
     private Entity myPlayer;
-    
-    private DungeonApp() { }
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {

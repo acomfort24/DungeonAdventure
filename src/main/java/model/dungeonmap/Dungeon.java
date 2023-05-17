@@ -14,10 +14,10 @@ public class Dungeon extends Grid<DungeonRoom> {
     private final int[][] myDungeon;
     
     /**
-     * Constructs a new maze with given width and height.
+     * Constructs a new dungeon with given width and height.
      *
-     * @param theWidth maze width
-     * @param theHeight maze height
+     * @param theWidth dungeon width
+     * @param theHeight dungeon height
      */
     public Dungeon(final int theWidth, final int theHeight) {
         super(DungeonRoom.class, theWidth, theHeight);
@@ -28,27 +28,24 @@ public class Dungeon extends Grid<DungeonRoom> {
         
         populate((x, y) -> {
             final DungeonRoom room = new DungeonRoom(x, y);
-            if ((myDungeon[x][y] & 1) == 0) {
-                room.setTopWall(true);
-            }
-            if ((myDungeon[x][y] & 8) == 0) {
-                room.setLeftWall(true);
-            }
+            room.setRoom(myDungeon[x][y]);
             return room;
         });
+        
     }
     
     private void generateDungeon(final int[][] theDungeon, final int theX, final int theY) {
         final DIR[] dirs = DIR.values();
         Collections.shuffle(Arrays.asList(dirs));
+        System.out.println(Arrays.toString(dirs));
         for (final DIR dir : dirs) {
-            final int newX = theX + dir.myDX;
-            final int newY = theY + dir.myDY;
-            if (between(newX, getWidth()) && between(newY, getHeight())
-                    && (theDungeon[newX][newY] == 0)) {
+            final int nextX = theX + dir.myDX;
+            final int nextY = theY + dir.myDY;
+            if (between(nextX, getWidth()) && between(nextY, getHeight())
+                    && (theDungeon[nextX][nextY] == 0)) {
                 theDungeon[theX][theY] |= dir.myBit;
-                theDungeon[newX][newY] |= dir.myOppo.myBit;
-                generateDungeon(theDungeon, newX, newY);
+                theDungeon[nextX][nextY] |= dir.myOppo.myBit;
+                generateDungeon(theDungeon, nextX, nextY);
             }
         }
     }
