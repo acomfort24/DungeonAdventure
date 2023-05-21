@@ -25,8 +25,10 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
-        theGameSettings.setWidth(1024);
-        theGameSettings.setHeight(768);
+        //theGameSettings.setWidth(1024);
+        //theGameSettings.setHeight(768);
+        theGameSettings.setWidth(1152);
+        theGameSettings.setHeight(864);
         theGameSettings.setTitle("Dungeon Adventure");
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
@@ -45,7 +47,7 @@ public final class DungeonApp extends GameApplication {
     protected void initGame() {
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
-        FXGL.setLevelFromMap("entrance.tmx");
+        FXGL.setLevelFromMap("DungeonRoom1.tmx");
         myPlayer = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
     }
     
