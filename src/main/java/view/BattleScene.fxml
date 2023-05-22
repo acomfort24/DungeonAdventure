@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.6683417085427136" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <ImageView fitHeight="263.0" fitWidth="206.0" layoutX="392.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="263.0" fitWidth="213.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true" />
+         </children></AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="121.0" prefWidth="598.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="122.0" prefWidth="174.0" text="Attack">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <TextArea layoutX="340.0" prefHeight="244.0" prefWidth="682.0" />
+            <Button layoutX="176.0" mnemonicParsing="false" prefHeight="122.0" prefWidth="164.0" text="Special">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="176.0" layoutY="126.0" mnemonicParsing="false" prefHeight="122.0" prefWidth="164.0" text="Flee" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutY="125.0" mnemonicParsing="false" prefHeight="122.0" prefWidth="174.0" text="Inventory">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children></AnchorPane>
+  </items>
+</SplitPane>
