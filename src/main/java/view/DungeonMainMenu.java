@@ -21,7 +21,7 @@ public class DungeonMainMenu extends FXGLMenu {
     public DungeonMainMenu() {
         super(MenuType.MAIN_MENU);
 
-        final Node node = new ImageView("assets/textures/background/Dungeon2.png");
+        final Node node = new ImageView("assets/textures/background/DungeonMainMenu.png");
         node.resize(FXGL.getAppWidth(), FXGL.getAppHeight());
         getContentRoot().getChildren().add(node);
 
@@ -41,7 +41,7 @@ public class DungeonMainMenu extends FXGLMenu {
 
         box.setAlignment(Pos.CENTER_LEFT);
         box.setTranslateX(100);
-        box.setTranslateY(590);
+        box.setTranslateY(660);
         
         //getContentRoot().getChildren().addAll(FXGL.getUIFactoryService().newButton("hello"));
 
