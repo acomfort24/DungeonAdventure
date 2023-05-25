@@ -24,7 +24,7 @@ public final class GetDatabase {
      * returns a hashmap of that row.
      * @author Chad Oehlschlaeger-Browne, Tom Capaul
      * @param theEntity The row in the table(Monster, Hero, Item)
-     * @param theName The name of the the entity
+     * @param theName The name of the entity
      * @return map of all properties and their value of a row in the table
      */
     private static Map<String, String> getData(final SQLiteDataSource theDB,

@@ -2,6 +2,7 @@ package controller;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
+import com.almasb.fxgl.app.FXGLApplication;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -15,8 +16,11 @@ import model.DungeonFactory;
 import model.EntityType;
 import model.PlayerItemHandler;
 import model.components.PlayerComponent;
+import model.dungeonmap.Dungeon;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
+
+import java.util.Map;
 
 
 public final class DungeonApp extends GameApplication {
@@ -25,8 +29,8 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
-        theGameSettings.setWidth(1024);
-        theGameSettings.setHeight(768);
+        theGameSettings.setWidth(1152);
+        theGameSettings.setHeight(864);
         theGameSettings.setTitle("Dungeon Adventure");
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
@@ -43,9 +47,10 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
-        FXGL.getGameWorld().addEntityFactory(new DungeonFactory());
-        FXGL.setLevelFromMap("entrance.tmx");
+        getGameScene().setBackgroundColor(Color.BLACK);
+        getGameWorld().addEntityFactory(new DungeonFactory());
+        Dungeon dungeon = new Dungeon(5,5);
+        FXGL.setLevelFromMap(dungeon.getEntrance());
         myPlayer = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
     }
     
@@ -105,7 +110,12 @@ public final class DungeonApp extends GameApplication {
             }
         }, KeyCode.S);
     }
-
+    
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("pillars", 0);
+    }
+    
     public static void main(final String[] theArgs) {
         launch(theArgs);
     }

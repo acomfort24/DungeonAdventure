@@ -3,15 +3,24 @@ package model.dungeonmap;
 import com.almasb.fxgl.core.collection.grid.Grid;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.Predicate;
+
 
 public class Dungeon extends Grid<DungeonRoom> {
-    
+    /** */
+    private static final int PILLAR_COUNT = 4;
+    /** */
+    private static final Predicate<DungeonRoom> IS_BASIC = x -> "basic".equals(x.getType());
     /** */
     private final int myWidth;
     /** */
     private final int myHeight;
     /** */
     private final int[][] myDungeon;
+    /** */
+    private DungeonRoom myEntrance;
+    /** */
+    private DungeonRoom myExit;
     
     /**
      * Constructs a new dungeon with given width and height.
@@ -25,19 +34,19 @@ public class Dungeon extends Grid<DungeonRoom> {
         myHeight = theHeight;
         myDungeon = new int[myWidth][myHeight];
         generateDungeon(myDungeon, 0, 0);
-        
         populate((x, y) -> {
             final DungeonRoom room = new DungeonRoom(x, y);
             room.setRoom(myDungeon[x][y]);
             return room;
         });
-        
+        setEntrance();
+        setExit();
+        setPillarRooms();
     }
     
     private void generateDungeon(final int[][] theDungeon, final int theX, final int theY) {
         final DIR[] dirs = DIR.values();
         Collections.shuffle(Arrays.asList(dirs));
-        System.out.println(Arrays.toString(dirs));
         for (final DIR dir : dirs) {
             final int nextX = theX + dir.myDX;
             final int nextY = theY + dir.myDY;
@@ -99,8 +108,28 @@ public class Dungeon extends Grid<DungeonRoom> {
         }
         System.out.println("+");
     }
-    public static void main(final String[] theArgs) {
-        final Dungeon d = new Dungeon(5, 5);
-        d.display();
+    
+    public String getEntrance() {
+        return myEntrance.getRoom();
+    }
+    
+    private void setEntrance() {
+        myEntrance = getRandomCell();
+        myEntrance.setType("entrance");
+    }
+    
+    private void setExit() {
+        if (getRandomCell(IS_BASIC).isPresent()) {
+            myExit = getRandomCell(IS_BASIC).get();
+            myExit.setType("exit");
+        }
+    }
+    
+    private void setPillarRooms() {
+        for (int i = 0; i < PILLAR_COUNT; i++) {
+            if (getRandomCell(IS_BASIC).isPresent()) {
+                getRandomCell(IS_BASIC).get().setType("pillar");
+            }
+        }
     }
 }
