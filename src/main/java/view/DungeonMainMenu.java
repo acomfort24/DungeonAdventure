@@ -21,7 +21,7 @@ public class DungeonMainMenu extends FXGLMenu {
     public DungeonMainMenu() {
         super(MenuType.MAIN_MENU);
 
-        final Node node = new ImageView("assets/textures/background/Dungeon2.png");
+        final Node node = new ImageView("assets/textures/background/MainMenu.png");
         node.resize(FXGL.getAppWidth(), FXGL.getAppHeight());
         getContentRoot().getChildren().add(node);
 
@@ -42,9 +42,7 @@ public class DungeonMainMenu extends FXGLMenu {
         box.setAlignment(Pos.CENTER_LEFT);
         box.setTranslateX(100);
         box.setTranslateY(590);
-        
         //getContentRoot().getChildren().addAll(FXGL.getUIFactoryService().newButton("hello"));
-
         getContentRoot().getChildren().add(box);
     }
     
@@ -66,7 +64,6 @@ public class DungeonMainMenu extends FXGLMenu {
             super();
             myName = theName;
             myAction = theAction;
-
             myText = FXGL.getUIFactoryService().newText(theName, Color.WHITE, 18.0);
             myText.fillProperty().bind(Bindings.when(focusedProperty())
                     .then(SELECTED_COLOR)
@@ -80,6 +77,7 @@ public class DungeonMainMenu extends FXGLMenu {
             final Rectangle currentSelection = new Rectangle(5, 17, Color.WHITE);
             currentSelection.setTranslateX(-15);
             currentSelection.setTranslateY(-3);
+            
             currentSelection.visibleProperty().bind(focusedProperty());
 
             setAlignment(Pos.CENTER_LEFT);
@@ -88,6 +86,9 @@ public class DungeonMainMenu extends FXGLMenu {
                 if (e.getCode() == KeyCode.ENTER) {
                     theAction.run();
                 }
+            });
+            setOnMouseClicked(e -> {
+                theAction.run();
             });
 
             getChildren().addAll(myText, currentSelection);

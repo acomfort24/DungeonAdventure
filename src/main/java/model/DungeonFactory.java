@@ -10,7 +10,6 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.Body;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import model.components.PlayerComponent;
@@ -35,10 +34,11 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("door")
     public Entity newDungeonDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.DUNGEON_DOOR)
+                .type(EntityType.DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
                 .build();
     }
     @Spawns("player")
@@ -50,6 +50,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.PLAYER)
                 .viewWithBBox("player.png")
+                .at(theData.getX(), theData.getY())
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent())

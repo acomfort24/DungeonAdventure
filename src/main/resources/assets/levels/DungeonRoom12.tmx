@@ -30,7 +30,6 @@
   <object id="2" type="wall" x="3" y="4" width="1144" height="93"/>
   <object id="3" type="wall" x="-2" y="4" width="49" height="859"/>
   <object id="4" type="wall" x="-3" y="814" width="1150" height="51"/>
-  <object id="5" type="player" x="520" y="656" width="117" height="80"/>
   <object id="8" type="door" x="-8" y="355" width="80" height="150"/>
   <object id="9" type="door" x="1086" y="360" width="71" height="139"/>
  </objectgroup>

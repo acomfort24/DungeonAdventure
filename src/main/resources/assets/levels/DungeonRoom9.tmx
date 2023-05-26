@@ -53,6 +53,5 @@
   <object id="3" type="wall" x="1" y="1" width="35" height="829"/>
   <object id="4" type="wall" x="1" y="2" width="1150" height="88"/>
   <object id="5" type="door" x="532" y="17" width="88" height="154"/>
-  <object id="6" type="player" x="522" y="679" width="101" height="81"/>
  </objectgroup>
 </map>
