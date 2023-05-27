@@ -14,6 +14,7 @@ import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.entity.level.LevelLoader;
 import com.almasb.fxgl.entity.level.tiled.TiledMap;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -64,13 +65,15 @@ public final class DungeonApp extends GameApplication {
         myPlayer.setReusable(true);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
-        System.out.println(myDungeon.getEntranceX() + " " + myDungeon.getEntranceY());
+        myDungeon.display();
+        System.out.println("Entrance coords: " + myDungeon.getEntranceX() + " " + myDungeon.getEntranceY()); //these might be flipped?? -brandon
         getWorldProperties().addListener("playerX", (old, now) -> {
             setRoom((int) now, geti("playerY"));
         });
         getWorldProperties().addListener("playerY", (old, now) -> {
             setRoom(geti("playerX"), (int) now);
         });
+        System.out.println(myPlayer.getType());
     }
     
     private void setRoom(final int num1, final int num2) {
@@ -82,9 +85,15 @@ public final class DungeonApp extends GameApplication {
     
     @Override
     protected void initPhysics() {
+        final CollisionHandler playerDoor = new PlayerDoorHandler();
+
         getPhysicsWorld().setGravity(0, 0);
         getPhysicsWorld().addCollisionHandler(new PlayerItemHandler());
+
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler());
+        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.SOUTH_DOOR));
+        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.WEST_DOOR));
+        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.EAST_DOOR));
     }
 
     @Override

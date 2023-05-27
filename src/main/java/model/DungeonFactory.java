@@ -31,10 +31,40 @@ public class DungeonFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("door")
-    public Entity newDungeonDoor(final SpawnData theData) {
+    @Spawns("north door")
+    public Entity newNorthDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.DOOR)
+                .type(EntityType.NORTH_DOOR)
+                .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
+                        theData.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("south door")
+    public Entity newSouthDoor(final SpawnData theData) {
+        return entityBuilder(theData)
+                .type(EntityType.SOUTH_DOOR)
+                .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
+                        theData.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("west door")
+    public Entity newWestDoor(final SpawnData theData) {
+        return entityBuilder(theData)
+                .type(EntityType.WEST_DOOR)
+                .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
+                        theData.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("east door")
+    public Entity newEastDoor(final SpawnData theData) {
+        return entityBuilder(theData)
+                .type(EntityType.EAST_DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
