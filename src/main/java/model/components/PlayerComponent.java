@@ -1,10 +1,11 @@
 package model.components;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
-
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.scene.image.Image;
+import model.dungeonmap.Dungeon;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class PlayerComponent extends Component {
     

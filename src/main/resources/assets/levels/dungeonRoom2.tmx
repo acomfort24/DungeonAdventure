@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="24" height="18" tilewidth="48" tileheight="48" infinite="0" backgroundcolor="#000000" nextlayerid="7" nextobjectid="7">
  <tileset firstgid="1" name="PixelCrawlerDungeonEnvironment" tilewidth="48" tileheight="48" tilecount="625" columns="25">
-  <image source="PixelCrawlerDungeonEnvironment.png" width="1200" height="1200"/>
+  <image source="../../../../../../../Desktop/PixelCrawlerDungeonEnvironment.png" width="1200" height="1200"/>
  </tileset>
  <layer id="6" name="Touch up" width="24" height="18">
   <data encoding="csv">
@@ -52,7 +52,6 @@
   <object id="2" type="wall" x="3" y="4" width="1144" height="93"/>
   <object id="3" type="wall" x="-2" y="4" width="49" height="859"/>
   <object id="4" type="wall" x="-3" y="814" width="1150" height="51"/>
-  <object id="5" type="player" x="520" y="656" width="117" height="80"/>
-  <object id="6" type="door" x="518" y="795" width="125" height="70"/>
+  <object id="6" type="south door" x="518" y="795" width="125" height="70"/>
  </objectgroup>
 </map>
