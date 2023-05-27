@@ -26,7 +26,6 @@ import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
-
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -52,6 +51,7 @@ public final class DungeonApp extends GameApplication {
                 return new DungeonMainMenu();
             }
         });
+        theGameSettings.setTicksPerSecond(60);
 
     }
 
@@ -73,12 +73,12 @@ public final class DungeonApp extends GameApplication {
         getWorldProperties().addListener("playerY", (old, now) -> {
             setRoom(geti("playerX"), (int) now);
         });
-        System.out.println(myPlayer.getType());
+
     }
     
     private void setRoom(final int num1, final int num2) {
         myPlayer.removeFromWorld();
-        String newRoom = myDungeon.get(num1, num2).getRoom();
+        final String newRoom = myDungeon.get(num1, num2).getRoom();
         FXGL.setLevelFromMap(newRoom);
         myPlayer = spawn("player", new Point2D(500, 500));
     }
@@ -148,7 +148,7 @@ public final class DungeonApp extends GameApplication {
     }
     
     @Override
-    protected void initGameVars(Map<String, Object> vars) {
+    protected void initGameVars(final Map<String, Object> vars) {
         vars.put("pillars", 0);
     }
     

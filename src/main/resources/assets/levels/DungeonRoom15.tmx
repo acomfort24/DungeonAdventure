@@ -52,9 +52,9 @@
   <object id="2" type="wall" x="6" y="821" width="1142" height="37"/>
   <object id="3" type="wall" x="1" y="1" width="42" height="829"/>
   <object id="4" type="wall" x="1" y="2" width="1150" height="88"/>
-  <object id="5" type="door" x="532" y="17" width="88" height="154"/>
-  <object id="7" type="door" x="1078" y="357" width="74" height="143"/>
-  <object id="8" type="door" x="513" y="796" width="133" height="62"/>
-  <object id="9" type="door" x="-3" y="365" width="77" height="134"/>
+  <object id="5" type="north door" x="532" y="17" width="88" height="154"/>
+  <object id="7" type="east door" x="1078" y="357" width="74" height="143"/>
+  <object id="8" type="south door" x="513" y="796" width="133" height="62"/>
+  <object id="9" type="west door" x="-3" y="365" width="77" height="134"/>
  </objectgroup>
 </map>
