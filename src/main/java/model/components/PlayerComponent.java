@@ -10,7 +10,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 public class PlayerComponent extends Component {
     
     /** */
-    private static final int PLAYER_VELOCITY = 170;
+    private static final int PLAYER_VELOCITY = 350;
     /** */
     protected PhysicsComponent myPhysics;
     

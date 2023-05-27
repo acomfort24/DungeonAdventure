@@ -43,6 +43,7 @@ public final class DungeonApp extends GameApplication {
         theGameSettings.setTitle("Dungeon Adventure");
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
+        theGameSettings.setTicksPerSecond(60);
         //theGameSettings.setMainMenuEnabled(true);
         theGameSettings.setSceneFactory(new SceneFactory() {
             @NotNull
@@ -51,12 +52,10 @@ public final class DungeonApp extends GameApplication {
                 return new DungeonMainMenu();
             }
         });
-        theGameSettings.setTicksPerSecond(60);
-
     }
 
     @Override
-    protected void initGame() throws NoSuchElementException {
+    protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         getGameWorld().addEntityFactory(new DungeonFactory());
         myDungeon = new Dungeon(5,5);
@@ -75,12 +74,12 @@ public final class DungeonApp extends GameApplication {
         });
 
     }
-    
+
     private void setRoom(final int num1, final int num2) {
         myPlayer.removeFromWorld();
-        final String newRoom = myDungeon.get(num1, num2).getRoom();
+        String newRoom = myDungeon.get(num1, num2).getRoom();
         FXGL.setLevelFromMap(newRoom);
-        myPlayer = spawn("player", new Point2D(500, 500));
+        myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
     }
     
     @Override
@@ -146,12 +145,15 @@ public final class DungeonApp extends GameApplication {
             }
         }, KeyCode.S);
     }
-    
+
     @Override
-    protected void initGameVars(final Map<String, Object> vars) {
+    protected void initGameVars(Map<String, Object> vars) {
         vars.put("pillars", 0);
+        vars.put("spawnX", (double) getAppWidth() / 2 - 50);
+        vars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
-    
+
+
     public static void main(final String[] theArgs) {
         launch(theArgs);
     }
