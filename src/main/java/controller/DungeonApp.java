@@ -18,6 +18,7 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.Scene;
 import model.DungeonFactory;
 import model.EntityType;
 import model.PlayerDoorHandler;
@@ -26,6 +27,10 @@ import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
+import view.GameMenu;
+
+import java.awt.event.ActionEvent;
+import java.sql.SQLOutput;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -35,6 +40,8 @@ public final class DungeonApp extends GameApplication {
     private Entity myPlayer;
     /** */
     private Dungeon myDungeon;
+    private SceneSwapController mySceneSwapController = new SceneSwapController();
+    private InventoryController myInventoryController = new InventoryController();
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
@@ -44,12 +51,16 @@ public final class DungeonApp extends GameApplication {
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
         theGameSettings.setTicksPerSecond(60);
-        //theGameSettings.setMainMenuEnabled(true);
+        theGameSettings.setMainMenuEnabled(true);
+
         theGameSettings.setSceneFactory(new SceneFactory() {
             @NotNull
             @Override
             public FXGLMenu newMainMenu() {
                 return new DungeonMainMenu();
+            }
+            public FXGLMenu newGameMenu() {
+                return new GameMenu();
             }
         });
     }
