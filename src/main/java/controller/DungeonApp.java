@@ -24,6 +24,7 @@ import model.PlayerDoorHandler;
 import model.PlayerItemHandler;
 import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
+import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import java.util.Map;
@@ -77,22 +78,35 @@ public final class DungeonApp extends GameApplication {
 
     private void setRoom(final int num1, final int num2) {
         myPlayer.removeFromWorld();
-        String newRoom = myDungeon.get(num1, num2).getRoom();
-        FXGL.setLevelFromMap(newRoom);
+        final DungeonRoom newRoom = myDungeon.get(num1, num2);
+        final String roomFileName = newRoom.getRoom();
+        FXGL.setLevelFromMap(roomFileName);
+        System.out.println(newRoom.hasHealPot());
+        if(newRoom.hasHealPot()) {
+            spawn("health potion");
+        }
+        if(newRoom.hasVisPot()) {
+            spawn("vision potion");
+        }
+        if(newRoom.hasPit()) {
+            // spawn("item", new Point2D(800,800));
+        }
         myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
     }
-    
+
     @Override
     protected void initPhysics() {
-        final CollisionHandler playerDoor = new PlayerDoorHandler();
+        final CollisionHandler playerDoorHandler = new PlayerDoorHandler();
+        final CollisionHandler playerItemHandler = new PlayerItemHandler();
 
         getPhysicsWorld().setGravity(0, 0);
-        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler());
+        getPhysicsWorld().addCollisionHandler(playerItemHandler);
+        getPhysicsWorld().addCollisionHandler(playerItemHandler.copyFor(EntityType.PLAYER,EntityType.VISION_POTION));
 
-        getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler());
-        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.SOUTH_DOOR));
-        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.WEST_DOOR));
-        getPhysicsWorld().addCollisionHandler(playerDoor.copyFor(EntityType.PLAYER, EntityType.EAST_DOOR));
+        getPhysicsWorld().addCollisionHandler(playerDoorHandler);
+        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.SOUTH_DOOR));
+        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.WEST_DOOR));
+        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.EAST_DOOR));
     }
 
     @Override

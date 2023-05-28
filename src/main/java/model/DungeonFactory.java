@@ -87,15 +87,31 @@ public class DungeonFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("item")
-    public Entity newItem(final SpawnData theData) {
+
+    @Spawns("health potion")
+    public Entity newHP(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.STATIC);
-        
+
         return entityBuilder()
-                .type(EntityType.ITEM)
-                .at(500, 500)
+                .type(EntityType.HEALTH_POTION)
                 .viewWithBBox("healthpotion.png")
+                .with(physics)
+                .at(600,600)
+                .with(new CollidableComponent(true))
+                .with(new PotionComponent())
+                .build();
+    }
+
+    @Spawns("vision potion")
+    public Entity newVP(final SpawnData theData) {
+        final PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+
+        return entityBuilder()
+                .type(EntityType.VISION_POTION)
+                .viewWithBBox("visionpotion.png")
+                .at(500,500)
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PotionComponent())
