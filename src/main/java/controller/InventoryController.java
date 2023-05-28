@@ -8,7 +8,4 @@ public class InventoryController extends SceneSwapController {
         //call useItem
         //get name of button and update inventory
     }
-    private void closeInventory(ActionEvent theEvent) throws IOException {
-        switchToPreviousScene(theEvent);
-    }
 }
