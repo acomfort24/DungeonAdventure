@@ -7,7 +7,6 @@ import javafx.beans.binding.Bindings;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
@@ -36,7 +35,6 @@ public class DungeonMainMenu extends FXGLMenu {
                 btnPlayGame,
                 btnOptions,
                 btnQuit,
-                new Separator(Orientation.HORIZONTAL),
                 FXGL.getUIFactoryService().newText("Welcome to Dungeon Adventure"));
 
         box.setAlignment(Pos.CENTER_LEFT);
