@@ -7,7 +7,7 @@ import com.almasb.fxgl.physics.HitBox;
 public class PlayerItemHandler extends CollisionHandler {
     
     public PlayerItemHandler() {
-        super(EntityType.PLAYER, EntityType.ITEM);
+        super(EntityType.PLAYER, EntityType.HEALTH_POTION);
     }
     
     @Override
