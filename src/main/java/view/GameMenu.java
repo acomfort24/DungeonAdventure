@@ -2,30 +2,28 @@ package view;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
-import javafx.event.EventHandler;
+import controller.InventoryController;
+import java.util.HashMap;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import controller.InventoryController;
 import javafx.scene.text.Text;
 
 public class GameMenu extends FXGLMenu {
-    private ScrollPane myFlexBox = new ScrollPane();
-    private Boolean showInventory = false;
+    private final ScrollPane myFlexBox = new ScrollPane();
+    private Boolean myShowInventory = false;
     public GameMenu() {
         super(MenuType.GAME_MENU);
         final DungeonAdventureButton btnResume = new DungeonAdventureButton("Resume Game",
-                "Resume Game", () -> fireResume());
-        final DungeonAdventureButton btnInventory = new DungeonAdventureButton("Inventory",
-                "Toggle Inventory", () -> toggleInventory());
+                "Resume Your Game", () -> {
+            myShowInventory = false;
+            myFlexBox.setContent(createProgressBox());
+            fireResume();
+        });
+        final DungeonAdventureButton btnInventory = new DungeonAdventureButton("Toggle Inventory",
+                "Open/Close Inventory", () -> toggleInventory());
         final DungeonAdventureButton btnSaveGame = new DungeonAdventureButton("Save Game",
                 "Save Game", () -> fireSave());
         final DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit to Menu",
@@ -46,27 +44,25 @@ public class GameMenu extends FXGLMenu {
         myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {
-        showInventory = !showInventory;
-        if (showInventory) {
+        myShowInventory = !myShowInventory;
+        if (myShowInventory) {
             myFlexBox.setContent(createInventoryBox());
         } else {
             myFlexBox.setContent(createProgressBox());
         }
     }
     private VBox createInventoryBox() {
-        VBox box = new VBox();
-        HashMap<String, Integer> inventory = InventoryController.getInventory();
-        for(String item : inventory.keySet()) {
-            FlowPane buttonPane = new FlowPane();
-            Button itemButton = new Button(item);
-            itemButton.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
-                @Override
-                public void handle(javafx.event.ActionEvent actionEvent) {
-                    useItem(item);
-                }
+        final VBox box = new VBox();
+        final HashMap<String, Integer> inventory = InventoryController.getInventory();
+        for (String item : inventory.keySet()) {
+            final FlowPane buttonPane = new FlowPane();
+            final Button itemButton = new Button(item);
+            itemButton.setOnAction(actionEvent -> {
+                useItem(item);
+                myFlexBox.setContent(createInventoryBox());
             });
             buttonPane.getChildren().add(itemButton);
-            Text itemAmount = new Text("" + inventory.get(item));
+            final Text itemAmount = new Text(String.valueOf(inventory.get(item)));
             buttonPane.getChildren().add(itemAmount);
             box.getChildren().add(buttonPane);
         }
@@ -74,9 +70,8 @@ public class GameMenu extends FXGLMenu {
     }
     private VBox createProgressBox() {
 //        Image heroImage = new Image(new FileInputStream(""));
-        Text testText = new Text("Progress!");
-        VBox box = new VBox(testText);
-        return box;
+        final Text testText = new Text("Progress!");
+        return new VBox(testText);
     }
     private void useItem(final String theItem) {
         InventoryController.useItem(theItem);
