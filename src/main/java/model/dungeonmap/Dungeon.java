@@ -127,6 +127,7 @@ public class Dungeon extends Grid<DungeonRoom> {
     private void setEntrance() {
         myEntrance = getRandomCell();
         myEntrance.setType("entrance");
+        myEntrance.setVisited(true);
     }
     
     private void setExit() {

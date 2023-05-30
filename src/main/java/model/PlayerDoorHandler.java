@@ -19,23 +19,23 @@ public class PlayerDoorHandler extends CollisionHandler {
         final String type = theD.getType().toString();
         switch (type) {
             case "NORTH_DOOR" -> {
-                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() / 2 - 50);
-                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() - 200);
+                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() / 2 - 48);
+                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() - 160);
                 FXGL.getGameWorld().getProperties().increment(PLAYER_Y_PROPERTY, -1);
             }
             case "SOUTH_DOOR" -> {
-                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() / 2 - 50);
-                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) 200);
+                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() / 2 - 48);
+                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) 150);
                 FXGL.getGameWorld().getProperties().increment(PLAYER_Y_PROPERTY, 1);
             }
             case "WEST_DOOR" -> {
-                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() - 200);
-                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() / 2 - 50);
+                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) getAppWidth() - 170);
+                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() / 2 - 48);
                 FXGL.getGameWorld().getProperties().increment(PLAYER_X_PROPERTY, -1);
             }
             case "EAST_DOOR" -> {
-                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) 200);
-                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() / 2 - 50);
+                FXGL.getGameWorld().getProperties().setValue("spawnX", (double) 70);
+                FXGL.getGameWorld().getProperties().setValue("spawnY", (double) getAppHeight() / 2 - 48);
                 FXGL.getGameWorld().getProperties().increment(PLAYER_X_PROPERTY, 1);
             }
             default -> {

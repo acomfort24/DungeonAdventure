@@ -2,6 +2,7 @@ package model;
 
 import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
 
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -97,7 +98,7 @@ public class DungeonFactory implements EntityFactory {
                 .type(EntityType.HEALTH_POTION)
                 .viewWithBBox("healthpotion.png")
                 .with(physics)
-                .at(600,600)
+                .at(FXGLMath.random(300, 800),FXGLMath.random(400, 600))
                 .with(new CollidableComponent(true))
                 .with(new PotionComponent())
                 .build();
@@ -111,7 +112,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.VISION_POTION)
                 .viewWithBBox("visionpotion.png")
-                .at(500,500)
+                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PotionComponent())

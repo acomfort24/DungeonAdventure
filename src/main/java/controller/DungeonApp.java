@@ -64,6 +64,7 @@ public final class DungeonApp extends GameApplication {
                 return new GameMenu();
             }
         });
+
     }
 
     @Override
@@ -72,12 +73,11 @@ public final class DungeonApp extends GameApplication {
         getGameWorld().addEntityFactory(new DungeonFactory());
         myDungeon = new Dungeon(5,5);
         FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-        myPlayer = spawn("player", new Point2D((double) getAppWidth() / 2 - 50, (double) getAppHeight() / 2 - 50));
+        myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
         myPlayer.setReusable(true);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
         myDungeon.display();
-        System.out.println("Entrance coords: " + myDungeon.getEntranceX() + " " + myDungeon.getEntranceY()); //these might be flipped?? -brandon
         getWorldProperties().addListener("playerX", (old, now) -> {
             setRoom((int) now, geti("playerY"));
         });
@@ -92,7 +92,7 @@ public final class DungeonApp extends GameApplication {
         final DungeonRoom newRoom = myDungeon.get(num1, num2);
         final String roomFileName = newRoom.getRoom();
         FXGL.setLevelFromMap(roomFileName);
-        System.out.println(newRoom.hasHealPot());
+        System.out.println(newRoom.getType());
         if(newRoom.hasHealPot()) {
             spawn("health potion");
         }

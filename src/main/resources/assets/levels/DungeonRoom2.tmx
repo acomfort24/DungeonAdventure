@@ -52,6 +52,6 @@
   <object id="2" type="wall" x="3" y="4" width="1144" height="93"/>
   <object id="3" type="wall" x="-2" y="4" width="49" height="859"/>
   <object id="4" type="wall" x="-3" y="814" width="1150" height="51"/>
-  <object id="6" type="south door" x="518" y="795" width="125" height="70"/>
+  <object id="6" type="south door" x="522.929" y="806.502" width="105.282" height="58.4981"/>
  </objectgroup>
 </map>

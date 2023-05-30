@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="24" height="18" tilewidth="48" tileheight="48" infinite="0" backgroundcolor="#000000" nextlayerid="6" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="24" height="18" tilewidth="48" tileheight="48" infinite="0" backgroundcolor="#000000" nextlayerid="6" nextobjectid="17">
  <tileset firstgid="1" name="PixelCrawlerDungeonEnvironment" tilewidth="48" tileheight="48" tilecount="625" columns="25">
   <image source="PixelCrawlerDungeonEnvironment.png" width="1200" height="1200"/>
  </tileset>
@@ -48,12 +48,12 @@
 </data>
  </layer>
  <objectgroup id="5" name="Object Layer 1">
-  <object id="1" type="wall" x="1104" y="8" width="46" height="864"/>
-  <object id="2" type="wall" x="6" y="821" width="1142" height="37"/>
-  <object id="3" type="wall" x="1" y="1" width="42" height="829"/>
-  <object id="4" type="wall" x="1" y="2" width="1150" height="88"/>
-  <object id="5" type="north door" x="532" y="17" width="88" height="154"/>
-  <object id="7" type="west door" x="-1" y="362" width="71" height="135"/>
-  <object id="8" type="south door" x="503" y="790" width="148" height="71"/>
+  <object id="9" type="wall" x="1103.83" y="7.3527" width="46" height="864"/>
+  <object id="10" type="wall" x="5.82888" y="820.353" width="1142" height="37"/>
+  <object id="11" type="wall" x="0.828878" y="0.352698" width="42" height="829"/>
+  <object id="12" type="wall" x="0.828878" y="1.3527" width="1150" height="88"/>
+  <object id="13" type="north door" x="536.411" y="16.3527" width="78.8357" height="128.798"/>
+  <object id="15" type="south door" x="520.275" y="805.663" width="110.662" height="56.8451"/>
+  <object id="16" type="west door" x="-3.17112" y="374.09" width="56.953" height="111.662"/>
  </objectgroup>
 </map>
