@@ -15,8 +15,6 @@ public class DungeonAdventureButton extends StackPane {
     /** */
     private static final Color NOT_SELECTED_COLOR = Color.GRAY;
     /** */
-    private final String myName;
-    /** */
     private final Runnable myAction;
     /** */
     private final Text myText;
@@ -25,7 +23,6 @@ public class DungeonAdventureButton extends StackPane {
     DungeonAdventureButton(final String theName, final String theDescription,
                            final Runnable theAction) {
         super();
-        myName = theName;
         myAction = theAction;
         myText = FXGL.getUIFactoryService().newText(theName, Color.WHITE, 18.0);
         myText.fillProperty().bind(Bindings.when(focusedProperty())
