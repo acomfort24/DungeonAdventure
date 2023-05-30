@@ -3,6 +3,7 @@ package model;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.HitBox;
+import controller.InventoryController;
 
 public class PlayerItemHandler extends CollisionHandler {
     
@@ -22,5 +23,7 @@ public class PlayerItemHandler extends CollisionHandler {
     @Override
     protected void onCollision(final Entity theP, final Entity theI) { }
     @Override
-    protected void onCollisionEnd(final Entity theP, final Entity theI) { }
+    protected void onCollisionEnd(final Entity theP, final Entity theI) {
+        InventoryController.addItem(theI.getType().toString());
+    }
 }

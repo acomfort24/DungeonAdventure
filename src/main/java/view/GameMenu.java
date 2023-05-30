@@ -42,6 +42,7 @@ public class GameMenu extends FXGLMenu {
         buttonBox.setTranslateX(100);
         buttonBox.setTranslateY(590);
         getContentRoot().getChildren().add(buttonBox);
+        getContentRoot().getChildren().add(myFlexBox);
         myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {
