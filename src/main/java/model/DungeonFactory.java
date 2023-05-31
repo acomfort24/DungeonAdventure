@@ -13,6 +13,8 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import javafx.geometry.Point2D;
+import model.components.PitAnimationComponent;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
 
@@ -118,4 +120,16 @@ public class DungeonFactory implements EntityFactory {
                 .with(new PotionComponent())
                 .build();
     }
+
+    @Spawns("pit")
+    public Entity newPit(final SpawnData theData) {
+            return entityBuilder()
+                    .type(EntityType.PIT)
+                    .bbox(new HitBox(BoundingShape.box(960, 680)))
+                    .with(new PitAnimationComponent())
+                    .with(new CollidableComponent())
+                    .at(new Point2D(96,144))
+                    .build();
+    }
+
 }

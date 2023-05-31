@@ -2,6 +2,8 @@ package controller;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
+import com.almasb.fxgl.animation.Animation;
+import com.almasb.fxgl.animation.AnimationBuilder;
 import com.almasb.fxgl.app.FXGLApplication;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -100,7 +102,7 @@ public final class DungeonApp extends GameApplication {
             spawn("vision potion");
         }
         if(newRoom.hasPit()) {
-            // spawn("item", new Point2D(800,800));
+            spawn("pit");
         }
         myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
     }
@@ -112,7 +114,7 @@ public final class DungeonApp extends GameApplication {
 
         getPhysicsWorld().setGravity(0, 0);
         getPhysicsWorld().addCollisionHandler(playerItemHandler);
-        getPhysicsWorld().addCollisionHandler(playerItemHandler.copyFor(EntityType.PLAYER,EntityType.VISION_POTION));
+        getPhysicsWorld().addCollisionHandler(playerItemHandler.copyFor(EntityType.PLAYER, EntityType.VISION_POTION));
 
         getPhysicsWorld().addCollisionHandler(playerDoorHandler);
         getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.SOUTH_DOOR));
