@@ -6,10 +6,11 @@ import com.almasb.fxgl.entity.component.Component;
 import javafx.scene.image.Image;
 
 public class PotionComponent extends Component {
-    private final String myName = "HealthPotion";
-    public PotionComponent() {
+    /** */
+    private final String myName;
+    public PotionComponent(final String theImage) {
         super();
-        final Image image = image("healthpotion.png");
+        myName = theImage.substring(0, theImage.length() - 4);
     }
     public String getName() {
         return myName;

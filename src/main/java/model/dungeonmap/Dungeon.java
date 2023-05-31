@@ -1,15 +1,9 @@
 package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Grid;
-
-import javafx.geometry.Point2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
-
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppHeight;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
-
 
 public class Dungeon extends Grid<DungeonRoom> {
     /** */
@@ -46,6 +40,7 @@ public class Dungeon extends Grid<DungeonRoom> {
         });
         setEntrance();
         setExit();
+        System.out.println(myExit.getX() + " " + myExit.getY());
         setPillarRooms();
     }
     

@@ -12,13 +12,13 @@ public class PlayerComponent extends Component {
     
     /** */
     private static final int PLAYER_VELOCITY = 350;
+    /* * */
     private static final Inventory myInventory = new Inventory<>(100);
     /** */
     protected PhysicsComponent myPhysics;
     
     public PlayerComponent() {
         super();
-        final Image image = image("player.png");
     }
     
     public void down() {
@@ -27,7 +27,7 @@ public class PlayerComponent extends Component {
     }
     
     public void up() {
-        getEntity().setScaleY(-1);
+        getEntity().setScaleY(1);
         myPhysics.setVelocityY(-PLAYER_VELOCITY);
     }
     public void left() {
