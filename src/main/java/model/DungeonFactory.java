@@ -1,20 +1,32 @@
 package model;
 
-import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.SensorCollisionHandler;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import model.components.*;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import model.components.PillarComponent;
+import model.components.PlayerComponent;
+import model.components.PotionComponent;
 
 
 public class DungeonFactory implements EntityFactory {
@@ -24,7 +36,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("wall")
     public Entity newDungeonWall(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.DUNGEON_WALL)
+                .type(DUNGEON_WALL)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -35,7 +47,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("north door")
     public Entity newNorthDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.NORTH_DOOR)
+                .type(NORTH_DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -45,7 +57,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("south door")
     public Entity newSouthDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.SOUTH_DOOR)
+                .type(SOUTH_DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -55,7 +67,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("west door")
     public Entity newWestDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.WEST_DOOR)
+                .type(WEST_DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -65,7 +77,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("east door")
     public Entity newEastDoor(final SpawnData theData) {
         return entityBuilder(theData)
-                .type(EntityType.EAST_DOOR)
+                .type(EAST_DOOR)
                 .bbox(new HitBox(BoundingShape.box(theData.<Integer>get("width"),
                         theData.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -79,14 +91,15 @@ public class DungeonFactory implements EntityFactory {
         physics.setFixtureDef(new FixtureDef().friction(0));
 
         return entityBuilder()
-                .type(EntityType.PLAYER)
+                .type(PLAYER)
                 //.viewWithBBox("player.png")
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .at(theData.getX(), theData.getY())
+                .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
                 .with(new PlayerAnimationComponent())
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent())
+                //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
                 .build();
     }
 
@@ -97,12 +110,12 @@ public class DungeonFactory implements EntityFactory {
         physics.setBodyType(BodyType.STATIC);
 
         return entityBuilder()
-                .type(EntityType.HEALTH_POTION)
+                .type(HEALTH_POTION)
                 .viewWithBBox("healthpotion.png")
                 .with(physics)
                 .at(FXGLMath.random(300, 800),FXGLMath.random(400, 600))
                 .with(new CollidableComponent(true))
-                .with(new PotionComponent())
+                .with(new PotionComponent("healthpotion.png"))
                 .build();
     }
 
@@ -112,12 +125,38 @@ public class DungeonFactory implements EntityFactory {
         physics.setBodyType(BodyType.STATIC);
 
         return entityBuilder()
-                .type(EntityType.VISION_POTION)
+                .type(VISION_POTION)
                 .viewWithBBox("visionpotion.png")
                 .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new PotionComponent())
+                .with(new PotionComponent("visionpotion.png"))
+                .build();
+    }
+    
+    @Spawns("pillar")
+    public Entity newPillar(final SpawnData theData) {
+        final PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.STATIC);
+        
+        return entityBuilder()
+                .type(PILLAR)
+                .viewWithBBox("pillar.png")
+                .at(getAppWidth() / 2 - 35, getAppHeight() / 2 - 43)
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(new PillarComponent())
+                .build();
+    }
+    
+    @Spawns("exit")
+    public Entity newExit(final SpawnData theData) {
+        
+        return entityBuilder()
+                .type(EXIT)
+                .view("exit" + geti("pillars") + ".png")
+                .at(getAppWidth() / 2 - 190, getAppHeight() / 2 - 130)
+                .with(new CollidableComponent(false))
                 .build();
     }
 

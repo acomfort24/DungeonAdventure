@@ -10,32 +10,31 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
-import com.almasb.fxgl.entity.level.Level;
-import com.almasb.fxgl.entity.level.LevelLoader;
-import com.almasb.fxgl.entity.level.tiled.TiledMap;
+import com.almasb.fxgl.entity.components.BoundingBoxComponent;
+import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import controller.collisionhandlers.PlayerDoorHandler;
+import controller.collisionhandlers.PlayerExitHandler;
+import controller.collisionhandlers.PlayerItemHandler;
+import controller.collisionhandlers.PlayerPillarHandler;
+import java.util.Map;
+
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.Scene;
 import model.DungeonFactory;
 import model.EntityType;
-import model.PlayerDoorHandler;
-import model.PlayerItemHandler;
 import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
-
-import java.awt.event.ActionEvent;
-import java.sql.SQLOutput;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 
 public final class DungeonApp extends GameApplication {
@@ -54,7 +53,7 @@ public final class DungeonApp extends GameApplication {
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
         theGameSettings.setTicksPerSecond(60);
-        theGameSettings.setMainMenuEnabled(true);
+        //theGameSettings.setMainMenuEnabled(true);
 
         theGameSettings.setSceneFactory(new SceneFactory() {
             @NotNull
@@ -74,41 +73,58 @@ public final class DungeonApp extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
         getGameWorld().addEntityFactory(new DungeonFactory());
         myDungeon = new Dungeon(5,5);
+        set("dungeon", myDungeon);
         FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-        myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
+        myPlayer = spawn("player");
         myPlayer.setReusable(true);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
         myDungeon.display();
+        System.out.println(geti("playerX") + " " + geti("playerY"));
         getWorldProperties().addListener("playerX", (old, now) -> {
             setRoom((int) now, geti("playerY"));
         });
         getWorldProperties().addListener("playerY", (old, now) -> {
             setRoom(geti("playerX"), (int) now);
         });
-
     }
 
-    private void setRoom(final int num1, final int num2) {
+    private void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
-        final DungeonRoom newRoom = myDungeon.get(num1, num2);
-        final String roomFileName = newRoom.getRoom();
-        FXGL.setLevelFromMap(roomFileName);
-
-        System.out.println(newRoom.getType());
-        if(newRoom.hasHealPot()) {
+        final DungeonRoom newRoom = myDungeon.get(theX, theY);
+        FXGL.setLevelFromMap(newRoom.getRoom());
+        spawnRoomEntities(newRoom);
+        myPlayer = spawn("player");
+    }
+    
+    private void spawnRoomEntities(final DungeonRoom theRoom) {
+        if (theRoom.hasHealPot()) {
             spawn("health potion");
         }
-        if(newRoom.hasVisPot()) {
+        if (theRoom.hasVisPot()) {
             spawn("vision potion");
         }
-        if(newRoom.hasPit()) {
+        if (theRoom.hasPit()) {
             spawn("pit");
         }
-        if(newRoom.hasMonster()){
+        if ("pillar".equals(theRoom.getType())) {
+            spawn("pillar");
+        }
+        if (theRoom.hasMonster()){
             spawn(randomMonster());
         }
-        myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
+        if ("exit".equals(theRoom.getType())) {
+            System.out.println(geti("pillars"));
+            if (geti("pillars") == 4) {
+                var exit = getGameWorld().create("exit", new SpawnData());
+                exit.getComponent(CollidableComponent.class).setValue(true);
+                exit.getComponent(BoundingBoxComponent.class).addHitBox(
+                        new HitBox(new Point2D(150.0, 119.0), BoundingShape.box(84.0, 61.0)));
+                getGameWorld().addEntity(exit);
+            } else {
+                spawn("exit");
+            }
+        }
     }
 
     private String randomMonster() {
@@ -126,17 +142,19 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        final CollisionHandler playerDoorHandler = new PlayerDoorHandler();
-        final CollisionHandler playerItemHandler = new PlayerItemHandler();
-
         getPhysicsWorld().setGravity(0, 0);
-        getPhysicsWorld().addCollisionHandler(playerItemHandler);
-        getPhysicsWorld().addCollisionHandler(playerItemHandler.copyFor(EntityType.PLAYER, EntityType.VISION_POTION));
+        
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.HEALTH_POTION));
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.VISION_POTION));
 
-        getPhysicsWorld().addCollisionHandler(playerDoorHandler);
-        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.SOUTH_DOOR));
-        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.WEST_DOOR));
-        getPhysicsWorld().addCollisionHandler(playerDoorHandler.copyFor(EntityType.PLAYER, EntityType.EAST_DOOR));
+        getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.NORTH_DOOR));
+        getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.SOUTH_DOOR));
+        getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.EAST_DOOR));
+        getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.WEST_DOOR));
+        
+        getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler());
+        
+        getPhysicsWorld().addCollisionHandler(new PlayerExitHandler());
     }
 
     @Override
@@ -196,10 +214,8 @@ public final class DungeonApp extends GameApplication {
         vars.put("spawnX", (double) getAppWidth() / 2 - 50);
         vars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
-
-
+    
     public static void main(final String[] theArgs) {
         launch(theArgs);
     }
-
 }

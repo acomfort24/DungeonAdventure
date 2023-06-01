@@ -16,7 +16,6 @@ public class DungeonMainMenu extends FXGLMenu {
         final Node node = new ImageView("assets/textures/background/MainMenu.png");
         node.resize(FXGL.getAppWidth(), FXGL.getAppHeight());
         getContentRoot().getChildren().add(node);
-
         final DungeonAdventureButton btnPlayGame = new DungeonAdventureButton("Play Game",
                 "Start a new game", () -> fireNewGame());
         final DungeonAdventureButton btnOptions = new DungeonAdventureButton("Options",
