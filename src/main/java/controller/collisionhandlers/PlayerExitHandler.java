@@ -12,6 +12,6 @@ public class PlayerExitHandler extends CollisionHandler {
     
     @Override
     protected void onCollision(final Entity theP, final Entity theE) {
-        FXGL.getUIFactoryService().
+        //FXGL.getUIFactoryService().
     }
 }

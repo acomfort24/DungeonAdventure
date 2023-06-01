@@ -18,14 +18,15 @@ public class PlayerComponent extends Component {
     
     public PlayerComponent() {
         super();
-        getEntity().setScaleY(1);
     }
     
     public void down() {
+        getEntity().setScaleY(1);
         myPhysics.setVelocityY(PLAYER_VELOCITY);
     }
     
     public void up() {
+        getEntity().setScaleY(1);
         myPhysics.setVelocityY(-PLAYER_VELOCITY);
     }
     public void left() {
