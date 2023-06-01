@@ -19,6 +19,8 @@ import com.almasb.fxgl.physics.SensorCollisionHandler;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import javafx.geometry.Point2D;
+import model.components.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -90,12 +92,14 @@ public class DungeonFactory implements EntityFactory {
 
         return entityBuilder()
                 .type(PLAYER)
-                .viewWithBBox("player.png")
+                //.viewWithBBox("player.png")
+                .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
-                //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
                 .with(physics)
+                .with(new PlayerAnimationComponent())
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent())
+                //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
                 .build();
     }
 
@@ -155,4 +159,37 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(false))
                 .build();
     }
+
+    @Spawns("pit")
+    public Entity newPit(final SpawnData theData) {
+            return entityBuilder()
+                    .type(EntityType.PIT)
+                    .bbox(new HitBox(BoundingShape.box(960, 680)))
+                    .with(new PitAnimationComponent())
+                    .with(new CollidableComponent())
+                    .at(new Point2D(96,144))
+                    .build();
+    }
+    @Spawns("skeleton")
+    public Entity newSkeleton(final SpawnData theData) {
+        return entityBuilder()
+                .type(EntityType.SKELETON)
+                .bbox(new HitBox(BoundingShape.box(96, 96)))
+                .with(new MonsterAnimationComponent("SkeletonIdleSheet.png"))
+                .with(new CollidableComponent())
+                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .build();
+    }
+
+    @Spawns("orc")
+    public Entity newOrc(final SpawnData theData) {
+        return entityBuilder()
+                .type(EntityType.ORC)
+                .bbox(new HitBox(BoundingShape.box(96, 96)))
+                .with(new MonsterAnimationComponent("OrcIdleSheet.png"))
+                .with(new CollidableComponent())
+                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .build();
+    }
+
 }

@@ -18,6 +18,7 @@ public class DungeonRoom extends Cell {
     private boolean myPit;
     /** */
     private boolean myVisit;
+    private boolean myMonster;
     
     public DungeonRoom(final int theX, final int theY) {
         super(theX, theY);
@@ -45,6 +46,7 @@ public class DungeonRoom extends Cell {
             setVisPot(false);
             setHealPot(false);
             setPit(false);
+            setMonster(false);
         }
     }
     
@@ -70,6 +72,13 @@ public class DungeonRoom extends Cell {
     
     public void setPit(final boolean thePit) {
         myPit = thePit;
+    }
+
+    public void setMonster(final boolean theMonster) {
+        myMonster = theMonster;
+    }
+    public boolean hasMonster() {
+        return myMonster;
     }
 
     public boolean hasBeenVisited() {

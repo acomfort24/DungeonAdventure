@@ -7,12 +7,11 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import javafx.scene.image.Image;
 
 
-
 public class PlayerComponent extends Component {
     
     /** */
     private static final int PLAYER_VELOCITY = 350;
-    /* * */
+    /** */
     private static final Inventory myInventory = new Inventory<>(100);
     /** */
     protected PhysicsComponent myPhysics;

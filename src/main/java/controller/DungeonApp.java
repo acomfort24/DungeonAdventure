@@ -2,6 +2,9 @@ package controller;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
+import com.almasb.fxgl.animation.Animation;
+import com.almasb.fxgl.animation.AnimationBuilder;
+import com.almasb.fxgl.app.FXGLApplication;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -102,10 +105,13 @@ public final class DungeonApp extends GameApplication {
             spawn("vision potion");
         }
         if (theRoom.hasPit()) {
-            // spawn("item", new Point2D(800,800));
+            spawn("pit");
         }
         if ("pillar".equals(theRoom.getType())) {
             spawn("pillar");
+        }
+        if (theRoom.hasMonster()){
+            spawn(randomMonster());
         }
         if ("exit".equals(theRoom.getType())) {
             System.out.println(geti("pillars"));
@@ -119,6 +125,19 @@ public final class DungeonApp extends GameApplication {
                 spawn("exit");
             }
         }
+    }
+
+    private String randomMonster() {
+        final int num = FXGL.random(1, 2);
+        final String monsterType;
+
+        switch (num) {
+            case 1 -> monsterType = "skeleton";
+            case 2 -> monsterType = "orc";
+            default -> throw new IllegalStateException("Unexpected value: " + num);
+        }
+
+        return monsterType;
     }
 
     @Override
