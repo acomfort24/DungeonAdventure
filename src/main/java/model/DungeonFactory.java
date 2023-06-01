@@ -183,12 +183,21 @@ public class DungeonFactory implements EntityFactory {
     }
     @Spawns("skeleton")
     public Entity newSkeleton(final SpawnData theData) {
+        Map<String, String> monsterData = myDBData.get(DungeonApp.MYPLAYERNAME);
         return entityBuilder()
                 .type(EntityType.SKELETON)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .with(new MonsterAnimationComponent("SkeletonIdleSheet.png"))
                 .with(new CollidableComponent())
                 .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .with(new MonsterComponent(
+                        Integer.parseInt(monsterData.get("minHeal")),
+                        Integer.parseInt(monsterData.get("maxHeal")),
+                        Integer.parseInt(monsterData.get("minDmg")),
+                        Integer.parseInt(monsterData.get("maxDmg")),
+                        Integer.parseInt(monsterData.get("atkSpd")),
+                        Double.parseDouble(monsterData.get("chncHit")),
+                        monsterData.get("name")))
                 .build();
     }
 

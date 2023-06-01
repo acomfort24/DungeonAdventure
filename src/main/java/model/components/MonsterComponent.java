@@ -2,22 +2,20 @@ package model.components;
 
 import com.almasb.fxgl.entity.component.Component;
 
-import java.util.Random;
+public class MonsterComponent extends Component {
+    private final int myMinHeal;
+    private final int myMaxHeal;
 
-public class MonsterComponent extends Component implements Healable {
-    private int myMinHeal;
-    private int myMaxHeal;
-    private CharacterComponent myCharacterComponent;
-    MonsterComponent(int theMinHeal, int theMaxHeal, int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, String theName) {
+    //doesn't get assigned a value here. Gets assigned through flgl
+    private HealerComponent myHealerComponent;
+    private final CharacterComponent myCharacterComponent;
+    public MonsterComponent(final int theMinHeal, final int theMaxHeal, final int theMinDmg,
+                            final int theMaxDmg, final int theAtkSpd, final Double theChncHit,
+                            final String theName) {
         super();
-        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd, theChncHit, theName);
+        myCharacterComponent = new CharacterComponent(theMinDmg,
+                theMaxDmg, theAtkSpd, theChncHit, theName);
         myMinHeal = theMinHeal;
         myMaxHeal = theMaxHeal;
-    }
-
-    @Override
-    public int Heal() {
-        Random r = new Random();
-        return r.nextInt(myMaxHeal-myMinHeal) + myMinHeal;
     }
 }
