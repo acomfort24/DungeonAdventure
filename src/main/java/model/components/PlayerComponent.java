@@ -4,11 +4,17 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
+
+import controller.DatabaseController;
+import controller.DungeonApp;
 import javafx.scene.image.Image;
+
+import java.util.Map;
 
 
 public class PlayerComponent extends Component {
-    
+    private CharacterComponent myCharacterComponent;
+    private double myChncBlock;
     /** */
     private static final int PLAYER_VELOCITY = 350;
     /** */
@@ -16,8 +22,9 @@ public class PlayerComponent extends Component {
     /** */
     protected PhysicsComponent myPhysics;
     
-    public PlayerComponent() {
+    public PlayerComponent(int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, String theName) {
         super();
+        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd, theChncHit, theName);
     }
     
     public void down() {
@@ -44,6 +51,9 @@ public class PlayerComponent extends Component {
 
     public static Inventory getMyInventory() {
         return myInventory;
+    }
+    public double getMyChncBlock() {
+        return myChncBlock;
     }
 }
 

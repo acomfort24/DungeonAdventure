@@ -19,6 +19,7 @@ import com.almasb.fxgl.physics.SensorCollisionHandler;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import controller.DungeonApp;
 import javafx.geometry.Point2D;
 import model.components.*;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -28,10 +29,15 @@ import model.components.PillarComponent;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
 
+import java.util.Map;
+
 
 public class DungeonFactory implements EntityFactory {
+    Map<String, Map<String, String>> myDBData;
 
-    public DungeonFactory() { }
+    public DungeonFactory(Map<String, Map<String, String>> theDBData) {
+        myDBData = theDBData;
+    }
     
     @Spawns("wall")
     public Entity newDungeonWall(final SpawnData theData) {
@@ -89,7 +95,7 @@ public class DungeonFactory implements EntityFactory {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0));
-
+        Map<String, String> heroData = myDBData.get(DungeonApp.MYPLAYERNAME);
         return entityBuilder()
                 .type(PLAYER)
                 //.viewWithBBox("player.png")
@@ -98,7 +104,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(physics)
                 .with(new PlayerAnimationComponent())
                 .with(new CollidableComponent(true))
-                .with(new PlayerComponent())
+                .with(new PlayerComponent(
+                        Integer.parseInt(heroData.get("minDmg")),
+                        Integer.parseInt(heroData.get("maxDmg")),
+                        Integer.parseInt(heroData.get("atkSpd")),
+                        Double.parseDouble(heroData.get("chncHit")),
+                        heroData.get("name")))
                 //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
                 .build();
     }
