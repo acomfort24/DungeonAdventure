@@ -94,6 +94,7 @@ public final class DungeonApp extends GameApplication {
         final DungeonRoom newRoom = myDungeon.get(num1, num2);
         final String roomFileName = newRoom.getRoom();
         FXGL.setLevelFromMap(roomFileName);
+
         System.out.println(newRoom.getType());
         if(newRoom.hasHealPot()) {
             spawn("health potion");
@@ -104,7 +105,23 @@ public final class DungeonApp extends GameApplication {
         if(newRoom.hasPit()) {
             spawn("pit");
         }
+        if(newRoom.hasMonster()){
+            spawn(randomMonster());
+        }
         myPlayer = spawn("player", getd("spawnX"), getd("spawnY"));
+    }
+
+    private String randomMonster() {
+        final int num = FXGL.random(1, 2);
+        final String monsterType;
+
+        switch (num) {
+            case 1 -> monsterType = "skeleton";
+            case 2 -> monsterType = "orc";
+            default -> throw new IllegalStateException("Unexpected value: " + num);
+        }
+
+        return monsterType;
     }
 
     @Override

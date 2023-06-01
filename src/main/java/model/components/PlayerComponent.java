@@ -7,7 +7,6 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import javafx.scene.image.Image;
 
 
-
 public class PlayerComponent extends Component {
     
     /** */
@@ -27,7 +26,7 @@ public class PlayerComponent extends Component {
     }
     
     public void up() {
-        getEntity().setScaleY(-1);
+
         myPhysics.setVelocityY(-PLAYER_VELOCITY);
     }
     public void left() {
