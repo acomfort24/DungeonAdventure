@@ -40,6 +40,7 @@ import view.GameMenu;
 public final class DungeonApp extends GameApplication {
     /** */
     private Entity myPlayer;
+    final public static String MYPLAYERNAME = "Priestess";
     /** */
     private Dungeon myDungeon;
     private SceneSwapController mySceneSwapController = new SceneSwapController();
@@ -71,22 +72,31 @@ public final class DungeonApp extends GameApplication {
     @Override
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
-        getGameWorld().addEntityFactory(new DungeonFactory());
-        myDungeon = new Dungeon(5,5);
-        set("dungeon", myDungeon);
-        FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-        myPlayer = spawn("player");
-        myPlayer.setReusable(true);
-        set("playerX", myDungeon.getEntranceX());
-        set("playerY", myDungeon.getEntranceY());
-        myDungeon.display();
-        System.out.println(geti("playerX") + " " + geti("playerY"));
-        getWorldProperties().addListener("playerX", (old, now) -> {
-            setRoom((int) now, geti("playerY"));
-        });
-        getWorldProperties().addListener("playerY", (old, now) -> {
-            setRoom(geti("playerX"), (int) now);
-        });
+        try {
+            //will change this when we can select class
+            Map<String, Map<String, String>> dbData= DatabaseController.getAllSqlData(MYPLAYERNAME);
+
+            getGameWorld().addEntityFactory(new DungeonFactory(dbData));
+            myDungeon = new Dungeon(5,5);
+            set("dungeon", myDungeon);
+            FXGL.setLevelFromMap(myDungeon.getEntranceMap());
+            myPlayer = spawn("player");
+            myPlayer.setReusable(true);
+            set("playerX", myDungeon.getEntranceX());
+            set("playerY", myDungeon.getEntranceY());
+            myDungeon.display();
+            System.out.println(geti("playerX") + " " + geti("playerY"));
+            getWorldProperties().addListener("playerX", (old, now) -> {
+                setRoom((int) now, geti("playerY"));
+            });
+            getWorldProperties().addListener("playerY", (old, now) -> {
+                setRoom(geti("playerX"), (int) now);
+            });
+        } catch (final Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+
     }
 
     private void setRoom(final int theX, final int theY) {

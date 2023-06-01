@@ -5,19 +5,28 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.IntegerComponent;
+import model.EntityType;
+import model.components.PlayerComponent;
 import org.sqlite.SQLiteDataSource;
+
+import static model.EntityType.PLAYER;
 
 /**
  * This is a temporary class to be cut up and used in the dungeon app.
  * @author Chad Oehlschlaeger-Browne
  *
  */
-public final class GetDatabase {
+public final class DatabaseController {
     /** Private Constructor. */
-    private GetDatabase() { }
+    private DatabaseController() { }
 
     /**
      * Query's the database given as a parameter and based on the entity/name
@@ -27,17 +36,17 @@ public final class GetDatabase {
      * @param theName The name of the entity
      * @return map of all properties and their value of a row in the table
      */
-    private static Map<String, String> getData(final SQLiteDataSource theDB,
-                                               final String theEntity,
-                                               final String theName) {
+    public static Map<String, String> getData(final SQLiteDataSource theDS, final String theEntity,
+                                              final String theName) {
+
         //now query the database table for all its contents and display the results
         System.out.println("Selecting all rows from questions table: " + theEntity);
         //%% escapes a % and %s inserts a string
         final String query = String.format("SELECT * FROM %s WHERE name LIKE '%%%s'",
                 theEntity, theName);
         final ConcurrentHashMap<String, String> resultMap = new ConcurrentHashMap<>();
-        try (Connection conn = theDB.getConnection();
-              Statement stmt = conn.createStatement()) {
+        try (Connection conn = theDS.getConnection();
+             Statement stmt = conn.createStatement()) {
             final ResultSet rs = stmt.executeQuery(query);
 
             final ResultSetMetaData rsmd = rs.getMetaData();
@@ -54,31 +63,22 @@ public final class GetDatabase {
         }
         return resultMap;
     }
-    /**
-     * Connects to Dungeon_Adventure.db in order to return
-     * a SQliteDataSource from it.
-     * @return the SQLiteDataSource is opened
-     */
-    private static SQLiteDataSource startConnection() {
+    public static Map<String, Map<String, String>> getAllSqlData(String theName) {
+        Map<String, Map<String, String>> sqlData = new HashMap<String, Map<String, String>>();
         SQLiteDataSource ds = null;
         //establish connection (creates db file if it does not exist :-)
         try {
             ds = new SQLiteDataSource();
             ds.setUrl("jdbc:sqlite:Dungeon_Adventure.db");
+            sqlData.put(theName, getData(ds, "Hero", theName));
+            sqlData.put("Gremlin", getData(ds, "Monster", "Gremlin"));
+            sqlData.put("Ogre", getData(ds, "Monster", "Ogre"));
+            sqlData.put("Skeleton", getData(ds, "Monster", "Skeleton"));
+            ds.getConnection().close();
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
-        return ds;
-    }
-    
-    public static void main(final String[] theArgs) {
-        final SQLiteDataSource ds = startConnection();
-        final Map<String, String> data = getData(ds, "Hero", "Warrior");
-        System.out.println(data);
-        System.out.println("press enter to close program/window");
-        final Scanner input = new Scanner(System.in);
-        input.nextLine();
+        return sqlData;
     }
 }
