@@ -23,7 +23,6 @@ import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
 import controller.collisionhandlers.PlayerPillarHandler;
 import java.util.Map;
-
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -96,14 +95,12 @@ public final class DungeonApp extends GameApplication {
             e.printStackTrace();
             System.exit(0);
         }
-
     }
 
     private void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
-        final DungeonRoom newRoom = myDungeon.get(theX, theY);
-        FXGL.setLevelFromMap(newRoom.getRoom());
-        spawnRoomEntities(newRoom);
+        FXGL.setLevelFromMap(myDungeon.get(theX, theY).getRoom());
+        spawnRoomEntities(myDungeon.get(theX, theY));
         myPlayer = spawn("player");
     }
     
@@ -117,14 +114,13 @@ public final class DungeonApp extends GameApplication {
         if (theRoom.hasPit()) {
             spawn("pit");
         }
-        if ("pillar".equals(theRoom.getType())) {
+        if (theRoom.hasPillar()) {
             spawn("pillar");
         }
-        if (theRoom.hasMonster()){
+        if (theRoom.hasMonster()) {
             spawn(randomMonster());
         }
         if ("exit".equals(theRoom.getType())) {
-            System.out.println(geti("pillars"));
             if (geti("pillars") == 4) {
                 var exit = getGameWorld().create("exit", new SpawnData());
                 exit.getComponent(CollidableComponent.class).setValue(true);
@@ -154,15 +150,15 @@ public final class DungeonApp extends GameApplication {
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
         
-        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.HEALTH_POTION));
-        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.VISION_POTION));
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.HEALTH_POTION, myDungeon));
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.VISION_POTION, myDungeon));
 
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.NORTH_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.SOUTH_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.EAST_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.WEST_DOOR));
         
-        getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler());
+        getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler(myDungeon));
         
         getPhysicsWorld().addCollisionHandler(new PlayerExitHandler());
     }

@@ -40,7 +40,6 @@ public class Dungeon extends Grid<DungeonRoom> {
         });
         setEntrance();
         setExit();
-        System.out.println(myExit.getX() + " " + myExit.getY());
         setPillarRooms();
     }
     
@@ -135,7 +134,9 @@ public class Dungeon extends Grid<DungeonRoom> {
     private void setPillarRooms() {
         for (int i = 0; i < PILLAR_COUNT; i++) {
             if (getRandomCell(IS_BASIC).isPresent()) {
-                getRandomCell(IS_BASIC).get().setType("pillar");
+                DungeonRoom dr = getRandomCell(IS_BASIC).get();
+                dr.setType("pillar");
+                dr.setPillar(true);
             }
         }
     }

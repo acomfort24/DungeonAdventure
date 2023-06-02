@@ -124,7 +124,7 @@ public class DungeonFactory implements EntityFactory {
                 .type(HEALTH_POTION)
                 .viewWithBBox("healthpotion.png")
                 .with(physics)
-                .at(FXGLMath.random(300, 800),FXGLMath.random(400, 600))
+                .at(430, 400)
                 .with(new CollidableComponent(true))
                 .with(new PotionComponent("healthpotion.png"))
                 .build();
@@ -138,7 +138,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(VISION_POTION)
                 .viewWithBBox("visionpotion.png")
-                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .at(670, 400)
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PotionComponent("visionpotion.png"))

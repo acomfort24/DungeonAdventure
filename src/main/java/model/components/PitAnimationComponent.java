@@ -19,10 +19,10 @@ public class PitAnimationComponent extends Component {
     private AnimationChannel animSpikes;
 
     public PitAnimationComponent() {
-        animSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"),Duration.seconds(1), List.of(
+        animSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"), Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0,0,960,680)),
                 new Pair<>(1, new FrameData(960,0,960,680)),
-                new Pair<>(2, new FrameData(960+960,0,960,680)),
+                new Pair<>(2, new FrameData(960 + 960,0,960,680)),
                 new Pair<>(3, new FrameData(960,0,960,680)),
                 new Pair<>(4, new FrameData(0,0,960,680))
         ));

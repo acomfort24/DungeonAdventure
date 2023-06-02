@@ -7,11 +7,15 @@ import com.almasb.fxgl.physics.HitBox;
 import controller.InventoryController;
 import model.EntityType;
 import model.dungeonmap.Dungeon;
+import model.dungeonmap.DungeonRoom;
 
 public class PlayerItemHandler extends CollisionHandler {
+    /** */
+    private final Dungeon myDungeon;
     
-    public PlayerItemHandler(final EntityType theEntityType) {
+    public PlayerItemHandler(final EntityType theEntityType, final Dungeon theDungeon) {
         super(EntityType.PLAYER, theEntityType);
+        myDungeon = theDungeon;
     }
     
     @Override
@@ -22,13 +26,10 @@ public class PlayerItemHandler extends CollisionHandler {
     protected void onCollisionBegin(final Entity theP, final Entity theI) {
         String itemType = theI.getType().toString();
         InventoryController.addItem(itemType);
-        Dungeon d = FXGL.getGameWorld().getProperties().getObject("dungeon");
-        int x = FXGL.getWorldProperties().getInt("playerX");
-        int y = FXGL.getWorldProperties().getInt("playerY");
-        if ("vision potion".equals(itemType)) {
-            d.get(x, y).setVisPot(false);
-        } else if ("health potion".equals(itemType)) {
-            d.get(x, y).setHealPot(false);
+        if ("VISION_POTION".equals(itemType)) {
+            myDungeon.get(FXGL.geti("playerX"), FXGL.geti("playerY")).setVisPot(false);
+        } else if ("HEALTH_POTION".equals(itemType)) {
+            myDungeon.get(FXGL.geti("playerX"), FXGL.geti("playerY")).setHealPot(false);
         }
         theI.removeFromWorld();
     }
