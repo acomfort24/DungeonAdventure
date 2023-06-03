@@ -9,6 +9,8 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -22,8 +24,14 @@ import controller.collisionhandlers.PlayerDoorHandler;
 import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
 import controller.collisionhandlers.PlayerPillarHandler;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import model.DungeonFactory;
@@ -83,7 +91,6 @@ public final class DungeonApp extends GameApplication {
             myPlayer.setReusable(true);
             set("playerX", myDungeon.getEntranceX());
             set("playerY", myDungeon.getEntranceY());
-            myDungeon.display();
             System.out.println(geti("playerX") + " " + geti("playerY"));
             getWorldProperties().addListener("playerX", (old, now) -> {
                 setRoom((int) now, geti("playerY"));
@@ -212,6 +219,34 @@ public final class DungeonApp extends GameApplication {
                 myPlayer.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
+
+        onKeyDown(KeyCode.O, () -> {
+            Queue<Point2D> dungeonQueue = new LinkedList<>();
+            myDungeon.display();
+            System.out.println(geti("playerX") + " " + geti("playerY"));
+            int count = 0;
+            for (DungeonRoom[] d : myDungeon.getData()) {
+                for (DungeonRoom dr : d) {
+                    if ("entrance".equals(dr.getType())
+                            || "exit".equals(dr.getType())
+                            || "pillar".equals(dr.getType())) {
+                        dungeonQueue.add(new Point2D(dr.getX(), dr.getY()));
+                    }
+                }
+            }
+            set("devQueue", dungeonQueue);
+            return null;
+        });
+
+        onKeyDown(KeyCode.P, () -> {
+            Queue devQueue = geto("devQueue");
+            Point2D point = (Point2D) devQueue.poll();
+            set("spawnX", (double) 200);
+            set("spawnY", (double) 200);
+            setRoom((int) point.getX(), (int) point.getY());
+            devQueue.add(point);
+            return null;
+        });
     }
 
     @Override
