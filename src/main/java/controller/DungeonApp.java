@@ -2,17 +2,12 @@ package controller;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-import com.almasb.fxgl.animation.Animation;
-import com.almasb.fxgl.animation.AnimationBuilder;
-import com.almasb.fxgl.app.FXGLApplication;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLIntroScene;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.core.math.FXGLMath;
-import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
@@ -25,13 +20,14 @@ import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
 import controller.collisionhandlers.PlayerPillarHandler;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import model.DungeonFactory;
@@ -42,14 +38,16 @@ import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
+import view.HeroSelectScene;
 
 
 public final class DungeonApp extends GameApplication {
     /** */
-    private Entity myPlayer;
-    final public static String MYPLAYERNAME = "Priestess";
+    private static Entity myPlayer;
+    public static String myPlayerName;
+    public static Map<String, Map<String, String>> myDBData= DatabaseController.getAllSqlData();
     /** */
-    private Dungeon myDungeon;
+    private static Dungeon myDungeon;
     private SceneSwapController mySceneSwapController = new SceneSwapController();
     private InventoryController myInventoryController = new InventoryController();
 
@@ -61,7 +59,7 @@ public final class DungeonApp extends GameApplication {
         theGameSettings.setVersion("0.1");
         theGameSettings.setDeveloperMenuEnabled(true);
         theGameSettings.setTicksPerSecond(60);
-        //theGameSettings.setMainMenuEnabled(true);
+        theGameSettings.setMainMenuEnabled(true);
 
         theGameSettings.setSceneFactory(new SceneFactory() {
             @NotNull
@@ -72,6 +70,7 @@ public final class DungeonApp extends GameApplication {
             public FXGLMenu newGameMenu() {
                 return new GameMenu();
             }
+
         });
 
     }
@@ -81,37 +80,38 @@ public final class DungeonApp extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             //will change this when we can select class
-            Map<String, Map<String, String>> dbData= DatabaseController.getAllSqlData(MYPLAYERNAME);
+                getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
+                myDungeon = new Dungeon(5,5);
+                set("dungeon", myDungeon);
+                FXGL.setLevelFromMap(myDungeon.getEntranceMap());
+                myPlayer = spawn("player");
+                myPlayer.setReusable(true);
+                set("playerX", myDungeon.getEntranceX());
+                set("playerY", myDungeon.getEntranceY());
+                System.out.println(geti("playerX") + " " + geti("playerY"));
+                getWorldProperties().addListener("playerX", (old, now) -> {
+                    setRoom((int) now, geti("playerY"));
+                });
+                getWorldProperties().addListener("playerY", (old, now) -> {
+                    setRoom(geti("playerX"), (int) now);
+                });
 
-            getGameWorld().addEntityFactory(new DungeonFactory(dbData));
-            myDungeon = new Dungeon(5,5);
-            set("dungeon", myDungeon);
-            FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-            myPlayer = spawn("player");
-            myPlayer.setReusable(true);
-            set("playerX", myDungeon.getEntranceX());
-            set("playerY", myDungeon.getEntranceY());
-            System.out.println(geti("playerX") + " " + geti("playerY"));
-            getWorldProperties().addListener("playerX", (old, now) -> {
-                setRoom((int) now, geti("playerY"));
-            });
-            getWorldProperties().addListener("playerY", (old, now) -> {
-                setRoom(geti("playerX"), (int) now);
-            });
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
+    public static void runAfterChoice(Map<String, Map<String, String>> theDBData) {
 
-    private void setRoom(final int theX, final int theY) {
+    }
+    private static void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
         FXGL.setLevelFromMap(myDungeon.get(theX, theY).getRoom());
         spawnRoomEntities(myDungeon.get(theX, theY));
         myPlayer = spawn("player");
     }
     
-    private void spawnRoomEntities(final DungeonRoom theRoom) {
+    private static void spawnRoomEntities(final DungeonRoom theRoom) {
         if (theRoom.hasHealPot()) {
             spawn("health potion");
         }
@@ -140,7 +140,7 @@ public final class DungeonApp extends GameApplication {
         }
     }
 
-    private String randomMonster() {
+    private static String randomMonster() {
         final int num = FXGL.random(1, 2);
         final String monsterType;
 
@@ -254,6 +254,10 @@ public final class DungeonApp extends GameApplication {
         vars.put("pillars", 0);
         vars.put("spawnX", (double) getAppWidth() / 2 - 50);
         vars.put("spawnY", (double) getAppHeight() / 2 - 50);
+    }
+    public static EventHandler<ActionEvent> setMyPlayerName(String thePlayerName) {
+        myPlayerName = thePlayerName;
+        return null;
     }
     
     public static void main(final String[] theArgs) {

@@ -2,6 +2,7 @@ package view;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
+import com.almasb.fxgl.dsl.FXGL;
 import controller.InventoryController;
 import java.util.HashMap;
 import javafx.geometry.Pos;
@@ -10,6 +11,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import model.EntityType;
+import model.components.PlayerComponent;
 
 public class GameMenu extends FXGLMenu {
     private final ScrollPane myFlexBox = new ScrollPane();
@@ -44,6 +47,7 @@ public class GameMenu extends FXGLMenu {
         myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {
+        System.out.println(PlayerComponent.getName());
         myShowInventory = !myShowInventory;
         if (myShowInventory) {
             myFlexBox.setContent(createInventoryBox());

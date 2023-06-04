@@ -95,7 +95,7 @@ public class DungeonFactory implements EntityFactory {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0));
-        Map<String, String> heroData = myDBData.get(DungeonApp.MYPLAYERNAME);
+        Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
         return entityBuilder()
                 .type(PLAYER)
                 //.viewWithBBox("player.png")
@@ -183,7 +183,7 @@ public class DungeonFactory implements EntityFactory {
     }
     @Spawns("skeleton")
     public Entity newSkeleton(final SpawnData theData) {
-        Map<String, String> monsterData = myDBData.get(DungeonApp.MYPLAYERNAME);
+        Map<String, String> monsterData = myDBData.get(DungeonApp.myPlayerName);
         return entityBuilder()
                 .type(EntityType.SKELETON)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
