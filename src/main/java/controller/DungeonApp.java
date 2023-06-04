@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
 import view.HeroSelectScene;
+import view.MapSubScene;
 
 
 public final class DungeonApp extends GameApplication {
@@ -100,6 +101,7 @@ public final class DungeonApp extends GameApplication {
         var hp = new HealthDoubleComponent(Double.parseDouble(heroData.get("hitPoints")));
         set("playerHP", hp);
         set("playerHPView", new GenericBarViewComponent(0.0, -20.0, Color.RED, hp.valueProperty(), 100.0, 8.0));
+
         myPlayer = spawn("player");
         myPlayer.setReusable(true);
         getWorldProperties().addListener("playerX", (old, now) -> {
@@ -108,6 +110,7 @@ public final class DungeonApp extends GameApplication {
         getWorldProperties().addListener("playerY", (old, now) -> {
             setRoom(geti("playerX"), (int) now);
         });
+        System.out.println(myPlayerName);
     }
 
     public static void runAfterChoice(Map<String, Map<String, String>> theDBData) {
@@ -116,6 +119,7 @@ public final class DungeonApp extends GameApplication {
     private static void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
         FXGL.setLevelFromMap(myDungeon.get(theX, theY).getRoom());
+        myDungeon.get(theX, theY).setVisited(true);
         spawnRoomEntities(myDungeon.get(theX, theY));
         myPlayer = spawn("player");
     }
@@ -254,6 +258,11 @@ public final class DungeonApp extends GameApplication {
             set("spawnY", (double) 200);
             setRoom((int) point.getX(), (int) point.getY());
             devQueue.add(point);
+            return null;
+        });
+
+        onKeyDown(KeyCode.M, () -> {
+            FXGL.getSceneService().pushSubScene(new MapSubScene(myDungeon));
             return null;
         });
     }
