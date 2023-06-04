@@ -92,18 +92,20 @@ public class Dungeon extends Grid<DungeonRoom> {
         for (int i = 0; i < myHeight; i++) {
             // draw the north edge
             for (int j = 0; j < myWidth; j++) {
-                System.out.print((myDungeon[j][i] & 1) == 0 ? "+-----" : "+     ");
+                System.out.print((myDungeon[j][i] & 1) == 0 ? "+------" : "+      ");
             }
             System.out.println("+");
             // draw the west edge
-            for (int j = 0; j < myWidth; j++) {
-                System.out.print((myDungeon[j][i] & 8) == 0 ? "|     " : "      ");
+            for (int k = 0; k < 2; k++) {
+                for (int j = 0; j < myWidth; j++) {
+                    System.out.print((myDungeon[j][i] & 8) == 0 ? "|      " : "       ");
+                }
+                System.out.println("|");
             }
-            System.out.println("|");
         }
         // draw the bottom line
         for (int j = 0; j < myWidth; j++) {
-            System.out.print("+-----");
+            System.out.print("+------");
         }
         System.out.println("+");
     }

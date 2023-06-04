@@ -70,7 +70,6 @@ public final class DungeonApp extends GameApplication {
             public FXGLMenu newGameMenu() {
                 return new GameMenu();
             }
-
         });
 
     }
