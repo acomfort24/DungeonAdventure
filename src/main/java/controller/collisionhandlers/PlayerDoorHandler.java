@@ -4,9 +4,9 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppHeight;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getAppWidth;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
-import controller.HealthController;
 import model.EntityType;
 
 public class PlayerDoorHandler extends CollisionHandler {
@@ -22,10 +22,12 @@ public class PlayerDoorHandler extends CollisionHandler {
         final String type = theD.getType().toString();
         switch (type) {
             case "NORTH_DOOR" -> {
+                System.out.println(theP.getComponent(HealthDoubleComponent.class).getValue());
+                theP.getComponent(HealthDoubleComponent.class).damage(10);
+                System.out.println(theP.getComponent(HealthDoubleComponent.class).getValue());
                 FXGL.getWorldProperties().setValue("spawnX", (double) getAppWidth() / 2 - 48);
                 FXGL.getWorldProperties().setValue("spawnY", (double) getAppHeight() - 160);
                 FXGL.getWorldProperties().increment(PLAYER_Y_PROPERTY, -1);
-                HealthController.loseHealth(-10);
             }
             case "SOUTH_DOOR" -> {
                 FXGL.getWorldProperties().setValue("spawnX", (double) getAppWidth() / 2 - 48);

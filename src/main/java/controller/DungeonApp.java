@@ -8,6 +8,9 @@ import com.almasb.fxgl.app.scene.FXGLIntroScene;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
+import com.almasb.fxgl.dsl.components.HealthIntComponent;
+import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
@@ -79,27 +82,34 @@ public final class DungeonApp extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             //will change this when we can select class
-                getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
-                myDungeon = new Dungeon(5,5);
-                set("dungeon", myDungeon);
-                FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-                myPlayer = spawn("player");
-                myPlayer.setReusable(true);
-                set("playerX", myDungeon.getEntranceX());
-                set("playerY", myDungeon.getEntranceY());
-                System.out.println(geti("playerX") + " " + geti("playerY"));
-                getWorldProperties().addListener("playerX", (old, now) -> {
-                    setRoom((int) now, geti("playerY"));
-                });
-                getWorldProperties().addListener("playerY", (old, now) -> {
-                    setRoom(geti("playerX"), (int) now);
-                });
-
+            getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
+            myDungeon = new Dungeon(5,5);
+            set("dungeon", myDungeon);
+            FXGL.setLevelFromMap(myDungeon.getEntranceMap());
+            playerSetUp();
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
+
+    private static void playerSetUp() {
+        Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
+        set("playerX", myDungeon.getEntranceX());
+        set("playerY", myDungeon.getEntranceY());
+        var hp = new HealthDoubleComponent(Double.parseDouble(heroData.get("hitPoints")));
+        set("playerHP", hp);
+        set("playerHPView", new GenericBarViewComponent(0.0, -20.0, Color.RED, hp.valueProperty(), 100.0, 8.0));
+        myPlayer = spawn("player");
+        myPlayer.setReusable(true);
+        getWorldProperties().addListener("playerX", (old, now) -> {
+            setRoom((int) now, geti("playerY"));
+        });
+        getWorldProperties().addListener("playerY", (old, now) -> {
+            setRoom(geti("playerX"), (int) now);
+        });
+    }
+
     public static void runAfterChoice(Map<String, Map<String, String>> theDBData) {
 
     }
@@ -257,6 +267,13 @@ public final class DungeonApp extends GameApplication {
     public static EventHandler<ActionEvent> setMyPlayerName(String thePlayerName) {
         myPlayerName = thePlayerName;
         return null;
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
+            getDialogService().showMessageBox("Game over man.", FXGL.getGameController()::gotoMainMenu);
+        }
     }
     
     public static void main(final String[] theArgs) {
