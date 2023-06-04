@@ -23,9 +23,9 @@ public class PlayerComponent extends Component {
     /** */
     protected PhysicsComponent myPhysics;
     
-    public PlayerComponent(int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, String theName) {
+    public PlayerComponent(int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, int theHealth, String theName) {
         super();
-        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd, theChncHit, theName);
+        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd, theChncHit, theHealth, theName);
     }
     
     public void down() {

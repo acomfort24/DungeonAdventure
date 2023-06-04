@@ -109,7 +109,9 @@ public class DungeonFactory implements EntityFactory {
                         Integer.parseInt(heroData.get("maxDmg")),
                         Integer.parseInt(heroData.get("atkSpd")),
                         Double.parseDouble(heroData.get("chncHit")),
+                        Integer.parseInt(heroData.get("hitPoints")),
                         heroData.get("name")))
+                .with(new HealthIntComponent(Integer.parseInt(heroData.get("hitPoints"))))
                 //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
                 .build();
     }
@@ -197,6 +199,7 @@ public class DungeonFactory implements EntityFactory {
                         Integer.parseInt(monsterData.get("maxDmg")),
                         Integer.parseInt(monsterData.get("atkSpd")),
                         Double.parseDouble(monsterData.get("chncHit")),
+                        Integer.parseInt(monsterData.get("hitPoints")),
                         monsterData.get("name")))
                 .build();
     }
