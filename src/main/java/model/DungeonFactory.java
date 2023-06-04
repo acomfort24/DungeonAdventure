@@ -4,6 +4,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
@@ -104,7 +105,7 @@ public class DungeonFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
-                .with(new PlayerAnimationComponent())
+                .with(new PlayerAnimationComponent(DungeonApp.myPlayerName))
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent(
                         Integer.parseInt(heroData.get("minDmg")),
