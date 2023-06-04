@@ -9,6 +9,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.EntityType;
+
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getDialogService;
+
 public class PlayerExitHandler extends CollisionHandler {
     
     public PlayerExitHandler() {
@@ -17,11 +20,6 @@ public class PlayerExitHandler extends CollisionHandler {
     
     @Override
     protected void onCollision(final Entity theP, final Entity theE) {
-        var text = FXGL.getUIFactoryService().newText("congrats bucko", Color.WHITE, 48.0);
-        var vbox = new VBox(text);
-        var root = new StackPane(vbox);
-        root.setTranslateX(400.0);
-        root.setTranslateY(300.0);
-        FXGL.getGameScene().getContentRoot().getChildren().addAll(root);
+        getDialogService().showMessageBox("congrats bucko.", FXGL.getGameController()::gotoMainMenu);
     }
 }

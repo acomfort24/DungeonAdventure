@@ -11,10 +11,10 @@ public class MonsterComponent extends Component {
     private final CharacterComponent myCharacterComponent;
     public MonsterComponent(final int theMinHeal, final int theMaxHeal, final int theMinDmg,
                             final int theMaxDmg, final int theAtkSpd, final Double theChncHit,
-                            final String theName) {
+                            final int theHealth, final String theName) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg,
-                theMaxDmg, theAtkSpd, theChncHit, theName);
+                theMaxDmg, theAtkSpd, theChncHit, theHealth, theName);
         myMinHeal = theMinHeal;
         myMaxHeal = theMaxHeal;
     }
