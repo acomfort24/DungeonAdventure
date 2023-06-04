@@ -1,5 +1,6 @@
 package model.components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 
 public class PlayerComponent extends Component {
-    private CharacterComponent myCharacterComponent;
+    private static CharacterComponent myCharacterComponent;
     private double myChncBlock;
     /** */
     private static final int PLAYER_VELOCITY = 350;
@@ -51,6 +52,9 @@ public class PlayerComponent extends Component {
 
     public static Inventory getMyInventory() {
         return myInventory;
+    }
+    public static String getName() {
+        return myCharacterComponent.getMyName();
     }
     public double getMyChncBlock() {
         return myChncBlock;

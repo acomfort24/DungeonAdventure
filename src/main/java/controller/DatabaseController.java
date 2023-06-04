@@ -63,14 +63,16 @@ public final class DatabaseController {
         }
         return resultMap;
     }
-    public static Map<String, Map<String, String>> getAllSqlData(String theName) {
+    public static Map<String, Map<String, String>> getAllSqlData() {
         Map<String, Map<String, String>> sqlData = new HashMap<String, Map<String, String>>();
         SQLiteDataSource ds = null;
         //establish connection (creates db file if it does not exist :-)
         try {
             ds = new SQLiteDataSource();
             ds.setUrl("jdbc:sqlite:Dungeon_Adventure.db");
-            sqlData.put(theName, getData(ds, "Hero", theName));
+            sqlData.put("Warrior", getData(ds, "Hero", "Warrior"));
+            sqlData.put("Priestess", getData(ds, "Hero", "Priestess"));
+            sqlData.put("Thief", getData(ds, "Hero", "Thief"));
             sqlData.put("Gremlin", getData(ds, "Monster", "Gremlin"));
             sqlData.put("Ogre", getData(ds, "Monster", "Ogre"));
             sqlData.put("Skeleton", getData(ds, "Monster", "Skeleton"));
