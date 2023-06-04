@@ -4,6 +4,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -96,6 +97,7 @@ public class DungeonFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0));
         Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
+
         return entityBuilder()
                 .type(PLAYER)
                 //.viewWithBBox("player.png")
@@ -111,8 +113,8 @@ public class DungeonFactory implements EntityFactory {
                         Double.parseDouble(heroData.get("chncHit")),
                         Integer.parseInt(heroData.get("hitPoints")),
                         heroData.get("name")))
-                .with(new HealthIntComponent(Integer.parseInt(heroData.get("hitPoints"))))
-                //.with(new GenericBarViewComponent(0.0, -20.0, Color.RED, new SimpleDoubleProperty(100.0), 100.0, 8.0))
+                .with((HealthDoubleComponent) geto("playerHP"))
+                .with((GenericBarViewComponent) geto("playerHPView"))
                 .build();
     }
 
