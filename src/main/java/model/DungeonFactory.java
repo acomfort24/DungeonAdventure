@@ -179,7 +179,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("pit")
     public Entity newPit(final SpawnData theData) {
             return entityBuilder()
-                    .type(EntityType.PIT)
+                    .type(PIT)
                     .bbox(new HitBox(BoundingShape.box(960, 680)))
                     .with(new PitAnimationComponent())
                     .with(new CollidableComponent())
@@ -190,29 +190,40 @@ public class DungeonFactory implements EntityFactory {
     public Entity newSkeleton(final SpawnData theData) {
         Map<String, String> monsterData = myDBData.get(DungeonApp.myPlayerName);
         return entityBuilder()
-                .type(EntityType.SKELETON)
+                .type(SKELETON)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .with(new MonsterAnimationComponent("SkeletonIdleSheet.png"))
+                .with(new MonsterAnimationComponent("Skeleton"))
                 .with(new CollidableComponent())
                 .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
-                .with(new MonsterComponent(
-                        Integer.parseInt(monsterData.get("minHeal")),
-                        Integer.parseInt(monsterData.get("maxHeal")),
-                        Integer.parseInt(monsterData.get("minDmg")),
-                        Integer.parseInt(monsterData.get("maxDmg")),
-                        Integer.parseInt(monsterData.get("atkSpd")),
-                        Double.parseDouble(monsterData.get("chncHit")),
-                        Integer.parseInt(monsterData.get("hitPoints")),
-                        monsterData.get("name")))
+//                .with(new MonsterComponent(
+//                        Integer.parseInt(monsterData.get("minHeal")),
+//                        Integer.parseInt(monsterData.get("maxHeal")),
+//                        Integer.parseInt(monsterData.get("minDmg")),
+//                        Integer.parseInt(monsterData.get("maxDmg")),
+//                        Integer.parseInt(monsterData.get("atkSpd")),
+//                        Double.parseDouble(monsterData.get("chncHit")),
+//                        Integer.parseInt(monsterData.get("hitPoints")),
+//                        monsterData.get("name")))
                 .build();
     }
 
-    @Spawns("orc")
-    public Entity newOrc(final SpawnData theData) {
+    @Spawns("goblin")
+    public Entity newGoblin(final SpawnData theData) {
         return entityBuilder()
-                .type(EntityType.ORC)
+                .type(GOBLIN)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .with(new MonsterAnimationComponent("OrcIdleSheet.png"))
+                .with(new MonsterAnimationComponent("Goblin"))
+                .with(new CollidableComponent())
+                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .build();
+    }
+
+    @Spawns("ogre")
+    public Entity newOgre(final SpawnData theData) {
+        return entityBuilder()
+                .type(OGRE)
+                .bbox(new HitBox(BoundingShape.box(96, 96)))
+                .with(new MonsterAnimationComponent("Ogre"))
                 .with(new CollidableComponent())
                 .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
                 .build();

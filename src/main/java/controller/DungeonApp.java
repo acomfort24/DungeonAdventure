@@ -154,12 +154,13 @@ public final class DungeonApp extends GameApplication {
     }
 
     private static String randomMonster() {
-        final int num = FXGL.random(1, 2);
+        final int num = FXGL.random(1, 3);
         final String monsterType;
 
         switch (num) {
             case 1 -> monsterType = "skeleton";
-            case 2 -> monsterType = "orc";
+            case 2 -> monsterType = "goblin";
+            case 3 -> monsterType = "ogre";
             default -> throw new IllegalStateException("Unexpected value: " + num);
         }
 

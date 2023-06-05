@@ -49,7 +49,7 @@ public class PitAnimationComponent extends Component {
                             cancel();
                         }
                     },
-                    4000
+                    2000
             );
         }
     }

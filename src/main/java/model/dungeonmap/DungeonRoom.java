@@ -29,6 +29,7 @@ public class DungeonRoom extends Cell {
         myVisPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
         myHealPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
         myPit = FXGLMath.randomBoolean(SPAWN_CHANCE);
+        myMonster = FXGLMath.randomBoolean(SPAWN_CHANCE * 4);
     }
     
     public String getRoom() {
