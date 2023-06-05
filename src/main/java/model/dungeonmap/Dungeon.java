@@ -1,15 +1,20 @@
 package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Grid;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
 
-public class Dungeon extends Grid<DungeonRoom> {
+public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     /** */
     private static final int PILLAR_COUNT = 4;
     /** */
     private static final Predicate<DungeonRoom> IS_BASIC = x -> "basic".equals(x.getType());
+
+
+
     /** */
     private final int myWidth;
     /** */
@@ -141,5 +146,12 @@ public class Dungeon extends Grid<DungeonRoom> {
                 dr.setPillar(true);
             }
         }
+    }
+    public int getMyWidth() {
+        return myWidth;
+    }
+
+    public int getMyHeight() {
+        return myHeight;
     }
 }

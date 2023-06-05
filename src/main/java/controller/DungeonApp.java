@@ -7,6 +7,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLIntroScene;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
@@ -18,14 +19,14 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.profile.DataFile;
+import com.almasb.fxgl.profile.SaveLoadHandler;
 import controller.collisionhandlers.PlayerDoorHandler;
 import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
 import controller.collisionhandlers.PlayerPillarHandler;
 
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -77,7 +78,56 @@ public final class DungeonApp extends GameApplication {
         });
 
     }
+    @Override
+    protected void onPreInit() {
+        getSaveLoadService().addHandler(new SaveLoadHandler() {
+            @Override
+            public void onSave(DataFile data) {
+                Bundle bundlePlayer = new Bundle("Player");
+                Bundle bundleRooms = new Bundle("Rooms");
+                Bundle bundleInventory = new Bundle("Inventory");
+                Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
+                bundlePlayer.put("playerName", myPlayerName);
+                bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
+                bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
+
+                Bundle bundleTempPlayer = new Bundle("tempPlayer");
+
+                bundleTempPlayer.put("tempPlayer", FXGL.getGameWorld().getSingleton(EntityType.PLAYER).);
+
+//                ArrayList<ArrayList<Map<String, Boolean>>> roomArrayList = new ArrayList<>();
+//                for (int i=0; i < myDungeon.getMyWidth(); i++) {
+//                    for (int j=0; j < myDungeon.getMyHeight(); j++) {
+//                        roomArrayList[i][j][""].set
+//                    }
+//                }
+                bundleRooms.put("rooms", new )
+
+
+                if (PlayerComponent.getMyInventory().hasItem("Health Potion")) {
+                    bundleInventory.put("healthPots", PlayerComponent.getMyInventory().getItemQuantity("Health Potion"));
+                }
+                if (PlayerComponent.getMyInventory().hasItem("Vision Potion")) {
+                    bundleInventory.put("visionPots", PlayerComponent.getMyInventory().getItemQuantity("Vision Potion"));
+                }
+
+
+                data.putBundle(bundlePlayer);
+                data.putBundle(bundleInventory);
+                data.putBundle(bundleRooms);
+            }
+
+            @Override
+            public void onLoad(DataFile data) {
+                Bundle bundlePlayer = data.getBundle("Player");
+                Bundle bundleInventory = data.getBundle("Inventory");
+                Bundle bundleRooms = data.getBundle("Rooms");
+                System.out.println(bundlePlayer);
+                System.out.println(bundleRooms);
+            }
+        });
+    }
     @Override
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
@@ -111,10 +161,6 @@ public final class DungeonApp extends GameApplication {
             setRoom(geti("playerX"), (int) now);
         });
         System.out.println(myPlayerName);
-    }
-
-    public static void runAfterChoice(Map<String, Map<String, String>> theDBData) {
-
     }
     private static void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();

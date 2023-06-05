@@ -1,7 +1,11 @@
 package controller;
 
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.inventory.Inventory;
 import java.util.HashMap;
+
+import model.EntityType;
 import model.components.PlayerComponent;
 
 
@@ -14,6 +18,9 @@ public class InventoryController extends SceneSwapController {
             inventory.incrementQuantity(theItem, -1);
         } else {
             inventory.remove(theItem);
+        }
+        if (theItem.equals("HEALTH_POTION")) {
+            FXGL.getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).restore(25);
         }
     }
     public static void addItem(final String theItem) {
