@@ -93,6 +93,7 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
+                //creates a 2d arraylist of maps of the different booleans of information in each room
                 ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
                 for (int i=0; i < myDungeon.getMyWidth(); i++) {
                     ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
