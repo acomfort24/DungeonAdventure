@@ -19,6 +19,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     private final int myWidth;
     /** */
     private final int myHeight;
+
     /** */
     private final int[][] myDungeon;
     /** */
@@ -153,5 +154,8 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
 
     public int getMyHeight() {
         return myHeight;
+    }
+    public int[][] getMyDungeon() {
+        return myDungeon;
     }
 }

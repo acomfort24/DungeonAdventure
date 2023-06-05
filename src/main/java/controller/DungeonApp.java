@@ -84,7 +84,8 @@ public final class DungeonApp extends GameApplication {
             @Override
             public void onSave(DataFile data) {
                 Bundle bundlePlayer = new Bundle("Player");
-                Bundle bundleRooms = new Bundle("Rooms");
+                Bundle bundleRoomsBooleans = new Bundle("RoomsBooleans");
+                Bundle bundleRoomsTypes = new Bundle("RoomsTypes");
                 Bundle bundleInventory = new Bundle("Inventory");
                 Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
@@ -92,18 +93,23 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
-                Bundle bundleTempPlayer = new Bundle("tempPlayer");
-
-                bundleTempPlayer.put("tempPlayer", FXGL.getGameWorld().getSingleton(EntityType.PLAYER).);
-
-//                ArrayList<ArrayList<Map<String, Boolean>>> roomArrayList = new ArrayList<>();
-//                for (int i=0; i < myDungeon.getMyWidth(); i++) {
-//                    for (int j=0; j < myDungeon.getMyHeight(); j++) {
-//                        roomArrayList[i][j][""].set
-//                    }
-//                }
-                bundleRooms.put("rooms", new )
-
+                ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
+                for (int i=0; i < myDungeon.getMyWidth(); i++) {
+                    ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
+                    for (int j=0; j < myDungeon.getMyHeight(); j++) {
+                        Map<String, Boolean> map = new HashMap<>();
+                        map.put("hasVisPot", myDungeon.get(i,j).hasVisPot());
+                        map.put("hasHealPot", myDungeon.get(i,j).hasHealPot());
+                        map.put("hasPit", myDungeon.get(i,j).hasPit());
+                        map.put("hasMonster", myDungeon.get(i,j).hasMonster());
+                        map.put("hasBeenVisited", myDungeon.get(i,j).hasBeenVisited());
+                        map.put("hasPillar", myDungeon.get(i,j).hasPillar());
+                        rowList.add(map);
+                    }
+                    roomArray.add(rowList);
+                }
+                bundleRoomsBooleans.put("roomsBooleans", roomArray);
+                bundleRoomsTypes.put("roomsTypes", myDungeon.getMyDungeon());
 
                 if (PlayerComponent.getMyInventory().hasItem("Health Potion")) {
                     bundleInventory.put("healthPots", PlayerComponent.getMyInventory().getItemQuantity("Health Potion"));
@@ -115,16 +121,19 @@ public final class DungeonApp extends GameApplication {
 
                 data.putBundle(bundlePlayer);
                 data.putBundle(bundleInventory);
-                data.putBundle(bundleRooms);
+                data.putBundle(bundleRoomsBooleans);
+                data.putBundle(bundleRoomsTypes);
             }
 
             @Override
             public void onLoad(DataFile data) {
                 Bundle bundlePlayer = data.getBundle("Player");
                 Bundle bundleInventory = data.getBundle("Inventory");
-                Bundle bundleRooms = data.getBundle("Rooms");
+                Bundle bundleRoomsBooleans = data.getBundle("RoomsBooleans");
+                Bundle bundleRoomsTypes = data.getBundle("RoomsTypes");
                 System.out.println(bundlePlayer);
-                System.out.println(bundleRooms);
+                System.out.println(bundleRoomsBooleans);
+                System.out.println(bundleRoomsTypes);
             }
         });
     }
