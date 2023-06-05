@@ -3,7 +3,9 @@ package model.dungeonmap;
 import com.almasb.fxgl.core.collection.grid.Cell;
 import com.almasb.fxgl.core.math.FXGLMath;
 
-public class DungeonRoom extends Cell {
+import java.io.Serializable;
+
+public class DungeonRoom extends Cell implements Serializable {
     /** */
     private static final double SPAWN_CHANCE = 0.1;
     /** */

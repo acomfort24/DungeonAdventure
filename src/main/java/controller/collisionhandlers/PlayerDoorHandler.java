@@ -22,7 +22,6 @@ public class PlayerDoorHandler extends CollisionHandler {
         final String type = theD.getType().toString();
         switch (type) {
             case "NORTH_DOOR" -> {
-                System.out.println(theP.getComponent(HealthDoubleComponent.class).getValue());
                 theP.getComponent(HealthDoubleComponent.class).damage(10);
                 System.out.println(theP.getComponent(HealthDoubleComponent.class).getValue());
                 FXGL.getWorldProperties().setValue("spawnX", (double) getAppWidth() / 2 - 48);
