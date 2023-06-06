@@ -189,6 +189,7 @@ public final class DungeonApp extends GameApplication {
         }
         if (theRoom.hasPit()) {
             spawn("pit");
+            myPlayer.getComponent(HealthDoubleComponent.class).damage(10);
         }
         if (theRoom.hasPillar()) {
             spawn("pillar");
@@ -293,7 +294,6 @@ public final class DungeonApp extends GameApplication {
             Queue<Point2D> dungeonQueue = new LinkedList<>();
             myDungeon.display();
             System.out.println(geti("playerX") + " " + geti("playerY"));
-            int count = 0;
             for (DungeonRoom[] d : myDungeon.getData()) {
                 for (DungeonRoom dr : d) {
                     if ("entrance".equals(dr.getType())

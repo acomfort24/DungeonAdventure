@@ -1,17 +1,11 @@
 package view;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.scene.Scene;
-import com.almasb.fxgl.scene.SceneService;
-import com.almasb.fxgl.scene.SubScene;
 import controller.DungeonApp;
-import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import model.DungeonFactory;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.Map;
 
@@ -23,12 +17,14 @@ public class HeroSelectScene extends HBox {
         createPanelButton("Warrior");
         createPanelButton("Thief");
         createPanelButton("Priestess");
+        this.setSpacing(50);
+        this.setLayoutX(150);
+        this.setLayoutY(250);
     }
     private void createPanelButton(String theName) {
         Button button = new Button();
-        button.setGraphic(new ImageView("file:resources/assets/textures/exit0.png"));
         button.setText(
-                "Class: " + myDBData.get(theName).get("name")
+                myDBData.get(theName).get("name")
                         + "\nMax Health: " + myDBData.get(theName).get("hitPoints")
                         + "\nMin Dmg: " + myDBData.get(theName).get("minDmg")
                         + "\nMax Dmg: " + myDBData.get(theName).get("maxDmg")
@@ -36,6 +32,9 @@ public class HeroSelectScene extends HBox {
                         + "\nChnc Hit: " + myDBData.get(theName).get("chncHit")
                         + "\nChnc Blk: " + myDBData.get(theName).get("chncBlock")
         );
+        button.setTextAlignment(TextAlignment.CENTER);
+        button.setPrefSize(250, 300);
+        button.setFont(new Font(30));
         button.setOnAction(e -> {
             DungeonApp.setMyPlayerName(theName);
             FXGL.getGameController().startNewGame();
