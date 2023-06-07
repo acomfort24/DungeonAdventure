@@ -118,8 +118,7 @@ public class DungeonFactory implements EntityFactory {
                 .with((GenericBarViewComponent) geto("playerHPView"))
                 .build();
     }
-
-
+    
     @Spawns("health potion")
     public Entity newHP(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
@@ -186,9 +185,10 @@ public class DungeonFactory implements EntityFactory {
                     .at(new Point2D(96,144))
                     .build();
     }
+    
     @Spawns("skeleton")
     public Entity newSkeleton(final SpawnData theData) {
-        Map<String, String> monsterData = myDBData.get(DungeonApp.myPlayerName);
+        Map<String, String> monsterData = myDBData.get("Skeleton");
         return entityBuilder()
                 .type(EntityType.SKELETON)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
@@ -209,11 +209,21 @@ public class DungeonFactory implements EntityFactory {
 
     @Spawns("orc")
     public Entity newOrc(final SpawnData theData) {
+        Map<String, String> monsterData = myDBData.get("Ogre");
         return entityBuilder()
                 .type(EntityType.ORC)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .with(new MonsterAnimationComponent("OrcIdleSheet.png"))
                 .with(new CollidableComponent())
+                .with(new MonsterComponent(
+                        Integer.parseInt(monsterData.get("minHeal")),
+                        Integer.parseInt(monsterData.get("maxHeal")),
+                        Integer.parseInt(monsterData.get("minDmg")),
+                        Integer.parseInt(monsterData.get("maxDmg")),
+                        Integer.parseInt(monsterData.get("atkSpd")),
+                        Double.parseDouble(monsterData.get("chncHit")),
+                        Integer.parseInt(monsterData.get("hitPoints")),
+                        monsterData.get("name")))
                 .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
                 .build();
     }
