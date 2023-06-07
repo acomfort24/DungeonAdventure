@@ -4,8 +4,10 @@ import com.almasb.fxgl.core.collection.grid.Grid;
 import com.almasb.fxgl.core.math.FXGLMath;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class Dungeon extends Grid<DungeonRoom> implements Serializable {
@@ -46,7 +48,31 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         setPillarRooms();
         addMonsters();
     }
-    
+    public Dungeon(int[][] theNumberArray, String[][] theTypeArray, ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray) {
+        super(DungeonRoom.class, theNumberArray.length, theNumberArray[0].length);
+        myWidth = theNumberArray.length;
+        myHeight = theNumberArray[0].length;
+        myDungeon = theNumberArray;
+
+        populate((x, y) -> {
+            final DungeonRoom room = new DungeonRoom(x, y,
+                    theRoomArray.get(x).get(y).get("hasVisPot"),
+                    theRoomArray.get(x).get(y).get("hasHealPot"),
+                    theRoomArray.get(x).get(y).get("hasPit"),
+                    theRoomArray.get(x).get(y).get("hasMonster"),
+                    theRoomArray.get(x).get(y).get("hasBeenVisited"),
+                    theRoomArray.get(x).get(y).get("hasPillar"));
+            room.setRoom(myDungeon[x][y]);
+            room.setType(theTypeArray[x][y]);
+            if(theTypeArray[x][y].equalsIgnoreCase("entrance")) {
+                setEntrance(room);
+            }
+            if(theTypeArray[x][y].equalsIgnoreCase("exit")) {
+                setExit(room);
+            }
+            return room;
+        });
+    }
     private void generateDungeon(final int[][] theDungeon, final int theX, final int theY) {
         final DIR[] dirs = DIR.values();
         Collections.shuffle(Arrays.asList(dirs));
@@ -129,14 +155,21 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         myEntrance.setType("entrance");
         myEntrance.setVisited(true);
     }
-    
+    private void setEntrance(DungeonRoom theRoom) {
+        myEntrance = theRoom;
+        myEntrance.setType("entrance");
+        myEntrance.setVisited(true);
+    }
     private void setExit() {
         if (getRandomCell(IS_BASIC).isPresent()) {
             myExit = getRandomCell(IS_BASIC).get();
             myExit.setType("exit");
         }
     }
-    
+    private void setExit(DungeonRoom theRoom) {
+        myExit = theRoom;
+        myExit.setType("exit");
+    }
     private void setPillarRooms() {
         for (int i = 0; i < PILLAR_COUNT; i++) {
             if (getRandomCell(IS_BASIC).isPresent()) {
