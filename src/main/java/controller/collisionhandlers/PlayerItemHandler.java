@@ -7,7 +7,6 @@ import com.almasb.fxgl.physics.HitBox;
 import controller.InventoryController;
 import model.EntityType;
 import model.dungeonmap.Dungeon;
-import model.dungeonmap.DungeonRoom;
 
 public class PlayerItemHandler extends CollisionHandler {
     /** */
