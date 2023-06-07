@@ -58,6 +58,7 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
+//        FXGL.getWorldProperties().clear();
         myDBData = DatabaseController.getAllSqlData();
         theGameSettings.setWidth(1152);
         theGameSettings.setHeight(864);
@@ -84,11 +85,11 @@ public final class DungeonApp extends GameApplication {
         getSaveLoadService().addHandler(new SaveLoadHandler() {
             @Override
             public void onSave(DataFile data) {
-                Bundle bundlePlayer = new Bundle("Player");
-                Bundle bundleRoomsBooleans = new Bundle("RoomsBooleans");
-                Bundle bundleRoomsNumbers = new Bundle("RoomsNumbers");
-                Bundle bundleRoomsTypes = new Bundle("RoomsTypes");
-                Bundle bundleInventory = new Bundle("Inventory");
+                Bundle bundlePlayer = new Bundle("player");
+                Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
+                Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
+                Bundle bundleRoomsTypes = new Bundle("roomsTypes");
+                Bundle bundleInventory = new Bundle("inventory");
                 Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
                 bundlePlayer.put("playerName", myPlayerName);
@@ -99,8 +100,6 @@ public final class DungeonApp extends GameApplication {
                 //creates a 2d arraylist of maps of the different booleans of information in each room
                 ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
 
-                Bundle bundleRooms = new Bundle("dungeon");
-                bundleRooms.put("roomInfo", geto("dungeon"));
 
                 for (int i=0; i < myDungeon.getMyWidth(); i++) {
                     ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
@@ -121,11 +120,11 @@ public final class DungeonApp extends GameApplication {
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon());
 
-                if (PlayerComponent.getMyInventory().hasItem("Health Potion")) {
-                    bundleInventory.put("healthPots", PlayerComponent.getMyInventory().getItemQuantity("Health Potion"));
+                if (PlayerComponent.getMyInventory().hasItem("HEALTH_POTION")) {
+                    bundleInventory.put("healthPots", PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"));
                 }
-                if (PlayerComponent.getMyInventory().hasItem("Vision Potion")) {
-                    bundleInventory.put("visionPots", PlayerComponent.getMyInventory().getItemQuantity("Vision Potion"));
+                if (PlayerComponent.getMyInventory().hasItem("VISION_POTION")) {
+                    bundleInventory.put("visionPots", PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"));
                 }
 
 
@@ -139,30 +138,72 @@ public final class DungeonApp extends GameApplication {
 
             @Override
             public void onLoad(DataFile data) {
-                Bundle bundlePlayer = data.getBundle("Player");
-                Bundle bundleInventory = data.getBundle("Inventory");
-                Bundle bundleRoomsBooleans = data.getBundle("RoomsBooleans");
-                Bundle bundleRoomsTypes = data.getBundle("RoomsTypes");
+                Bundle bundlePlayer = data.getBundle("player");
+                Bundle bundleInventory = data.getBundle("inventory");
+                Bundle bundleRoomsBooleans = data.getBundle("roomsBooleans");
+                Bundle bundleRoomsNumbers = data.getBundle("roomsNumbers");
+                Bundle bundleRoomsTypes = data.getBundle("roomsTypes");
                 System.out.println(bundlePlayer);
                 System.out.println(bundleRoomsBooleans);
                 System.out.println(bundleRoomsTypes);
-                getGameController().loadGame(data);
+                set("loaded", true);
+
+
+                set("loadedPlayerName", bundlePlayer.get("playerName"));
+                set("loadedPlayerHealth", bundlePlayer.get("curHealth"));
+                set("loadedPillarsCollected", bundlePlayer.get("pillarsCollected"));
+
+                if (bundleInventory.exists("healthPots")) {
+                    set("loadedHealthPots", bundleInventory.get("healthPots"));
+                }
+                if (bundleInventory.exists("visionPots")) {
+                    set("loadedVisionPots", bundleInventory.get("visionPots"));
+                }
+
+
+                set("loadedRoomsBooleans", bundleRoomsBooleans.get("roomsBooleans"));
+                set("loadedRoomsNumbers", bundleRoomsNumbers.get("roomsNumbers"));
+                set("loadedRoomsTypes", bundleRoomsTypes.get("roomsTypes"));
+                loadHelper();
+                getGameController().gotoPlay();
             }
         });
+    }
+    private void loadHelper() {
+        System.out.println("it loaded");
+        System.out.println(getd("loadedPlayerHealth"));
+        myDungeon = new Dungeon(geto("loadedRoomsNumbers"), geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"));
+        myPlayerName = gets("loadedPlayerName");
+        set("spawnX", (double) getAppWidth() / 2 - 50);
+        set("spawnY", (double) getAppHeight() / 2 - 50);
+        set("pillars", geti("loadedPillarsCollected"));
+        getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
+        set("dungeon", myDungeon);
+        FXGL.setLevelFromMap(myDungeon.getEntranceMap());
+
+        playerSetUp();
+        getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
+
+        if (getWorldProperties().exists("loadedHealthPots")) {
+            for (int i = 0; i < geti("loadedHealthPots"); i++) {
+                InventoryController.addItem("HEALTH_POTION");
+            }
+        }
+        if (getWorldProperties().exists("loadedVisionPots")) {
+            for (int i = 0; i < geti("loadedVisionPots"); i++) {
+                InventoryController.addItem("VISION_POTION");
+            }
+        }
+
+
     }
     @Override
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
-//            if (geto) {
-//
-//            } else {
-//
-//            }
-            System.out.println("hi");
+            myDungeon = new Dungeon(5,5);
             //will change this when we can select class
             getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
-            myDungeon = new Dungeon(5,5);
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
@@ -343,6 +384,8 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
+        System.out.println("initGameVarsRan");
+        vars.put("loaded", false);
         vars.put("pillars", 0);
         vars.put("spawnX", (double) getAppWidth() / 2 - 50);
         vars.put("spawnY", (double) getAppHeight() / 2 - 50);
