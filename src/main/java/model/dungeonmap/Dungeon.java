@@ -49,7 +49,8 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         addMonsters();
     }
     public Dungeon(final int[][] theNumberArray, final String[][] theTypeArray,
-                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray) {
+                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray,
+                   final String[][] theMonsterArray) {
         super(DungeonRoom.class, theNumberArray.length, theNumberArray[0].length);
         myWidth = theNumberArray.length;
         myHeight = theNumberArray[0].length;
@@ -70,6 +71,9 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             }
             if (theTypeArray[x][y].equalsIgnoreCase("exit")) {
                 setExit(room);
+            }
+            if (room.hasMonster()) {
+                room.setMonsterType(theMonsterArray[x][y]);
             }
             return room;
         });
