@@ -13,6 +13,7 @@ import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
@@ -49,6 +50,7 @@ import view.MapSubScene;
 public final class DungeonApp extends GameApplication {
     /** */
     private static Entity myPlayer;
+    private static EntityFactory myDungeonFactory;
     public static String myPlayerName;
     public static Map<String, Map<String, String>> myDBData;
     /** */
@@ -143,9 +145,6 @@ public final class DungeonApp extends GameApplication {
                 Bundle bundleRoomsBooleans = data.getBundle("roomsBooleans");
                 Bundle bundleRoomsNumbers = data.getBundle("roomsNumbers");
                 Bundle bundleRoomsTypes = data.getBundle("roomsTypes");
-                System.out.println(bundlePlayer);
-                System.out.println(bundleRoomsBooleans);
-                System.out.println(bundleRoomsTypes);
                 set("loaded", true);
 
 
@@ -170,19 +169,21 @@ public final class DungeonApp extends GameApplication {
         });
     }
     private void loadHelper() {
-        System.out.println("it loaded");
-        System.out.println(getd("loadedPlayerHealth"));
         myDungeon = new Dungeon(geto("loadedRoomsNumbers"), geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"));
         myPlayerName = gets("loadedPlayerName");
         set("spawnX", (double) getAppWidth() / 2 - 50);
         set("spawnY", (double) getAppHeight() / 2 - 50);
         set("pillars", geti("loadedPillarsCollected"));
-        getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
+        getGameWorld().removeEntityFactory(myDungeonFactory);
+        myDungeonFactory = new DungeonFactory(myDBData);
+        getGameWorld().addEntityFactory(myDungeonFactory);
         set("dungeon", myDungeon);
         FXGL.setLevelFromMap(myDungeon.getEntranceMap());
 
         playerSetUp();
         getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
+        initPhysics();
+
 
         if (getWorldProperties().exists("loadedHealthPots")) {
             for (int i = 0; i < geti("loadedHealthPots"); i++) {
@@ -203,7 +204,8 @@ public final class DungeonApp extends GameApplication {
         try {
             myDungeon = new Dungeon(5,5);
             //will change this when we can select class
-            getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
+            myDungeonFactory = new DungeonFactory(myDBData);
+            getGameWorld().addEntityFactory(myDungeonFactory);
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
@@ -229,7 +231,6 @@ public final class DungeonApp extends GameApplication {
         getWorldProperties().addListener("playerY", (old, now) -> {
             setRoom(geti("playerX"), (int) now);
         });
-        System.out.println(myPlayerName);
     }
     private static void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
@@ -384,7 +385,6 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        System.out.println("initGameVarsRan");
         vars.put("loaded", false);
         vars.put("pillars", 0);
         vars.put("spawnX", (double) getAppWidth() / 2 - 50);

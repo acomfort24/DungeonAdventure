@@ -32,6 +32,18 @@ public class DungeonRoom extends Cell implements Serializable {
         myHealPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
         myPit = FXGLMath.randomBoolean(SPAWN_CHANCE);
     }
+    public DungeonRoom(final int theX, final int theY,
+                       final Boolean theHasVisPot, final Boolean theHasHealthPot,
+                       final Boolean theHasPit, final Boolean theHasMonster,
+                       final Boolean theHasBeenVisited, final Boolean theHasPillar){
+        super(theX, theY);
+        myVisPot = theHasVisPot;
+        myHealPot = theHasHealthPot;
+        myPit = theHasPit;
+        myMonster = theHasMonster;
+        myVisit = theHasBeenVisited;
+        myPillar = theHasPillar;
+    }
     
     public String getRoom() {
         return myRoom;

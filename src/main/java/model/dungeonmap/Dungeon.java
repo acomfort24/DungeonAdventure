@@ -55,8 +55,15 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         myWidth = theNumberArray.length;
         myHeight = theNumberArray[0].length;
         myDungeon = theNumberArray;
+
         populate((x, y) -> {
-            final DungeonRoom room = new DungeonRoom(x, y);
+            final DungeonRoom room = new DungeonRoom(x, y,
+                    theRoomArray.get(x).get(y).get("hasVisPot"),
+                    theRoomArray.get(x).get(y).get("hasHealPot"),
+                    theRoomArray.get(x).get(y).get("hasPit"),
+                    theRoomArray.get(x).get(y).get("hasMonster"),
+                    theRoomArray.get(x).get(y).get("hasBeenVisited"),
+                    theRoomArray.get(x).get(y).get("hasPillar"));
             room.setRoom(myDungeon[x][y]);
             room.setType(theTypeArray[x][y]);
             if(theTypeArray[x][y].equalsIgnoreCase("entrance")) {
