@@ -14,14 +14,10 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     private static final int PILLAR_COUNT = 4;
     /** */
     private static final Predicate<DungeonRoom> IS_BASIC = x -> "basic".equals(x.getType());
-
-
-
     /** */
     private final int myWidth;
     /** */
     private final int myHeight;
-
     /** */
     private final int[][] myDungeon;
     /** */
@@ -180,13 +176,6 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
                 dr.setPillar(true);
             }
         }
-    }
-    public int getMyWidth() {
-        return myWidth;
-    }
-
-    public int getMyHeight() {
-        return myHeight;
     }
     public int[][] getMyDungeon() {
         return myDungeon;

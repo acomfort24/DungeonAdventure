@@ -53,6 +53,7 @@ public final class DungeonApp extends GameApplication {
     private static EntityFactory myDungeonFactory;
     public static String myPlayerName;
     public static Map<String, Map<String, String>> myDBData;
+
     /** */
     private static Dungeon myDungeon;
     private SceneSwapController mySceneSwapController = new SceneSwapController();
@@ -87,32 +88,32 @@ public final class DungeonApp extends GameApplication {
         getSaveLoadService().addHandler(new SaveLoadHandler() {
             @Override
             public void onSave(DataFile data) {
-                Bundle bundlePlayer = new Bundle("player");
-                Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
-                Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
-                Bundle bundleRoomsTypes = new Bundle("roomsTypes");
-                Bundle bundleInventory = new Bundle("inventory");
-                Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+                final Bundle bundlePlayer = new Bundle("player");
+                final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
+                final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
+                final Bundle bundleRoomsTypes = new Bundle("roomsTypes");
+                final Bundle bundleInventory = new Bundle("inventory");
+                final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
                 bundlePlayer.put("playerName", myPlayerName);
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
-                String[][] roomsTypes = new String[myDungeon.getMyWidth()][myDungeon.getMyHeight()];
+                final String[][] roomsTypes = new String[myDungeon.getMyWidth()][myDungeon.getMyHeight()];
                 //creates a 2d arraylist of maps of the different booleans of information in each room
-                ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
+                final ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
 
 
-                for (int i=0; i < myDungeon.getMyWidth(); i++) {
-                    ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
-                    for (int j=0; j < myDungeon.getMyHeight(); j++) {
+                for (int i=0; i < myDungeon.getWidth(); i++) {
+                    final ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
+                    for (int j=0; j < myDungeon.getHeight(); j++) {
                         Map<String, Boolean> map = new HashMap<>();
-                        map.put("hasVisPot", myDungeon.get(i,j).hasVisPot());
-                        map.put("hasHealPot", myDungeon.get(i,j).hasHealPot());
-                        map.put("hasPit", myDungeon.get(i,j).hasPit());
-                        map.put("hasMonster", myDungeon.get(i,j).hasMonster());
-                        map.put("hasBeenVisited", myDungeon.get(i,j).hasBeenVisited());
-                        map.put("hasPillar", myDungeon.get(i,j).hasPillar());
+                        map.put("hasVisPot", myDungeon.get(i, j).hasVisPot());
+                        map.put("hasHealPot", myDungeon.get(i, j).hasHealPot());
+                        map.put("hasPit", myDungeon.get(i, j).hasPit());
+                        map.put("hasMonster", myDungeon.get(i, j).hasMonster());
+                        map.put("hasBeenVisited", myDungeon.get(i, j).hasBeenVisited());
+                        map.put("hasPillar", myDungeon.get(i, j).hasPillar());
                         rowList.add(map);
                         roomsTypes[i][j] = myDungeon.get(i,j).getType();
                     }
@@ -128,8 +129,7 @@ public final class DungeonApp extends GameApplication {
                 if (PlayerComponent.getMyInventory().hasItem("VISION_POTION")) {
                     bundleInventory.put("visionPots", PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"));
                 }
-
-
+                
                 data.putBundle(bundlePlayer);
                 data.putBundle(bundleInventory);
                 data.putBundle(bundleRoomsBooleans);
@@ -200,6 +200,7 @@ public final class DungeonApp extends GameApplication {
     }
     @Override
     protected void initGame() {
+        
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             myDungeon = new Dungeon(5,5);
@@ -222,7 +223,6 @@ public final class DungeonApp extends GameApplication {
         var hp = new HealthDoubleComponent(Double.parseDouble(heroData.get("hitPoints")));
         set("playerHP", hp);
         set("playerHPView", new GenericBarViewComponent(0.0, -20.0, Color.RED, hp.valueProperty(), 100.0, 8.0));
-
         myPlayer = spawn("player");
         myPlayer.setReusable(true);
         getWorldProperties().addListener("playerX", (old, now) -> {
@@ -249,6 +249,7 @@ public final class DungeonApp extends GameApplication {
         }
         if (theRoom.hasPit()) {
             spawn("pit");
+            myPlayer.getComponent(HealthDoubleComponent.class).damage(10);
         }
         if (theRoom.hasPillar()) {
             spawn("pillar");
@@ -353,7 +354,6 @@ public final class DungeonApp extends GameApplication {
             Queue<Point2D> dungeonQueue = new LinkedList<>();
             myDungeon.display();
             System.out.println(geti("playerX") + " " + geti("playerY"));
-            int count = 0;
             for (DungeonRoom[] d : myDungeon.getData()) {
                 for (DungeonRoom dr : d) {
                     if ("entrance".equals(dr.getType())
