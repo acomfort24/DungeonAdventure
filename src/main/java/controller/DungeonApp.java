@@ -6,7 +6,6 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
@@ -94,7 +93,7 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
-                final String[][] roomsTypes = new String[myDungeon.getMyWidth()][myDungeon.getMyHeight()];
+                final String[][] roomsTypes = new String[myDungeon.getWidth()][myDungeon.getHeight()];
                 //creates a 2d arraylist of maps of the different booleans of information in each room
                 final ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
 

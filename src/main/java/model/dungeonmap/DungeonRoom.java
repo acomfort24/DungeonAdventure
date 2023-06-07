@@ -30,6 +30,9 @@ public class DungeonRoom extends Cell implements Serializable {
     public DungeonRoom(final int theX, final int theY) {
         super(theX, theY);
         myType = "basic";
+        myVisPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
+        myHealPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
+        myPit = FXGLMath.randomBoolean(SPAWN_CHANCE);
     }
     public DungeonRoom(final int theX, final int theY,
                        final Boolean theHasVisPot, final Boolean theHasHealthPot,
@@ -71,9 +74,7 @@ public class DungeonRoom extends Cell implements Serializable {
                 setPit(false);
             }
             default -> {
-                myVisPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
-                myHealPot = FXGLMath.randomBoolean(SPAWN_CHANCE);
-                myPit = FXGLMath.randomBoolean(SPAWN_CHANCE);
+                // Do nothing
             }
         }
     }

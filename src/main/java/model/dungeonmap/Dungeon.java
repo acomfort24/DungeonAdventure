@@ -48,7 +48,8 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         setPillarRooms();
         addMonsters();
     }
-    public Dungeon(int[][] theNumberArray, String[][] theTypeArray, ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray) {
+    public Dungeon(final int[][] theNumberArray, final String[][] theTypeArray,
+                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray) {
         super(DungeonRoom.class, theNumberArray.length, theNumberArray[0].length);
         myWidth = theNumberArray.length;
         myHeight = theNumberArray[0].length;
@@ -64,10 +65,10 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
                     theRoomArray.get(x).get(y).get("hasPillar"));
             room.setRoom(myDungeon[x][y]);
             room.setType(theTypeArray[x][y]);
-            if(theTypeArray[x][y].equalsIgnoreCase("entrance")) {
+            if (theTypeArray[x][y].equalsIgnoreCase("entrance")) {
                 setEntrance(room);
             }
-            if(theTypeArray[x][y].equalsIgnoreCase("exit")) {
+            if (theTypeArray[x][y].equalsIgnoreCase("exit")) {
                 setExit(room);
             }
             return room;
