@@ -86,6 +86,7 @@ public final class DungeonApp extends GameApplication {
                 final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
                 final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
                 final Bundle bundleRoomsTypes = new Bundle("roomsTypes");
+                final Bundle bundleRoomsMonsters = new Bundle("roomsMonsters");
                 final Bundle bundleInventory = new Bundle("inventory");
                 final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
@@ -93,6 +94,7 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
+                final String[][] roomsMonsters = new String[myDungeon.getWidth()][myDungeon.getHeight()];
                 final String[][] roomsTypes = new String[myDungeon.getWidth()][myDungeon.getHeight()];
                 //creates a 2d arraylist of maps of the different booleans of information in each room
                 final ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
@@ -110,10 +112,14 @@ public final class DungeonApp extends GameApplication {
                         map.put("hasPillar", myDungeon.get(i, j).hasPillar());
                         rowList.add(map);
                         roomsTypes[i][j] = myDungeon.get(i,j).getType();
+                        if(map.get("hasMonster")) {
+                            roomsMonsters[i][j] = myDungeon.get(i,j).getMonsterType();
+                        }
                     }
                     roomArray.add(rowList);
                 }
                 bundleRoomsTypes.put("roomsTypes", roomsTypes);
+                bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon());
 
@@ -129,6 +135,7 @@ public final class DungeonApp extends GameApplication {
                 data.putBundle(bundleRoomsBooleans);
                 data.putBundle(bundleRoomsNumbers);
                 data.putBundle(bundleRoomsTypes);
+                data.putBundle(bundleRoomsMonsters);
             }
 
 
@@ -139,6 +146,7 @@ public final class DungeonApp extends GameApplication {
                 Bundle bundleRoomsBooleans = data.getBundle("roomsBooleans");
                 Bundle bundleRoomsNumbers = data.getBundle("roomsNumbers");
                 Bundle bundleRoomsTypes = data.getBundle("roomsTypes");
+                Bundle bundleRoomsMonsters = data.getBundle("roomsMonsters");
                 set("loaded", true);
 
 
@@ -157,18 +165,22 @@ public final class DungeonApp extends GameApplication {
                 set("loadedRoomsBooleans", bundleRoomsBooleans.get("roomsBooleans"));
                 set("loadedRoomsNumbers", bundleRoomsNumbers.get("roomsNumbers"));
                 set("loadedRoomsTypes", bundleRoomsTypes.get("roomsTypes"));
+                set("loadedRoomsMonsters", bundleRoomsMonsters.get("roomsMonsters"));
                 loadHelper();
                 getGameController().gotoPlay();
             }
         });
     }
     private void loadHelper() {
-        myDungeon = new Dungeon(geto("loadedRoomsNumbers"), geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"));
+        myDungeon = new Dungeon(geto("loadedRoomsNumbers"), geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"), geto("loadedRoomsMonsters"));
         myPlayerName = gets("loadedPlayerName");
         set("spawnX", (double) getAppWidth() / 2 - 50);
         set("spawnY", (double) getAppHeight() / 2 - 50);
         set("pillars", geti("loadedPillarsCollected"));
-        getGameWorld().removeEntityFactory(myDungeonFactory);
+        if(myDungeonFactory != null) {
+            getGameWorld().removeEntityFactory(myDungeonFactory);
+        }
+
         myDungeonFactory = new DungeonFactory(myDBData);
         getGameWorld().addEntityFactory(myDungeonFactory);
         set("dungeon", myDungeon);
