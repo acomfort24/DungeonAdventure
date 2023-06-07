@@ -50,7 +50,7 @@ public final class DungeonApp extends GameApplication {
     /** */
     private static Entity myPlayer;
     public static String myPlayerName;
-    public static Map<String, Map<String, String>> myDBData= DatabaseController.getAllSqlData();
+    public static Map<String, Map<String, String>> myDBData;
     /** */
     private static Dungeon myDungeon;
     private SceneSwapController mySceneSwapController = new SceneSwapController();
@@ -58,6 +58,7 @@ public final class DungeonApp extends GameApplication {
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
+        myDBData = DatabaseController.getAllSqlData();
         theGameSettings.setWidth(1152);
         theGameSettings.setHeight(864);
         theGameSettings.setTitle("Dungeon Adventure");
@@ -85,6 +86,7 @@ public final class DungeonApp extends GameApplication {
             public void onSave(DataFile data) {
                 Bundle bundlePlayer = new Bundle("Player");
                 Bundle bundleRoomsBooleans = new Bundle("RoomsBooleans");
+                Bundle bundleRoomsNumbers = new Bundle("RoomsNumbers");
                 Bundle bundleRoomsTypes = new Bundle("RoomsTypes");
                 Bundle bundleInventory = new Bundle("Inventory");
                 Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
@@ -93,8 +95,13 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
 
+                String[][] roomsTypes = new String[myDungeon.getMyWidth()][myDungeon.getMyHeight()];
                 //creates a 2d arraylist of maps of the different booleans of information in each room
                 ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<ArrayList<Map<String, Boolean>>>();
+
+                Bundle bundleRooms = new Bundle("dungeon");
+                bundleRooms.put("roomInfo", geto("dungeon"));
+
                 for (int i=0; i < myDungeon.getMyWidth(); i++) {
                     ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
                     for (int j=0; j < myDungeon.getMyHeight(); j++) {
@@ -106,11 +113,13 @@ public final class DungeonApp extends GameApplication {
                         map.put("hasBeenVisited", myDungeon.get(i,j).hasBeenVisited());
                         map.put("hasPillar", myDungeon.get(i,j).hasPillar());
                         rowList.add(map);
+                        roomsTypes[i][j] = myDungeon.get(i,j).getType();
                     }
                     roomArray.add(rowList);
                 }
+                bundleRoomsTypes.put("roomsTypes", roomsTypes);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
-                bundleRoomsTypes.put("roomsTypes", myDungeon.getMyDungeon());
+                bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon());
 
                 if (PlayerComponent.getMyInventory().hasItem("Health Potion")) {
                     bundleInventory.put("healthPots", PlayerComponent.getMyInventory().getItemQuantity("Health Potion"));
@@ -123,8 +132,10 @@ public final class DungeonApp extends GameApplication {
                 data.putBundle(bundlePlayer);
                 data.putBundle(bundleInventory);
                 data.putBundle(bundleRoomsBooleans);
+                data.putBundle(bundleRoomsNumbers);
                 data.putBundle(bundleRoomsTypes);
             }
+
 
             @Override
             public void onLoad(DataFile data) {
@@ -135,6 +146,7 @@ public final class DungeonApp extends GameApplication {
                 System.out.println(bundlePlayer);
                 System.out.println(bundleRoomsBooleans);
                 System.out.println(bundleRoomsTypes);
+                getGameController().loadGame(data);
             }
         });
     }
@@ -142,6 +154,12 @@ public final class DungeonApp extends GameApplication {
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
+//            if (geto) {
+//
+//            } else {
+//
+//            }
+            System.out.println("hi");
             //will change this when we can select class
             getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
             myDungeon = new Dungeon(5,5);
