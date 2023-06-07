@@ -4,29 +4,21 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
-import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.SensorCollisionHandler;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import controller.DungeonApp;
 import javafx.geometry.Point2D;
 import model.components.*;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import model.components.PillarComponent;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
@@ -179,10 +171,10 @@ public class DungeonFactory implements EntityFactory {
     public Entity newPit(final SpawnData theData) {
             return entityBuilder()
                     .type(EntityType.PIT)
-                    .bbox(new HitBox(BoundingShape.box(960, 680)))
-                    .with(new PitAnimationComponent())
+                    .bbox(new HitBox(BoundingShape.box(1052, 693)))
+                    .with(new PitComponent())
                     .with(new CollidableComponent())
-                    .at(new Point2D(96,144))
+                    .at(new Point2D(48,123))
                     .build();
     }
     
