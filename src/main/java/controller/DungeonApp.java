@@ -218,6 +218,7 @@ public final class DungeonApp extends GameApplication {
         set("playerHPView", new GenericBarViewComponent(0.0, -20.0, Color.RED, hp.valueProperty(), 100.0, 8.0));
         myPlayer = spawn("player");
         myPlayer.setReusable(true);
+        set("player", myPlayer);
         getWorldProperties().addListener("playerX", (old, now) -> {
             setRoom((int) now, geti("playerY"));
         });
@@ -242,7 +243,6 @@ public final class DungeonApp extends GameApplication {
         }
         if (theRoom.hasPit()) {
             spawn("pit");
-            myPlayer.getComponent(HealthDoubleComponent.class).damage(10);
         }
         if (theRoom.hasPillar()) {
             spawn("pillar");
