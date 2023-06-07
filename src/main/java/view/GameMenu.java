@@ -30,7 +30,10 @@ public class GameMenu extends FXGLMenu {
         final DungeonAdventureButton btnSaveGame = new DungeonAdventureButton("Save Game",
                 "Save Game", () -> fireSave());
         final DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit to Menu",
-                "Quit to Menu", () -> fireExitToMainMenu());
+                "Quit to Menu", () -> {
+            fireExitToMainMenu();
+            FXGL.getWorldProperties().clear();
+        });
 
 
         final VBox buttonBox = new VBox(15,
@@ -47,7 +50,6 @@ public class GameMenu extends FXGLMenu {
         myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {
-        System.out.println(PlayerComponent.getName());
         myShowInventory = !myShowInventory;
         if (myShowInventory) {
             myFlexBox.setContent(createInventoryBox());

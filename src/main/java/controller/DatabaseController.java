@@ -39,8 +39,6 @@ public final class DatabaseController {
     public static Map<String, String> getData(final SQLiteDataSource theDS, final String theEntity,
                                               final String theName) {
 
-        //now query the database table for all its contents and display the results
-        System.out.println("Selecting all rows from questions table: " + theEntity);
         //%% escapes a % and %s inserts a string
         final String query = String.format("SELECT * FROM %s WHERE name LIKE '%%%s'",
                 theEntity, theName);
