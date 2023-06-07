@@ -1,6 +1,7 @@
 package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Grid;
+import com.almasb.fxgl.core.math.FXGLMath;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -43,6 +44,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         setEntrance();
         setExit();
         setPillarRooms();
+        addMonsters();
     }
     
     private void generateDungeon(final int[][] theDungeon, final int theX, final int theY) {
@@ -144,6 +146,24 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             }
         }
     }
+    
+    private void addMonsters() {
+        int count = 0;
+        while (count < 4) {
+            DungeonRoom dr = getRandomCell();
+            if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
+                dr.setMonster(true);
+                dr.setMonsterType(randomMonster());
+                count++;
+            }
+        }
+    }
+    
+    private static String randomMonster() {
+        final String[] monsterArr = {"skeleton", "orc"};
+        return FXGLMath.random(monsterArr).get();
+    }
+    
     public int[][] getMyDungeon() {
         return myDungeon;
     }

@@ -24,6 +24,8 @@ public class DungeonRoom extends Cell implements Serializable {
     private boolean myPillar;
     /** */
     private boolean myMonster;
+    /** */
+    private String myMonsterType;
     
     public DungeonRoom(final int theX, final int theY) {
         super(theX, theY);
@@ -93,6 +95,14 @@ public class DungeonRoom extends Cell implements Serializable {
     }
     public boolean hasMonster() {
         return myMonster;
+    }
+    
+    public void setMonsterType(final String theMonsterType) {
+        myMonsterType = theMonsterType;
+    }
+    
+    public String getMonsterType() {
+        return myMonsterType;
     }
 
     public boolean hasBeenVisited() {

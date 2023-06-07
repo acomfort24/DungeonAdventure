@@ -4,13 +4,12 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.FXGLIntroScene;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -28,9 +27,6 @@ import controller.collisionhandlers.PlayerPillarHandler;
 
 import java.util.*;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -42,7 +38,6 @@ import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
-import view.HeroSelectScene;
 import view.MapSubScene;
 
 
@@ -140,7 +135,6 @@ public final class DungeonApp extends GameApplication {
     }
     @Override
     protected void initGame() {
-        
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             //will change this when we can select class
@@ -195,7 +189,7 @@ public final class DungeonApp extends GameApplication {
             spawn("pillar");
         }
         if (theRoom.hasMonster()) {
-            spawn(randomMonster());
+            spawn(theRoom.getMonsterType());
         }
         if ("exit".equals(theRoom.getType())) {
             if (geti("pillars") == 4) {
@@ -210,33 +204,20 @@ public final class DungeonApp extends GameApplication {
         }
     }
 
-    private static String randomMonster() {
-        final int num = FXGL.random(1, 2);
-        final String monsterType;
-
-        switch (num) {
-            case 1 -> monsterType = "skeleton";
-            case 2 -> monsterType = "orc";
-            default -> throw new IllegalStateException("Unexpected value: " + num);
-        }
-
-        return monsterType;
-    }
+    
 
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
-        
-        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.HEALTH_POTION, myDungeon));
-        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(EntityType.VISION_POTION, myDungeon));
-
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(
+                EntityType.HEALTH_POTION, myDungeon));
+        getPhysicsWorld().addCollisionHandler(new PlayerItemHandler(
+                EntityType.VISION_POTION, myDungeon));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.NORTH_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.SOUTH_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.EAST_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.WEST_DOOR));
-        
         getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler(myDungeon));
-        
         getPhysicsWorld().addCollisionHandler(new PlayerExitHandler());
     }
 
@@ -291,7 +272,7 @@ public final class DungeonApp extends GameApplication {
         }, KeyCode.S);
 
         onKeyDown(KeyCode.O, () -> {
-            Queue<Point2D> dungeonQueue = new LinkedList<>();
+            final Queue<Point2D> dungeonQueue = new LinkedList<>();
             myDungeon.display();
             System.out.println(geti("playerX") + " " + geti("playerY"));
             for (DungeonRoom[] d : myDungeon.getData()) {
@@ -324,14 +305,13 @@ public final class DungeonApp extends GameApplication {
     }
 
     @Override
-    protected void initGameVars(Map<String, Object> vars) {
-        vars.put("pillars", 0);
-        vars.put("spawnX", (double) getAppWidth() / 2 - 50);
-        vars.put("spawnY", (double) getAppHeight() / 2 - 50);
+    protected void initGameVars(final Map<String, Object> theVars) {
+        theVars.put("pillars", 0);
+        theVars.put("spawnX", (double) getAppWidth() / 2 - 50);
+        theVars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
-    public static EventHandler<ActionEvent> setMyPlayerName(String thePlayerName) {
+    public static void setMyPlayerName(final String thePlayerName) {
         myPlayerName = thePlayerName;
-        return null;
     }
 
     @Override
