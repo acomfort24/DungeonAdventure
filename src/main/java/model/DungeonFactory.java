@@ -171,10 +171,10 @@ public class DungeonFactory implements EntityFactory {
     public Entity newPit(final SpawnData theData) {
             return entityBuilder()
                     .type(EntityType.PIT)
-                    .bbox(new HitBox(BoundingShape.box(960, 680)))
+                    .bbox(new HitBox(BoundingShape.box(1052, 693)))
                     .with(new PitComponent())
                     .with(new CollidableComponent())
-                    .at(new Point2D(48,144))
+                    .at(new Point2D(48,123))
                     .build();
     }
     

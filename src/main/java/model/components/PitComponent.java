@@ -23,11 +23,11 @@ public class PitComponent extends Component {
 
     public PitComponent() {
         animSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"), Duration.seconds(1), List.of(
-                //new Pair<>(0, new FrameData(0,0,1052,680)),
-                new Pair<>(1, new FrameData(1052,0,1052,680)),
-                new Pair<>(2, new FrameData(2104,0,1052,680)),
-                new Pair<>(3, new FrameData(1052,0,1052,680))
-               // new Pair<>(4, new FrameData(0,0,1052,680))
+                new Pair<>(0, new FrameData(0,0,1052,693)),
+                new Pair<>(1, new FrameData(1052,0,1052,693)),
+                new Pair<>(2, new FrameData(2104,0,1052,693)),
+                new Pair<>(3, new FrameData(1052,0,1052,693)),
+                new Pair<>(4, new FrameData(0,0,1052,693))
         ));
 
         texture = new AnimatedTexture(animSpikes);
