@@ -106,7 +106,8 @@ public class DungeonFactory implements EntityFactory {
                         Integer.parseInt(heroData.get("atkSpd")),
                         Double.parseDouble(heroData.get("chncHit")),
                         Integer.parseInt(heroData.get("hitPoints")),
-                        heroData.get("name")))
+                        heroData.get("name"),
+                        Double.parseDouble(heroData.get("chncBlock"))))
                 .with((HealthDoubleComponent) geto("playerHP"))
                 .with((GenericBarViewComponent) geto("playerHPView"))
                 .build();
