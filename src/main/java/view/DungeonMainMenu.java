@@ -10,8 +10,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public class DungeonMainMenu extends FXGLMenu {
-    static HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.myDBData);
-    static LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
+    /** */
+    private final HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.getDatabase());
+    /** */
+    private final LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
 
     public DungeonMainMenu() {
         super(MenuType.MAIN_MENU);
@@ -47,8 +49,5 @@ public class DungeonMainMenu extends FXGLMenu {
         box.setTranslateX(100);
         box.setTranslateY(590);
         getContentRoot().getChildren().add(box);
-
     }
-
-
 }
