@@ -40,7 +40,7 @@ public class LoadSelectScene extends VBox {
         button.setText(save);
         button.setOnAction(e -> {
             getSaveLoadService().readAndLoadTask(save + ".sav").run();
-            DungeonMainMenu.myLoadSelectScreen.setVisible(false);
+            this.setVisible(false);
         });
         this.getChildren().add(button);
     }
