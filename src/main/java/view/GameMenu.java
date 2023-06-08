@@ -3,6 +3,7 @@ package view;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import controller.DungeonApp;
 import controller.InventoryController;
 import java.util.HashMap;
 import javafx.geometry.Pos;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.EntityType;
 import model.components.PlayerComponent;
+import model.dungeonmap.Dungeon;
 
 public class GameMenu extends FXGLMenu {
     private final ScrollPane myFlexBox = new ScrollPane();
@@ -21,8 +23,6 @@ public class GameMenu extends FXGLMenu {
         super(MenuType.GAME_MENU);
         final DungeonAdventureButton btnResume = new DungeonAdventureButton("Resume Game",
                 "Resume Your Game", () -> {
-            myShowInventory = false;
-            myFlexBox.setContent(createProgressBox());
             fireResume();
         });
         final DungeonAdventureButton btnInventory = new DungeonAdventureButton("Toggle Inventory",
@@ -47,6 +47,11 @@ public class GameMenu extends FXGLMenu {
         buttonBox.setTranslateY(590);
         getContentRoot().getChildren().add(buttonBox);
         getContentRoot().getChildren().add(myFlexBox);
+        myFlexBox.setContent(createProgressBox());
+    }
+    @Override
+    public void onDestroy() {
+        myShowInventory = false;
         myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {

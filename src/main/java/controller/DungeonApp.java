@@ -16,6 +16,7 @@ import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.profile.DataFile;
@@ -93,6 +94,8 @@ public final class DungeonApp extends GameApplication {
                 bundlePlayer.put("playerName", myPlayerName);
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
+                bundlePlayer.put("playerX", geti("playerX"));
+                bundlePlayer.put("playerY", geti("playerY"));
 
                 final String[][] roomsMonsters = new String[myDungeon.getWidth()][myDungeon.getHeight()];
                 final String[][] roomsTypes = new String[myDungeon.getWidth()][myDungeon.getHeight()];
@@ -149,7 +152,8 @@ public final class DungeonApp extends GameApplication {
                 Bundle bundleRoomsMonsters = data.getBundle("roomsMonsters");
                 set("loaded", true);
 
-
+                set("loadedPlayerX", bundlePlayer.get("playerX"));
+                set("loadedPlayerY", bundlePlayer.get("playerY"));
                 set("loadedPlayerName", bundlePlayer.get("playerName"));
                 set("loadedPlayerHealth", bundlePlayer.get("curHealth"));
                 set("loadedPillarsCollected", bundlePlayer.get("pillarsCollected"));
@@ -187,10 +191,14 @@ public final class DungeonApp extends GameApplication {
         FXGL.setLevelFromMap(myDungeon.getEntranceMap());
 
         playerSetUp();
+        set("playerX", geti("loadedPlayerX"));
+        set("playerY", geti("loadedPlayerY"));
+        setRoom(geti("playerX"), geti("playerY"));
+
         getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
         initPhysics();
 
-
+        clearInventory();
         if (getWorldProperties().exists("loadedHealthPots")) {
             for (int i = 0; i < geti("loadedHealthPots"); i++) {
                 InventoryController.addItem("HEALTH_POTION");
@@ -215,12 +223,19 @@ public final class DungeonApp extends GameApplication {
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
+            clearInventory();
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
+    private void clearInventory() {
+        Inventory inventory = PlayerComponent.getMyInventory();
+        Map inventoryMap = PlayerComponent.getMyInventory().getAllData();
+        for (Object item : inventoryMap.keySet()) {
+            inventory.remove(item);
+        }
+    }
     private static void playerSetUp() {
         Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
         set("playerX", myDungeon.getEntranceX());
