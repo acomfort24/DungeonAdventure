@@ -1,49 +1,42 @@
 package view;
 
-import com.almasb.fxgl.dsl.FXGL;
-import javafx.concurrent.Task;
-import com.almasb.fxgl.profile.SaveFile;
-import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getSaveLoadService;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.scene.control.Button;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getSaveLoadService;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getUIFactoryService;
 
 public class LoadSelectScene extends VBox {
-    Map<String, Map<String, String>> myDBData;
     public LoadSelectScene() {
         super();
-        Text text = new Text("Choose a save");
+        final Text text = new Text("Choose a save");
         text.setFont(new Font(26));
         text.setFill(Color.WHITE);
         this.getChildren().add(text);
         try {
-            List<String> list = findFiles(Paths.get("./"), ".sav");
+            final List<String> list = findFiles(Paths.get("./"));
             list.remove(0);
             list.remove(0);
             for (String save : list) {
                 createLoadFileButton(save);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.out.println(e);
         }
     }
-    private void createLoadFileButton(String theSaveName) {
-        String save = theSaveName.substring(2, theSaveName.length() - 4);
-        Button button = new Button();
+    private void createLoadFileButton(final String theSaveName) {
+        final String save = theSaveName.substring(2, theSaveName.length() - 4);
+        final Button button = new Button();
         button.setText(save);
         button.setOnAction(e -> {
             getSaveLoadService().readAndLoadTask(save + ".sav").run();
@@ -54,18 +47,18 @@ public class LoadSelectScene extends VBox {
     /*
     searches for files with given extension starting at the given path
      */
-    private static List<String> findFiles(Path path, String fileExtension)
+    private static List<String> findFiles(final Path thePath)
             throws IOException {
 
-        if (!Files.isDirectory(path)) {
+        if (!Files.isDirectory(thePath)) {
             throw new IllegalArgumentException("Path must be a directory!");
         }
-        List<String> result;
-        try (Stream<Path> walk = Files.walk(path)) {
+        final List<String> result;
+        try (Stream<Path> walk = Files.walk(thePath)) {
             result = walk
                     .filter(p -> !Files.isDirectory(p))
                     .map(p -> p.toString().toLowerCase())
-                    .filter(f -> f.endsWith(fileExtension))
+                    .filter(f -> f.endsWith(".sav"))
                     .collect(Collectors.toList());
         }
 

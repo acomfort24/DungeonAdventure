@@ -4,14 +4,13 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.inventory.Inventory;
 import java.util.HashMap;
-
 import model.EntityType;
 import model.components.PlayerComponent;
 
 
 
 
-public class InventoryController extends SceneSwapController {
+public class InventoryController {
     public static void useItem(final String theItem) {
         final Inventory inventory = PlayerComponent.getMyInventory();
         if (inventory.getItemQuantity(theItem) > 1) {
@@ -19,7 +18,7 @@ public class InventoryController extends SceneSwapController {
         } else {
             inventory.remove(theItem);
         }
-        if (theItem.equals("HEALTH_POTION")) {
+        if ("HEALTH_POTION".equals(theItem)) {
             FXGL.getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).restore(25);
         }
     }
@@ -31,7 +30,8 @@ public class InventoryController extends SceneSwapController {
         final HashMap<String, Integer> returnedMap = new HashMap<>();
         final Inventory inventory = PlayerComponent.getMyInventory();
         if (!inventory.getAllData().isEmpty()) {
-            inventory.getAllData().forEach((key, value) -> returnedMap.put(key.toString(), inventory.getItemQuantity(key)));
+            inventory.getAllData().forEach((key, value) ->
+                    returnedMap.put(key.toString(), inventory.getItemQuantity(key)));
         }
         return returnedMap;
     }
