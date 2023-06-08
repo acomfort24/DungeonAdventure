@@ -6,13 +6,14 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 
 
 public class PlayerComponent extends Component {
+    /** */
     private static final int PLAYER_VELOCITY = 350;
     /** */
     private static final Inventory myInventory = new Inventory<>(100);
-    private static CharacterComponent myCharacterComponent;
-    private double myChncBlock;
     /** */
-
+    private static CharacterComponent myCharacterComponent;
+    /** */
+    private double myChncBlock;
     /** */
     protected PhysicsComponent myPhysics;
     

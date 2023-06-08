@@ -49,6 +49,5 @@ public class DungeonMainMenu extends FXGLMenu {
         box.setTranslateX(100);
         box.setTranslateY(590);
         getContentRoot().getChildren().add(box);
-
     }
 }
