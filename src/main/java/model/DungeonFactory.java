@@ -17,17 +17,17 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import controller.DungeonApp;
+import java.util.Map;
 import javafx.geometry.Point2D;
 import model.components.*;
 import model.components.PillarComponent;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
 
-import java.util.Map;
-
 
 public class DungeonFactory implements EntityFactory {
-    Map<String, Map<String, String>> myDBData;
+    /** */
+    final Map<String, Map<String, String>> myDBData;
 
     public DungeonFactory(Map<String, Map<String, String>> theDBData) {
         myDBData = theDBData;
@@ -84,12 +84,13 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+    
     @Spawns("player")
     public Entity newPlayer(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0));
-        Map<String, String> heroData = myDBData.get(DungeonApp.myCharacterName);
+        final Map<String, String> heroData = myDBData.get(DungeonApp.getCharacterName());
 
         return entityBuilder()
                 .type(PLAYER)
@@ -97,7 +98,7 @@ public class DungeonFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
-                .with(new PlayerAnimationComponent(DungeonApp.myCharacterName))
+                .with(new PlayerAnimationComponent(DungeonApp.getCharacterName()))
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent(
                         Integer.parseInt(heroData.get("minDmg")),
@@ -149,7 +150,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(PILLAR)
                 .viewWithBBox("pillar.png")
-                .at(getAppWidth() / 2 - 35, getAppHeight() / 2 - 43)
+                .at((double) getAppWidth() / 2 - 35, (double) getAppHeight() / 2 - 43)
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PillarComponent())
@@ -162,7 +163,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(EXIT)
                 .view("exit" + geti("pillars") + ".png")
-                .at(getAppWidth() / 2 - 190, getAppHeight() / 2 - 130)
+                .at((double) getAppWidth() / 2 - 190, (double) getAppHeight() / 2 - 130)
                 .with(new CollidableComponent(false))
                 .build();
     }
@@ -178,15 +179,16 @@ public class DungeonFactory implements EntityFactory {
                     .build();
     }
     
-    @Spawns("skeleton")
-    public Entity newSkeleton(final SpawnData theData) {
-        Map<String, String> monsterData = myDBData.get("Skeleton");
+    @Spawns("monster")
+    public Entity newMonster(final SpawnData theData) {
+        final Map<String, String> monsterData = myDBData.get(theData.get("type"));
+        
         return entityBuilder()
-                .type(EntityType.SKELETON)
+                .type(EntityType.MONSTER)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .with(new MonsterAnimationComponent("SkeletonIdleSheet.png"))
-                .with(new CollidableComponent())
-                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
+                .with(new MonsterAnimationComponent(theData.get("type") + "IdleSheet.png"))
+                .with(new CollidableComponent(true))
+                .at(FXGLMath.random(350, 800), FXGLMath.random(350, 550))
                 .with(new MonsterComponent(
                         Integer.parseInt(monsterData.get("minHeal")),
                         Integer.parseInt(monsterData.get("maxHeal")),
@@ -198,26 +200,4 @@ public class DungeonFactory implements EntityFactory {
                         monsterData.get("name")))
                 .build();
     }
-
-    @Spawns("orc")
-    public Entity newOrc(final SpawnData theData) {
-        Map<String, String> monsterData = myDBData.get("Orc");
-        return entityBuilder()
-                .type(EntityType.ORC)
-                .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .with(new MonsterAnimationComponent("OrcIdleSheet.png"))
-                .with(new CollidableComponent())
-                .with(new MonsterComponent(
-                        Integer.parseInt(monsterData.get("minHeal")),
-                        Integer.parseInt(monsterData.get("maxHeal")),
-                        Integer.parseInt(monsterData.get("minDmg")),
-                        Integer.parseInt(monsterData.get("maxDmg")),
-                        Integer.parseInt(monsterData.get("atkSpd")),
-                        Double.parseDouble(monsterData.get("chncHit")),
-                        Integer.parseInt(monsterData.get("hitPoints")),
-                        monsterData.get("name")))
-                .at(FXGLMath.random(400, 800),FXGLMath.random(500, 600))
-                .build();
-    }
-
 }

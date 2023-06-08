@@ -15,8 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class GameMenu extends FXGLMenu {
+    /** */
     private final ScrollPane myFlexBox = new ScrollPane();
+    /** */
     private Boolean myShowInventory = false;
+    
     public GameMenu() {
         super(MenuType.GAME_MENU);
         final DungeonAdventureButton btnResume = new
@@ -44,14 +47,17 @@ public class GameMenu extends FXGLMenu {
         getContentRoot().getChildren().add(buttonBox);
         getContentRoot().getChildren().add(myFlexBox);
     }
+    
     @Override
     public void onCreate() {
         myFlexBox.setContent(createProgressBox());
     }
+    
     @Override
     public void onDestroy() {
         myShowInventory = false;
     }
+    
     private void toggleInventory() {
         myShowInventory = !myShowInventory;
         if (myShowInventory) {
@@ -60,6 +66,7 @@ public class GameMenu extends FXGLMenu {
             myFlexBox.setContent(createProgressBox());
         }
     }
+    
     private VBox createInventoryBox() {
         final VBox box = new VBox();
         final HashMap<String, Integer> inventory = InventoryController.getInventory();
@@ -77,9 +84,10 @@ public class GameMenu extends FXGLMenu {
         }
         return box;
     }
+    
     private VBox createProgressBox() {
         final ImageView heroImage =
-                new ImageView(FXGL.image(DungeonApp.myCharacterName + ".png"));
+                new ImageView(FXGL.image(DungeonApp.getCharacterName() + ".png"));
         final VBox box = new VBox();
         final Text pillarText =
                 new Text("Pillars Collected: " + FXGL.getWorldProperties().getInt("pillars"));

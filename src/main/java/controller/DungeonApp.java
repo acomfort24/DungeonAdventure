@@ -21,6 +21,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.profile.DataFile;
 import com.almasb.fxgl.profile.SaveLoadHandler;
+import com.almasb.fxgl.ui.Position;
 import controller.collisionhandlers.PlayerDoorHandler;
 import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
@@ -41,14 +42,16 @@ import view.MapSubScene;
 
 
 public final class DungeonApp extends GameApplication {
-    public static String myCharacterName;
+    /** */
+    private static String myCharacterName;
     /** */
     private static Entity myPlayer;
+    /** */
     private static EntityFactory myDungeonFactory;
-
+    /** */
     private static String myPlayerName;
-    public static Map<String, Map<String, String>> myDBData;
-
+    /** */
+    private static Map<String, Map<String, String>> myDBData;
     /** */
     private static Dungeon myDungeon;
     private final InventoryController myInventoryController = new InventoryController();
@@ -133,7 +136,6 @@ public final class DungeonApp extends GameApplication {
                 bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon());
-
                 if (PlayerComponent.getMyInventory().hasItem("HEALTH_POTION")) {
                     bundleInventory.put("healthPots",
                             PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"));
@@ -142,7 +144,6 @@ public final class DungeonApp extends GameApplication {
                     bundleInventory.put("visionPots",
                             PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"));
                 }
-                
                 theData.putBundle(bundlePlayer);
                 theData.putBundle(bundleInventory);
                 theData.putBundle(bundleRoomsBooleans);
@@ -175,8 +176,7 @@ public final class DungeonApp extends GameApplication {
                 if (bundleInventory.exists("visionPots")) {
                     set("loadedVisionPots", bundleInventory.get("visionPots"));
                 }
-
-
+                
                 set("loadedRoomsBooleans", bundleRoomsBooleans.get("roomsBooleans"));
                 set("loadedRoomsNumbers", bundleRoomsNumbers.get("roomsNumbers"));
                 set("loadedRoomsTypes", bundleRoomsTypes.get("roomsTypes"));
@@ -188,13 +188,15 @@ public final class DungeonApp extends GameApplication {
     }
     private void loadHelper() {
         myDungeon = new Dungeon(geto("loadedRoomsNumbers"),
-                geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"),
+                geto("loadedRoomsTypes"),
+                geto("loadedRoomsBooleans"),
                 geto("loadedRoomsMonsters"));
         myCharacterName = gets("loadedCharacterName");
         myPlayerName = gets("loadedPlayerName");
         set("spawnX", (double) getAppWidth() / 2 - 50);
         set("spawnY", (double) getAppHeight() / 2 - 50);
         set("pillars", geti("loadedPillarsCollected"));
+        
         if (myDungeonFactory != null) {
             getGameWorld().removeEntityFactory(myDungeonFactory);
         }
@@ -212,8 +214,8 @@ public final class DungeonApp extends GameApplication {
         getGameWorld().getSingleton(EntityType.PLAYER).
                 getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
         initPhysics();
-
         clearInventory();
+        
         if (getWorldProperties().exists("loadedHealthPots")) {
             for (int i = 0; i < geti("loadedHealthPots"); i++) {
                 InventoryController.addItem("HEALTH_POTION");
@@ -224,9 +226,8 @@ public final class DungeonApp extends GameApplication {
                 InventoryController.addItem("VISION_POTION");
             }
         }
-
-
     }
+    
     @Override
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
@@ -244,6 +245,7 @@ public final class DungeonApp extends GameApplication {
             System.exit(0);
         }
     }
+    
     private void clearInventory() {
         final Inventory inventory = PlayerComponent.getMyInventory();
         final Map inventoryMap = PlayerComponent.getMyInventory().getAllData();
@@ -251,15 +253,23 @@ public final class DungeonApp extends GameApplication {
             inventory.remove(item);
         }
     }
+    
     private static void playerSetUp() {
-        final Map<String, String> heroData = myDBData.get(DungeonApp.myCharacterName);
+        final Map<String, String> heroData = myDBData.get(myCharacterName);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
-        final HealthDoubleComponent hp;
-        hp = new HealthDoubleComponent(Double.parseDouble(heroData.get("hitPoints")));
+        
+        final HealthDoubleComponent hp = new HealthDoubleComponent(
+                Double.parseDouble(heroData.get("hitPoints")));
         set("playerHP", hp);
-        set("playerHPView", new GenericBarViewComponent(0.0, -20.0,
-                Color.RED, hp.valueProperty(), 100.0, 8.0));
+        
+        final var hpBar = new GenericBarViewComponent(0.0, -40.0, Color.RED,
+                hp.valueProperty(), 100.0, 8.0);
+        hpBar.getBar().setLabelVisible(true);
+        hpBar.getBar().setLabelFill(Color.WHITE);
+        hpBar.getBar().setLabelPosition(Position.TOP);
+        set("playerHPView", hpBar);
+        
         myPlayer = spawn("player");
         myPlayer.setReusable(true);
         set("player", myPlayer);
@@ -290,7 +300,9 @@ public final class DungeonApp extends GameApplication {
             spawn("pillar");
         }
         if (theRoom.hasMonster()) {
-            spawn(theRoom.getMonsterType());
+            SpawnData monsterType = new SpawnData();
+            monsterType.put("type", theRoom.getMonsterType());
+            spawn("monster", monsterType);
         }
         if ("exit".equals(theRoom.getType())) {
             if (geti("pillars") == 4) {
@@ -304,8 +316,6 @@ public final class DungeonApp extends GameApplication {
             }
         }
     }
-
-    
 
     @Override
     protected void initPhysics() {
@@ -404,7 +414,7 @@ public final class DungeonApp extends GameApplication {
             return null;
         });
     }
-
+    
     @Override
     protected void initGameVars(final Map<String, Object> vars) {
         vars.put("loaded", false);
@@ -412,11 +422,7 @@ public final class DungeonApp extends GameApplication {
         vars.put("spawnX", (double) getAppWidth() / 2 - 50);
         vars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
-  
-    public static void setMyCharacterName(final String theCharacterName) {
-        myCharacterName = theCharacterName;
-    }
-
+    
     @Override
     protected void onUpdate(final double theTpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
@@ -426,12 +432,26 @@ public final class DungeonApp extends GameApplication {
             });
         }
     }
-    public static String getMyPlayerName() {
+  
+    public static void setCharacterName(final String theCharacterName) {
+        myCharacterName = theCharacterName;
+    }
+    
+    public static String getCharacterName() {
+        return myCharacterName;
+    }
+    
+    public static void setPlayerName(final String thePlayerName) {
+        myPlayerName = thePlayerName;
+    }
+    public static String getPlayerName() {
         return myPlayerName;
     }
-    public static void setMyPlayerName(final String thePlayerName) {
-        DungeonApp.myPlayerName = thePlayerName;
+    
+    public static Map<String, Map<String, String>> getDatabase() {
+        return myDBData;
     }
+    
     public static void main(final String[] theArgs) {
         launch(theArgs);
     }
