@@ -46,7 +46,13 @@ public final class DungeonApp extends GameApplication {
     /** */
     private static Entity myPlayer;
     private static EntityFactory myDungeonFactory;
-    public static String myPlayerName;
+
+
+
+    public static String myCharacterName;
+
+
+    private static String myPlayerName;
     public static Map<String, Map<String, String>> myDBData;
 
     /** */
@@ -91,7 +97,9 @@ public final class DungeonApp extends GameApplication {
                 final Bundle bundleInventory = new Bundle("inventory");
                 final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
+                bundlePlayer.put("characterName", myCharacterName);
                 bundlePlayer.put("playerName", myPlayerName);
+
                 bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
                 bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
                 bundlePlayer.put("playerX", geti("playerX"));
@@ -154,6 +162,7 @@ public final class DungeonApp extends GameApplication {
 
                 set("loadedPlayerX", bundlePlayer.get("playerX"));
                 set("loadedPlayerY", bundlePlayer.get("playerY"));
+                set("loadedCharacterName", bundlePlayer.get("characterName"));
                 set("loadedPlayerName", bundlePlayer.get("playerName"));
                 set("loadedPlayerHealth", bundlePlayer.get("curHealth"));
                 set("loadedPillarsCollected", bundlePlayer.get("pillarsCollected"));
@@ -177,6 +186,7 @@ public final class DungeonApp extends GameApplication {
     }
     private void loadHelper() {
         myDungeon = new Dungeon(geto("loadedRoomsNumbers"), geto("loadedRoomsTypes"), geto("loadedRoomsBooleans"), geto("loadedRoomsMonsters"));
+        myCharacterName = gets("loadedCharacterName");
         myPlayerName = gets("loadedPlayerName");
         set("spawnX", (double) getAppWidth() / 2 - 50);
         set("spawnY", (double) getAppHeight() / 2 - 50);
@@ -237,8 +247,7 @@ public final class DungeonApp extends GameApplication {
         }
     }
     private static void playerSetUp() {
-        System.out.println(myPlayerName);
-        Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
+        Map<String, String> heroData = myDBData.get(DungeonApp.myCharacterName);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
         var hp = new HealthDoubleComponent(Double.parseDouble(heroData.get("hitPoints")));
@@ -399,8 +408,8 @@ public final class DungeonApp extends GameApplication {
         vars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
   
-    public static void setMyPlayerName(final String thePlayerName) {
-        myPlayerName = thePlayerName;
+    public static void setMyCharacterName(final String theCharacterName) {
+        myCharacterName = theCharacterName;
     }
 
     @Override
@@ -415,7 +424,12 @@ public final class DungeonApp extends GameApplication {
             });
         }
     }
-    
+    public static String getMyPlayerName() {
+        return myPlayerName;
+    }
+    public static void setMyPlayerName(String myPlayerName) {
+        DungeonApp.myPlayerName = myPlayerName;
+    }
     public static void main(final String[] theArgs) {
         launch(theArgs);
     }
