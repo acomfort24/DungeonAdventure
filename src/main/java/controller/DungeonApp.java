@@ -51,7 +51,7 @@ public final class DungeonApp extends GameApplication {
 
     /** */
     private static Dungeon myDungeon;
-    final private InventoryController myInventoryController = new InventoryController();
+    private final InventoryController myInventoryController = new InventoryController();
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
@@ -86,7 +86,7 @@ public final class DungeonApp extends GameApplication {
     protected void onPreInit() {
         getSaveLoadService().addHandler(new SaveLoadHandler() {
             @Override
-            public void onSave(DataFile theData) {
+            public void onSave(final DataFile theData) {
                 final Bundle bundlePlayer = new Bundle("player");
                 final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
                 final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
@@ -97,17 +97,19 @@ public final class DungeonApp extends GameApplication {
 
                 bundlePlayer.put("characterName", myCharacterName);
                 bundlePlayer.put("playerName", myPlayerName);
-
-                bundlePlayer.put("curHealth", player.getComponent(HealthDoubleComponent.class).getValue());
-                bundlePlayer.put("pillarsCollected", FXGL.getWorldProperties().getValue("pillars"));
+                bundlePlayer.put("curHealth",
+                        player.getComponent(HealthDoubleComponent.class).getValue());
+                bundlePlayer.put("pillarsCollected",
+                        FXGL.getWorldProperties().getValue("pillars"));
                 bundlePlayer.put("playerX", geti("playerX"));
                 bundlePlayer.put("playerY", geti("playerY"));
 
-                final String[][] roomsMonsters = new String[myDungeon.getWidth()][myDungeon.getHeight()];
-                final String[][] roomsTypes = new String[myDungeon.getWidth()][myDungeon.getHeight()];
-                //creates a 2d arraylist of maps of the different booleans of information in each room
+                final String[][] roomsMonsters =
+                        new String[myDungeon.getWidth()][myDungeon.getHeight()];
+                final String[][] roomsTypes =
+                        new String[myDungeon.getWidth()][myDungeon.getHeight()];
+                //creates a 2d arraylist of maps of the different booleans in each room
                 final ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<>();
-
 
                 for (int i = 0; i < myDungeon.getWidth(); i++) {
                     final ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
@@ -193,7 +195,7 @@ public final class DungeonApp extends GameApplication {
         set("spawnX", (double) getAppWidth() / 2 - 50);
         set("spawnY", (double) getAppHeight() / 2 - 50);
         set("pillars", geti("loadedPillarsCollected"));
-        if(myDungeonFactory != null) {
+        if (myDungeonFactory != null) {
             getGameWorld().removeEntityFactory(myDungeonFactory);
         }
 
@@ -416,7 +418,7 @@ public final class DungeonApp extends GameApplication {
     }
 
     @Override
-    protected void onUpdate(final double tpf) {
+    protected void onUpdate(final double theTpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
             getDialogService().showMessageBox("Game over man.", () -> {
                 FXGL.getWorldProperties().clear();

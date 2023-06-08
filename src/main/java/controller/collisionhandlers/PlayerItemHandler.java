@@ -23,7 +23,7 @@ public class PlayerItemHandler extends CollisionHandler {
     
     @Override
     protected void onCollisionBegin(final Entity theP, final Entity theI) {
-        String itemType = theI.getType().toString();
+        final String itemType = theI.getType().toString();
         InventoryController.addItem(itemType);
         if ("VISION_POTION".equals(itemType)) {
             myDungeon.get(FXGL.geti("playerX"), FXGL.geti("playerY")).setVisPot(false);

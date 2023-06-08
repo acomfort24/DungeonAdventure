@@ -19,7 +19,8 @@ public class InventoryController {
             inventory.remove(theItem);
         }
         if ("HEALTH_POTION".equals(theItem)) {
-            FXGL.getGameWorld().getSingleton(EntityType.PLAYER).getComponent(HealthDoubleComponent.class).restore(25);
+            FXGL.getGameWorld().getSingleton(EntityType.PLAYER)
+                    .getComponent(HealthDoubleComponent.class).restore(25);
         }
     }
     public static void addItem(final String theItem) {
