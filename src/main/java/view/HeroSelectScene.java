@@ -21,7 +21,7 @@ public class HeroSelectScene extends HBox {
         myDBData = theDBData;
         createPanelButton("Warrior");
         createPanelButton("Thief");
-        createPanelButton("Priestess");
+        createPanelButton("Wizard");
         this.setSpacing(50);
         this.setLayoutX(150);
         this.setLayoutY(250);

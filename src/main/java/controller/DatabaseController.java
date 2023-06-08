@@ -69,10 +69,10 @@ public final class DatabaseController {
             ds = new SQLiteDataSource();
             ds.setUrl("jdbc:sqlite:Dungeon_Adventure.db");
             sqlData.put("Warrior", getData(ds, "Hero", "Warrior"));
-            sqlData.put("Priestess", getData(ds, "Hero", "Priestess"));
+            sqlData.put("Wizard", getData(ds, "Hero", "Wizard"));
             sqlData.put("Thief", getData(ds, "Hero", "Thief"));
             sqlData.put("Gremlin", getData(ds, "Monster", "Gremlin"));
-            sqlData.put("Ogre", getData(ds, "Monster", "Ogre"));
+            sqlData.put("Orc", getData(ds, "Monster", "Orc"));
             sqlData.put("Skeleton", getData(ds, "Monster", "Skeleton"));
             ds.getConnection().close();
         } catch (final Exception e) {
