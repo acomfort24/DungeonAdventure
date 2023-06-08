@@ -19,6 +19,8 @@ import model.EntityType;
 import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 
+import static com.almasb.fxgl.app.scene.FXGLMenu.*;
+
 public class GameMenu extends FXGLMenu {
     private final ScrollPane myFlexBox = new ScrollPane();
     private Boolean myShowInventory = false;
@@ -31,7 +33,9 @@ public class GameMenu extends FXGLMenu {
         final DungeonAdventureButton btnInventory = new DungeonAdventureButton("Toggle Inventory",
                 "Open/Close Inventory", () -> toggleInventory());
         final DungeonAdventureButton btnSaveGame = new DungeonAdventureButton("Save Game",
-                "Save Game", () -> fireSave());
+                "Save Game", () -> {
+            fireSave();
+        });
         final DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit to Menu",
                 "Quit to Menu", () -> {
             fireExitToMainMenu();

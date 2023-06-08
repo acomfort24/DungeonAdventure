@@ -237,6 +237,7 @@ public final class DungeonApp extends GameApplication {
         }
     }
     private static void playerSetUp() {
+        System.out.println(myPlayerName);
         Map<String, String> heroData = myDBData.get(DungeonApp.myPlayerName);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
@@ -405,7 +406,13 @@ public final class DungeonApp extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
-            getDialogService().showMessageBox("Game over man.", FXGL.getGameController()::gotoMainMenu);
+            getDialogService().showMessageBox("Game over man.", new Runnable() {
+                @Override
+                public void run() {
+                    FXGL.getWorldProperties().clear();
+                    FXGL.getGameController().gotoMainMenu();
+                }
+            });
         }
     }
     

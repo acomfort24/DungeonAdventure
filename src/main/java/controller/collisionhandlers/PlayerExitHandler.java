@@ -20,6 +20,12 @@ public class PlayerExitHandler extends CollisionHandler {
     
     @Override
     protected void onCollision(final Entity theP, final Entity theE) {
-        getDialogService().showMessageBox("congrats bucko.", FXGL.getGameController()::gotoMainMenu);
+        getDialogService().showMessageBox("congrats bucko.", new Runnable() {
+            @Override
+            public void run() {
+                FXGL.getWorldProperties().clear();
+                FXGL.getGameController().gotoMainMenu();
+            }
+        });
     }
 }
