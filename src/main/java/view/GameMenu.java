@@ -3,12 +3,15 @@ package view;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import controller.DungeonApp;
 import controller.InventoryController;
 import java.util.HashMap;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -47,12 +50,14 @@ public class GameMenu extends FXGLMenu {
         buttonBox.setTranslateY(590);
         getContentRoot().getChildren().add(buttonBox);
         getContentRoot().getChildren().add(myFlexBox);
+    }
+    @Override
+    public void onCreate() {
         myFlexBox.setContent(createProgressBox());
     }
     @Override
     public void onDestroy() {
         myShowInventory = false;
-        myFlexBox.setContent(createProgressBox());
     }
     private void toggleInventory() {
         myShowInventory = !myShowInventory;
@@ -80,9 +85,12 @@ public class GameMenu extends FXGLMenu {
         return box;
     }
     private VBox createProgressBox() {
-//        Image heroImage = new Image(new FileInputStream(""));
-        final Text testText = new Text("Progress!");
-        return new VBox(testText);
+        ImageView heroImage = new ImageView(FXGL.image(DungeonApp.myPlayerName + ".png"));
+        final VBox box = new VBox();
+        final Text pillarText = new Text("Pillars Collected: " + FXGL.getWorldProperties().getInt("pillars"));
+        box.getChildren().add(heroImage);
+        box.getChildren().add(pillarText);
+        return box;
     }
     private void useItem(final String theItem) {
         InventoryController.useItem(theItem);

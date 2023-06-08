@@ -201,7 +201,7 @@ public class DungeonFactory implements EntityFactory {
 
     @Spawns("orc")
     public Entity newOrc(final SpawnData theData) {
-        Map<String, String> monsterData = myDBData.get("Ogre");
+        Map<String, String> monsterData = myDBData.get("Orc");
         return entityBuilder()
                 .type(EntityType.ORC)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
