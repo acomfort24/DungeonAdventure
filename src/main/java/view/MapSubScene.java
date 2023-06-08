@@ -21,8 +21,7 @@ public class MapSubScene extends SubScene {
     private final int myNumRows;
     private final int myNumColumns;
     private final Dungeon myDungeon;
-
-
+    
     public MapSubScene(final Dungeon theDungeon) {
 
         this.myDungeon = theDungeon;

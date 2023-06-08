@@ -10,19 +10,18 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import kotlin.Pair;
 
-
 public class MonsterAnimationComponent extends Component {
-
+    /** */
     private final AnimatedTexture myTexture;
+    /** */
     private final AnimationChannel myAnimIdle;
-
-
-    public MonsterAnimationComponent(final String imageFile) {
-        myAnimIdle = new AnimationChannel(FXGL.image(imageFile), Duration.seconds(1), List.of(
-                new Pair<>(0, new FrameData(0,0,96,96)),
-                new Pair<>(1, new FrameData(96,0,96,96)),
-                new Pair<>(2, new FrameData(96+96,0,96,96)),
-                new Pair<>(3, new FrameData(96+96+96,0,96,96))
+    
+    public MonsterAnimationComponent(final String theImageFile) {
+        myAnimIdle = new AnimationChannel(FXGL.image(theImageFile), Duration.seconds(1), List.of(
+                new Pair<>(0, new FrameData(0,0,96,97)),
+                new Pair<>(1, new FrameData(96,0,96,97)),
+                new Pair<>(2, new FrameData(96+96,0,96,97)),
+                new Pair<>(3, new FrameData(96+96+96,0,96,97))
         ));
 
         myTexture = new AnimatedTexture(myAnimIdle);
@@ -34,5 +33,4 @@ public class MonsterAnimationComponent extends Component {
         entity.getTransformComponent().setScaleOrigin(new Point2D(48,48));
         entity.getViewComponent().addChild(myTexture);
     }
-
 }

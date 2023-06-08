@@ -198,7 +198,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     }
     
     private static String randomMonster() {
-        final String[] monsterArr = {"skeleton", "orc"};
+        final String[] monsterArr = {"Skeleton", "Orc"};
         return FXGLMath.random(monsterArr).get();
     }
     

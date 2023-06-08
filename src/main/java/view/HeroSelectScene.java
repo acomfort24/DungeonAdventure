@@ -40,10 +40,10 @@ public class HeroSelectScene extends HBox {
         button.setTextFill(Color.WHITE);
         button.setOnAction(e ->
                 FXGL.getDialogService().showInputBox("Enter your player name.", name -> {
-                    DungeonApp.setMyPlayerName(name);
-                    DungeonApp.setMyCharacterName(theName);
+                    DungeonApp.setPlayerName(name);
+                    DungeonApp.setCharacterName(theName);
                     FXGL.getGameController().startNewGame();
-                    DungeonMainMenu.mySelectScreen.setVisible(false);
+                    this.setVisible(false);
                 }));
         final BackgroundImage bgImage = new BackgroundImage(FXGL.image(theName + ".png"),
                 BackgroundRepeat.NO_REPEAT,
