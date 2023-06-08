@@ -3,44 +3,33 @@ package view;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import controller.DungeonApp;
 import controller.InventoryController;
 import java.util.HashMap;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import model.EntityType;
-import model.components.PlayerComponent;
-import model.dungeonmap.Dungeon;
-
-import static com.almasb.fxgl.app.scene.FXGLMenu.*;
 
 public class GameMenu extends FXGLMenu {
     private final ScrollPane myFlexBox = new ScrollPane();
     private Boolean myShowInventory = false;
     public GameMenu() {
         super(MenuType.GAME_MENU);
-        final DungeonAdventureButton btnResume = new DungeonAdventureButton("Resume Game",
-                "Resume Your Game", () -> {
-            fireResume();
-        });
-        final DungeonAdventureButton btnInventory = new DungeonAdventureButton("Toggle Inventory",
-                "Open/Close Inventory", () -> toggleInventory());
-        final DungeonAdventureButton btnSaveGame = new DungeonAdventureButton("Save Game",
-                "Save Game", () -> {
-            fireSave();
-        });
-        final DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit to Menu",
-                "Quit to Menu", () -> {
-            fireExitToMainMenu();
-            FXGL.getWorldProperties().clear();
-        });
+        final DungeonAdventureButton btnResume = new
+                DungeonAdventureButton("Resume Game", this::fireResume);
+        final DungeonAdventureButton btnInventory =
+                new DungeonAdventureButton("Toggle Inventory", this::toggleInventory);
+        final DungeonAdventureButton btnSaveGame =
+                new DungeonAdventureButton("Save Game", this::fireSave);
+        final DungeonAdventureButton btnQuit =
+                new DungeonAdventureButton("Quit to Menu", () -> {
+                    fireExitToMainMenu();
+                    FXGL.getWorldProperties().clear();
+                });
 
 
         final VBox buttonBox = new VBox(15,
@@ -89,9 +78,11 @@ public class GameMenu extends FXGLMenu {
         return box;
     }
     private VBox createProgressBox() {
-        ImageView heroImage = new ImageView(FXGL.image(DungeonApp.myCharacterName + ".png"));
+        final ImageView heroImage =
+                new ImageView(FXGL.image(DungeonApp.myCharacterName + ".png"));
         final VBox box = new VBox();
-        final Text pillarText = new Text("Pillars Collected: " + FXGL.getWorldProperties().getInt("pillars"));
+        final Text pillarText =
+                new Text("Pillars Collected: " + FXGL.getWorldProperties().getInt("pillars"));
         box.getChildren().add(heroImage);
         box.getChildren().add(pillarText);
         return box;

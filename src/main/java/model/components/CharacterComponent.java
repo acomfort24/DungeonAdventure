@@ -1,19 +1,21 @@
 package model.components;
 
-import com.almasb.fxgl.dsl.components.HealthIntComponent;
 import com.almasb.fxgl.entity.component.Component;
 
 public class CharacterComponent extends Component {
-    private int myMinDmg;
-    private int myMaxDmg;
-    private int myAtkSpd;
-    private double myChncHit;
-    private int myCurHealth;
+    private final int myMaxDmg;
+    private final int myMinDmg;
 
-    private int myMaxHealth;
-    private String myName;
+    private final int myAtkSpd;
+    private final double myChncHit;
+    private final int myCurHealth;
 
-    public CharacterComponent(int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, int theHealth, String theName) {
+    private final int myMaxHealth;
+    private final String myName;
+
+    public CharacterComponent(final int theMinDmg, final int theMaxDmg, final int theAtkSpd,
+                              final Double theChncHit, final int theHealth,
+                              final String theName) {
         myMinDmg = theMinDmg;
         myMaxDmg = theMaxDmg;
         myAtkSpd = theAtkSpd;

@@ -15,24 +15,21 @@ public class DungeonAdventureButton extends StackPane {
     /** */
     private static final Color NOT_SELECTED_COLOR = Color.GRAY;
     /** */
-    private final Runnable myAction;
-    /** */
-    private final Text myText;
+
 
     /* default */
-    DungeonAdventureButton(final String theName, final String theDescription,
+    DungeonAdventureButton(final String theName,
                            final Runnable theAction) {
         super();
-        myAction = theAction;
-        myText = FXGL.getUIFactoryService().newText(theName, Color.WHITE, 18.0);
-        myText.fillProperty().bind(Bindings.when(focusedProperty())
+        final Text text = FXGL.getUIFactoryService().newText(theName, Color.WHITE, 18.0);
+        text.fillProperty().bind(Bindings.when(focusedProperty())
                 .then(SELECTED_COLOR)
                 .otherwise(NOT_SELECTED_COLOR));
-        myText.strokeProperty().bind(Bindings.when(focusedProperty())
+        text.strokeProperty().bind(Bindings.when(focusedProperty())
                 .then(SELECTED_COLOR)
                 .otherwise(NOT_SELECTED_COLOR));
 
-        myText.setStrokeWidth(.5);
+        text.setStrokeWidth(.5);
 
         final Rectangle currentSelection = new Rectangle(5, 17, Color.WHITE);
         currentSelection.setTranslateX(-15);
@@ -47,11 +44,9 @@ public class DungeonAdventureButton extends StackPane {
                 theAction.run();
             }
         });
-        setOnMouseClicked(e -> {
-            theAction.run();
-        });
+        setOnMouseClicked(e -> theAction.run());
 
-        getChildren().addAll(myText, currentSelection);
+        getChildren().addAll(text, currentSelection);
     }
 
 }

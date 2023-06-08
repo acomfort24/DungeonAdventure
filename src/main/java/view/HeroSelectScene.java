@@ -1,24 +1,19 @@
 package view;
-import com.almasb.fxgl.app.scene.FXGLScene;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.CoreComponent;
-import com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider;
 import controller.DungeonApp;
+import java.util.Collections;
+import java.util.Map;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.util.Collections;
-import java.util.Map;
 
 public class HeroSelectScene extends HBox {
-    Map<String, Map<String, String>> myDBData;
-    public HeroSelectScene(Map<String, Map<String, String>> theDBData) {
+    private final Map<String, Map<String, String>> myDBData;
+    public HeroSelectScene(final Map<String, Map<String, String>> theDBData) {
         super();
         myDBData = theDBData;
         createPanelButton("Warrior");
@@ -28,8 +23,8 @@ public class HeroSelectScene extends HBox {
         this.setLayoutX(150);
         this.setLayoutY(250);
     }
-    private void createPanelButton(String theName) {
-        Button button = new Button();
+    private void createPanelButton(final String theName) {
+        final Button button = new Button();
         button.setText(
                 myDBData.get(theName).get("name")
                         + "\nMax Health: " + myDBData.get(theName).get("hitPoints")
@@ -43,16 +38,14 @@ public class HeroSelectScene extends HBox {
         button.setPrefSize(250, 300);
         button.setFont(new Font(26));
         button.setTextFill(Color.WHITE);
-        button.setOnAction(e -> {
-            FXGL.getDialogService().showInputBox("Enter your player name.", name -> {
-                DungeonApp.setMyPlayerName(name);
-                DungeonApp.setMyCharacterName(theName);
-                FXGL.getGameController().startNewGame();
-                DungeonMainMenu.mySelectScreen.setVisible(false);
-            });
-
-        });
-        BackgroundImage bgImage = new BackgroundImage(FXGL.image(theName + ".png"),
+        button.setOnAction(e ->
+                FXGL.getDialogService().showInputBox("Enter your player name.", name -> {
+                    DungeonApp.setMyPlayerName(name);
+                    DungeonApp.setMyCharacterName(theName);
+                    FXGL.getGameController().startNewGame();
+                    DungeonMainMenu.mySelectScreen.setVisible(false);
+                }));
+        final BackgroundImage bgImage = new BackgroundImage(FXGL.image(theName + ".png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,

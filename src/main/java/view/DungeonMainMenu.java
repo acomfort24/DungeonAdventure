@@ -22,22 +22,20 @@ public class DungeonMainMenu extends FXGLMenu {
         getContentRoot().getChildren().add(node);
         getContentRoot().getChildren().add(mySelectScreen);
         getContentRoot().getChildren().add(myLoadSelectScreen);
-        final DungeonAdventureButton btnPlayGame = new DungeonAdventureButton("Play Game",
-                "Start a new game", () -> {
-            mySelectScreen.setVisible(true);
-            myLoadSelectScreen.setVisible(false);
-        });
-        final DungeonAdventureButton btnOptions = new DungeonAdventureButton("Options",
-                "Change in-game settings", () -> { });
-        final DungeonAdventureButton btnLoad = new DungeonAdventureButton("Load",
-                "Load a previous game", () -> {
+        final DungeonAdventureButton btnPlayGame =
+                new DungeonAdventureButton("Play Game", () -> {
+                    mySelectScreen.setVisible(true);
+                    myLoadSelectScreen.setVisible(false);
+                });
+        final DungeonAdventureButton btnOptions =
+                new DungeonAdventureButton("Options", () -> { });
+        final DungeonAdventureButton btnLoad = new DungeonAdventureButton("Load", () -> {
             myLoadSelectScreen.setVisible(true);
             mySelectScreen.setVisible(false);
         });
 
-        final DungeonAdventureButton btnQuit = new DungeonAdventureButton("Quit Game",
-                "Quit to desktop", () -> fireExit());
-        final boolean showClasses = false;
+        final DungeonAdventureButton btnQuit =
+                new DungeonAdventureButton("Quit Game", this::fireExit);
         final var box = new VBox(15,
                 btnPlayGame,
                 btnOptions,

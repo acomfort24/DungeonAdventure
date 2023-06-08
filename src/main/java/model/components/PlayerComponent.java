@@ -1,31 +1,27 @@
 package model.components;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
-
-import controller.DatabaseController;
-import controller.DungeonApp;
-import javafx.scene.image.Image;
-
-import java.util.Map;
 
 
 public class PlayerComponent extends Component {
-    private static CharacterComponent myCharacterComponent;
-    private double myChncBlock;
-    /** */
     private static final int PLAYER_VELOCITY = 350;
     /** */
     private static final Inventory myInventory = new Inventory<>(100);
+    private static CharacterComponent myCharacterComponent;
+    private double myChncBlock;
+    /** */
+
     /** */
     protected PhysicsComponent myPhysics;
     
-    public PlayerComponent(int theMinDmg, int theMaxDmg, int theAtkSpd, Double theChncHit, int theHealth, String theName) {
+    public PlayerComponent(final int theMinDmg, final int theMaxDmg,
+                           final int theAtkSpd, final Double theChncHit,
+                           final int theHealth, final String theName) {
         super();
-        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd, theChncHit, theHealth, theName);
+        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
+                theChncHit, theHealth, theName);
     }
     
     public void down() {
@@ -59,5 +55,18 @@ public class PlayerComponent extends Component {
     public double getMyChncBlock() {
         return myChncBlock;
     }
+    /*
+    Leaving this code here even though we're not allowed to override the
+    to string method in FXGL to show that we know how to do it.
+     */
+//    public static String toString() {
+//        String string = String.format("Name: %s\nCurrent Health: %f\nHealth Potions:
+//        %i\nVision Potions: %i\nPillars Found: ",
+//                DungeonApp.getMyPlayerName(),
+//                PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"),
+//                PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"),
+//                gets("pillars"));
+//        return string;
+//    }
 }
 
