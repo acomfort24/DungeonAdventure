@@ -1,7 +1,9 @@
 package view;
+import com.almasb.fxgl.app.scene.FXGLScene;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.CoreComponent;
+import com.almasb.fxgl.ui.FXGLUIFactoryServiceProvider;
 import controller.DungeonApp;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -42,9 +44,13 @@ public class HeroSelectScene extends HBox {
         button.setFont(new Font(26));
         button.setTextFill(Color.WHITE);
         button.setOnAction(e -> {
-            DungeonApp.setMyPlayerName(theName);
-            FXGL.getGameController().startNewGame();
-            DungeonMainMenu.mySelectScreen.setVisible(false);
+            FXGL.getDialogService().showInputBox("Enter your player name.", name -> {
+                DungeonApp.setMyPlayerName(name);
+                DungeonApp.setMyCharacterName(theName);
+                FXGL.getGameController().startNewGame();
+                DungeonMainMenu.mySelectScreen.setVisible(false);
+            });
+
         });
         BackgroundImage bgImage = new BackgroundImage(FXGL.image(theName + ".png"),
                 BackgroundRepeat.NO_REPEAT,

@@ -89,7 +89,7 @@ public class GameMenu extends FXGLMenu {
         return box;
     }
     private VBox createProgressBox() {
-        ImageView heroImage = new ImageView(FXGL.image(DungeonApp.myPlayerName + ".png"));
+        ImageView heroImage = new ImageView(FXGL.image(DungeonApp.myCharacterName + ".png"));
         final VBox box = new VBox();
         final Text pillarText = new Text("Pillars Collected: " + FXGL.getWorldProperties().getInt("pillars"));
         box.getChildren().add(heroImage);
