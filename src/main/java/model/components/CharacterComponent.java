@@ -8,7 +8,7 @@ public class CharacterComponent extends Component {
 
     private final int myAtkSpd;
     private final double myChncHit;
-    private final int myCurHealth;
+
 
     private final int myMaxHealth;
     private final String myName;
@@ -20,7 +20,6 @@ public class CharacterComponent extends Component {
         myMaxDmg = theMaxDmg;
         myAtkSpd = theAtkSpd;
         myChncHit = theChncHit;
-        myCurHealth = theHealth;
         myMaxHealth = theHealth;
         myName = theName;
 

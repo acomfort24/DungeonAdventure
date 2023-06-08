@@ -9,6 +9,7 @@ public class PlayerComponent extends Component {
     private static final int PLAYER_VELOCITY = 350;
     /** */
     private static final Inventory myInventory = new Inventory<>(100);
+
     private static CharacterComponent myCharacterComponent;
     private double myChncBlock;
     /** */
@@ -18,10 +19,11 @@ public class PlayerComponent extends Component {
     
     public PlayerComponent(final int theMinDmg, final int theMaxDmg,
                            final int theAtkSpd, final Double theChncHit,
-                           final int theHealth, final String theName) {
+                           final int theHealth, final String theName, Double theChncBlock) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);
+        myChncBlock = theChncBlock;
     }
     
     public void down() {
@@ -54,6 +56,9 @@ public class PlayerComponent extends Component {
     }
     public double getMyChncBlock() {
         return myChncBlock;
+    }
+    public static CharacterComponent getMyCharacterComponent() {
+        return myCharacterComponent;
     }
     /*
     Leaving this code here even though we're not allowed to override the
