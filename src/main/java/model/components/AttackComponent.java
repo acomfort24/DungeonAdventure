@@ -1,27 +1,43 @@
 package model.components;
 
 import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.FrameData;
+import java.util.List;
+
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import kotlin.Pair;
 
-import java.util.List;
-
 public class AttackComponent extends Component {
     /** */
-    private final AnimatedTexture myTexture;
+    private final AnimationChannel myAnimAttackL;
     /** */
-    private final AnimationChannel myAnimAttack;
+    private final AnimationChannel myAnimAttackR;
+    /** */
+    private final Entity myPlayer;
     public AttackComponent() {
+        myPlayer = FXGL.getWorldProperties().getObject("player");
+        double attackSpeed = myPlayer.getComponent(PlayerComponent.class).getAtkSpeed();
         final int width = 110;
         final int height = 80;
         
-        myAnimAttack = new AnimationChannel(FXGL.image("AttackSheet.png"),
-                Duration.seconds(0.5), List.of(
+        myAnimAttackL = new AnimationChannel(FXGL.image("AttackSheetL.png"),
+                Duration.seconds(attackSpeed), List.of(
+                new Pair<>(0, new FrameData(550, 0, width, height)),
+                new Pair<>(1, new FrameData(440, 0, width, height)),
+                new Pair<>(2, new FrameData(330, 0, width, height)),
+                new Pair<>(3, new FrameData(220, 0, width, height)),
+                new Pair<>(4, new FrameData(110, 0, width, height)),
+                new Pair<>(5, new FrameData(0, 0, width, height))
+        ));
+        
+        myAnimAttackR = new AnimationChannel(FXGL.image("AttackSheetR.png"),
+                Duration.seconds(attackSpeed), List.of(
                 new Pair<>(0, new FrameData(0, 0, width, height)),
                 new Pair<>(1, new FrameData(110, 0, width, height)),
                 new Pair<>(2, new FrameData(220, 0, width, height)),
@@ -29,13 +45,17 @@ public class AttackComponent extends Component {
                 new Pair<>(4, new FrameData(440, 0, width, height)),
                 new Pair<>(5, new FrameData(550, 0, width, height))
         ));
-        
-        myTexture = new AnimatedTexture(myAnimAttack);
     }
     
     @Override
     public void onAdded() {
-        entity.getViewComponent().addChild(myTexture);
-        myTexture.play();
+        AnimatedTexture texture;
+        if (myPlayer.getScaleX() < 0) {
+            texture = new AnimatedTexture(myAnimAttackL);
+        } else {
+            texture = new AnimatedTexture(myAnimAttackR);
+        }
+        entity.getViewComponent().addChild(texture);
+        texture.play();
     }
 }

@@ -165,7 +165,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     
     private void addMonsters() {
         int count = 0;
-        while (count < 4) {
+        while (count < 7) {
             DungeonRoom dr = getRandomCell();
             if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
                 dr.setMonster(true);

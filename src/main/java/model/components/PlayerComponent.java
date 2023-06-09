@@ -1,5 +1,6 @@
 package model.components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -8,19 +9,19 @@ import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 
 public class PlayerComponent extends Component {
     /** */
-    private int myVelocity = 300;
+    private int myVelocity = 325;
     /** */
     private static final Inventory myInventory = new Inventory<>(100);
     /** */
-    private static CharacterComponent myCharacterComponent;
+    private CharacterComponent myCharacterComponent;
     /** */
     private double myChncBlock;
     /** */
     protected PhysicsComponent myPhysics;
     
     public PlayerComponent(final int theMinDmg, final int theMaxDmg,
-                           final int theAtkSpd, final Double theChncHit,
-                           final int theHealth, final String theName, Double theChncBlock) {
+                           final int theAtkSpd, final double theChncHit,
+                           final int theHealth, final String theName, double theChncBlock) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);
@@ -60,13 +61,17 @@ public class PlayerComponent extends Component {
     public static Inventory getMyInventory() {
         return myInventory;
     }
-    public static String getName() {
+    public String getName() {
         return myCharacterComponent.getMyName();
     }
     public double getMyChncBlock() {
         return myChncBlock;
     }
-    public static CharacterComponent getMyCharacterComponent() {
+    
+    public double getAtkSpeed() {
+        return myCharacterComponent.getMyAtkSpd();
+    }
+    public CharacterComponent getMyCharacterComponent() {
         return myCharacterComponent;
     }
     /*

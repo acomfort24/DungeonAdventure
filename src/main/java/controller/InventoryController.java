@@ -8,8 +8,6 @@ import model.EntityType;
 import model.components.PlayerComponent;
 
 
-
-
 public class InventoryController {
     public static void useItem(final String theItem) {
         final Inventory inventory = PlayerComponent.getMyInventory();
