@@ -31,7 +31,9 @@ import java.awt.*;
 import java.util.*;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.DungeonFactory;
 import model.EntityType;
 import model.components.PlayerComponent;
@@ -407,6 +409,29 @@ public final class DungeonApp extends GameApplication {
                 myPlayer.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
+        
+        final var wrapper = new Object() {
+            Long myActionTime = 0L;
+        };
+        
+        onBtnDown(MouseButton.PRIMARY, () -> {
+            final Long currentTime = System.currentTimeMillis();
+            if (currentTime - wrapper.myActionTime > 400) {
+                if (myPlayer.getScaleX() == -1) {
+                    myPlayer.getComponent(PlayerComponent.class).pausePlayer();
+                    spawn("weapon", myPlayer.getPosition().add(-40, 15));
+                } else {
+                    myPlayer.getComponent(PlayerComponent.class).pausePlayer();
+                    spawn("weapon", myPlayer.getPosition().add(40, 15));
+                }
+                wrapper.myActionTime = currentTime;
+                runOnce(() -> {
+                    myPlayer.getComponent(PlayerComponent.class).resumePlayer();
+                    return null;
+                }, Duration.millis(400));
+            }
+            return null;
+        });
 
         onKeyDown(KeyCode.O, () -> {
             final Queue<Point2D> dungeonQueue = new LinkedList<>();
