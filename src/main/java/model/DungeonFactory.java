@@ -1,7 +1,6 @@
 package model;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
@@ -99,7 +98,6 @@ public class DungeonFactory implements EntityFactory {
 
         return entityBuilder()
                 .type(PLAYER)
-                //.viewWithBBox("player.png")
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
@@ -176,11 +174,12 @@ public class DungeonFactory implements EntityFactory {
 
     @Spawns("pit")
     public Entity newPit(final SpawnData theData) {
+        
             return entityBuilder()
                     .type(PIT)
-                    .bbox(new HitBox(BoundingShape.box(1052, 693)))
-                    .with(new PitComponent())
-                    .with(new CollidableComponent())
+                    .bbox(new HitBox(BoundingShape.box(1152, 864)))
+                    .with(new PitAnimationComponent())
+                    .with(new CollidableComponent(true))
                     .at(new Point2D(48,123))
                     .build();
     }
@@ -201,7 +200,7 @@ public class DungeonFactory implements EntityFactory {
         
         return entityBuilder()
                 .type(MONSTER)
-                .bbox(new HitBox(BoundingShape.box(96, 96)))
+                .bbox(new HitBox(BoundingShape.box(75, 96)))
                 .with(new MonsterAnimationComponent(theData.get("type") + "IdleSheet.png"))
                 .with(new CollidableComponent(true))
                 .with(hp)
@@ -225,11 +224,11 @@ public class DungeonFactory implements EntityFactory {
         physics.setBodyType(BodyType.DYNAMIC);
         
         return entityBuilder(data)
-                .type(ATTACK)
-                .bbox(new HitBox(BoundingShape.box(103, 70)))
+                .type(WEAPON)
+                .bbox(new HitBox(BoundingShape.box(100, 70)))
+                .with(new CollidableComponent(true))
                 .with(new AttackComponent())
                 .with(new ExpireCleanComponent(Duration.seconds(0.5)))
                 .build();
-                
     }
 }

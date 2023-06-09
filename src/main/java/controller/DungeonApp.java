@@ -22,11 +22,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.profile.DataFile;
 import com.almasb.fxgl.profile.SaveLoadHandler;
 import com.almasb.fxgl.ui.Position;
-import controller.collisionhandlers.PlayerDoorHandler;
-import controller.collisionhandlers.PlayerExitHandler;
-import controller.collisionhandlers.PlayerItemHandler;
-import controller.collisionhandlers.PlayerPillarHandler;
-
+import controller.collisionhandlers.*;
 import java.awt.*;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -312,6 +308,7 @@ public final class DungeonApp extends GameApplication {
         myDungeon.get(theX, theY).setVisited(true);
         spawnRoomEntities(myDungeon.get(theX, theY));
         myPlayer = spawn("player");
+        set("player", myPlayer);
     }
     
     private static void spawnRoomEntities(final DungeonRoom theRoom) {
@@ -356,8 +353,10 @@ public final class DungeonApp extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.SOUTH_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.EAST_DOOR));
         getPhysicsWorld().addCollisionHandler(new PlayerDoorHandler(EntityType.WEST_DOOR));
+        getPhysicsWorld().addCollisionHandler(new PlayerPitHandler());
         getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler(myDungeon));
         getPhysicsWorld().addCollisionHandler(new PlayerExitHandler());
+        getPhysicsWorld().addCollisionHandler(new WeaponEnemyHandler());
     }
 
     @Override
@@ -411,15 +410,16 @@ public final class DungeonApp extends GameApplication {
         }, KeyCode.S);
         
         final var wrapper = new Object() {
-            Long myActionTime = 0L;
+            long myActionTime = 0L;
         };
         
         onBtnDown(MouseButton.PRIMARY, () -> {
-            final Long currentTime = System.currentTimeMillis();
-            if (currentTime - wrapper.myActionTime > 400) {
-                if (myPlayer.getScaleX() == -1) {
+            final long currentTime = System.currentTimeMillis();
+            if (currentTime - wrapper.myActionTime
+                    > myPlayer.getComponent(PlayerComponent.class).getAtkSpeed() * 1000) {
+                if (myPlayer.getScaleX() < 0) {
                     myPlayer.getComponent(PlayerComponent.class).pausePlayer();
-                    spawn("weapon", myPlayer.getPosition().add(-40, 15));
+                    spawn("weapon", myPlayer.getPosition().add(-55, 15));
                 } else {
                     myPlayer.getComponent(PlayerComponent.class).pausePlayer();
                     spawn("weapon", myPlayer.getPosition().add(40, 15));
@@ -428,14 +428,15 @@ public final class DungeonApp extends GameApplication {
                 runOnce(() -> {
                     myPlayer.getComponent(PlayerComponent.class).resumePlayer();
                     return null;
-                }, Duration.millis(400));
+                }, Duration.seconds(myPlayer.getComponent(
+                        PlayerComponent.class).getAtkSpeed()));
             }
             return null;
         });
 
         onKeyDown(KeyCode.O, () -> {
             final Queue<Point2D> dungeonQueue = new LinkedList<>();
-            myDungeon.toString();
+            System.out.println(myDungeon.toString());
             System.out.println(geti("playerX") + " " + geti("playerY"));
             for (DungeonRoom[] d : myDungeon.getData()) {
                 for (DungeonRoom dr : d) {
