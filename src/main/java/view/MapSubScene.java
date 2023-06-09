@@ -20,7 +20,7 @@ public class MapSubScene extends SubScene implements Serializable {
     private final int myNumRows;
     private final int myNumColumns;
     private final Dungeon myDungeon;
-    private final ArrayList<Point> myRevealedRooms;
+    private ArrayList<Point> myRevealedRooms;
 
     public MapSubScene(final Dungeon theDungeon) {
 
@@ -185,8 +185,8 @@ public class MapSubScene extends SubScene implements Serializable {
         return this.myRevealedRooms;
     }
 
-    public void setRevealedRoom(final Point thePoint) {
-        myRevealedRooms.add(thePoint);
+    public void setRevealedRoom(final ArrayList<Point> thePoints) {
+        this.myRevealedRooms = thePoints;
     }
 
 

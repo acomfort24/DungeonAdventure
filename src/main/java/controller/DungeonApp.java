@@ -146,6 +146,7 @@ public final class DungeonApp extends GameApplication {
 
 
                 ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
+
                 bundleMap.put("revealedRooms", revealedRooms);
 
 
@@ -164,6 +165,8 @@ public final class DungeonApp extends GameApplication {
                 theData.putBundle(bundleRoomsTypes);
                 theData.putBundle(bundleRoomsMonsters);
                 theData.putBundle(bundleMap);
+                System.out.println(theData.getBundle("map").get("revealedRooms").toString());
+
             }
 
 
