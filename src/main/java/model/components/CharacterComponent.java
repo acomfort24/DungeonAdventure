@@ -6,19 +6,17 @@ public class CharacterComponent extends Component {
     private final int myMaxDmg;
     private final int myMinDmg;
 
-    private final int myAtkSpd;
+    private final double myAtkSpd;
     private final double myChncHit;
-
-
     private final int myMaxHealth;
     private final String myName;
 
     public CharacterComponent(final int theMinDmg, final int theMaxDmg, final int theAtkSpd,
-                              final Double theChncHit, final int theHealth,
+                              final double theChncHit, final int theHealth,
                               final String theName) {
         myMinDmg = theMinDmg;
         myMaxDmg = theMaxDmg;
-        myAtkSpd = theAtkSpd;
+        myAtkSpd = (10.0 - theAtkSpd) / 10.0;
         myChncHit = theChncHit;
         myMaxHealth = theHealth;
         myName = theName;
@@ -32,7 +30,7 @@ public class CharacterComponent extends Component {
         return myMaxDmg;
     }
 
-    public int getMyAtkSpd() {
+    public double getMyAtkSpd() {
         return myAtkSpd;
     }
 
