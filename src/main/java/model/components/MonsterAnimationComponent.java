@@ -44,7 +44,7 @@ public class MonsterAnimationComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(48,48));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(38,48));
         entity.getViewComponent().addChild(myTexture);
     }
     
