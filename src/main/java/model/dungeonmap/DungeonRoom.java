@@ -134,26 +134,4 @@ public class DungeonRoom extends Cell implements Serializable {
     public void setPillar(final boolean thePillar) {
         myPillar = thePillar;
     }
-    public String toString() {
-        StringBuilder returnedString = new StringBuilder();
-        for (int k = 0; k < 2; k++) {
-            final StringBuilder curLine = new StringBuilder();
-            curLine.append("       ");
-            if (k == 0 && hasMonster()) {
-                curLine.setCharAt(1, 'M');
-            }
-            if (k == 0 && hasHealPot()) {
-                curLine.setCharAt(6, 'H');
-            }
-            if (k == 1 && hasVisPot()) {
-                curLine.setCharAt(1, 'V');
-            }
-            if (k == 1 && hasPillar()) {
-                curLine.setCharAt(6, 'P');
-            }
-            returnedString.append(curLine);
-            returnedString.append("\n");
-        }
-        return returnedString.toString();
-    }
 }

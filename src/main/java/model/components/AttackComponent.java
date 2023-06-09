@@ -5,11 +5,10 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.FrameData;
+import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import kotlin.Pair;
-
-import java.util.List;
 
 public class AttackComponent extends Component {
     /** */
@@ -36,6 +35,7 @@ public class AttackComponent extends Component {
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(myTexture);
+        entity.setScaleOrigin(new Point2D(48, 48));
         myTexture.play();
     }
 }

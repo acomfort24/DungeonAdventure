@@ -22,9 +22,6 @@ public class InventoryController {
             FXGL.getGameWorld().getSingleton(EntityType.PLAYER)
                     .getComponent(HealthDoubleComponent.class).restore(25);
         }
-        if ("VISION_POTION".equals(theItem)) {
-           DungeonApp.getMyDungeonMap().setRevealedRooms();
-        }
     }
     public static void addItem(final String theItem) {
         final Inventory inventory = PlayerComponent.getMyInventory();
