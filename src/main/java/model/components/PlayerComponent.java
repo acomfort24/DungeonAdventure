@@ -3,11 +3,12 @@ package model.components;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 
 
 public class PlayerComponent extends Component {
     /** */
-    private static final int PLAYER_VELOCITY = 350;
+    private int myVelocity = 300;
     /** */
     private static final Inventory myInventory = new Inventory<>(100);
     /** */
@@ -28,24 +29,32 @@ public class PlayerComponent extends Component {
     
     public void down() {
         getEntity().setScaleY(1);
-        myPhysics.setVelocityY(PLAYER_VELOCITY);
+        myPhysics.setVelocityY(myVelocity);
     }
     
     public void up() {
         getEntity().setScaleY(1);
-        myPhysics.setVelocityY(-PLAYER_VELOCITY);
+        myPhysics.setVelocityY(-myVelocity);
     }
     public void left() {
         getEntity().setScaleX(-1);
-        myPhysics.setVelocityX(-PLAYER_VELOCITY);
+        myPhysics.setVelocityX(-myVelocity);
     }
     public void right() {
         getEntity().setScaleX(1);
-        myPhysics.setVelocityX(PLAYER_VELOCITY);
+        myPhysics.setVelocityX(myVelocity);
     }
     
     public void stop() {
         myPhysics.setLinearVelocity(0, 0);
+    }
+    
+    public void pausePlayer() {
+        myVelocity = 0;
+    }
+    
+    public void resumePlayer() {
+        myVelocity = 300;
     }
 
     public static Inventory getMyInventory() {
