@@ -27,12 +27,10 @@ import controller.collisionhandlers.PlayerExitHandler;
 import controller.collisionhandlers.PlayerItemHandler;
 import controller.collisionhandlers.PlayerPillarHandler;
 
-import javafx.util.Duration;
+import java.awt.*;
 import java.util.*;
-
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import model.DungeonFactory;
 import model.EntityType;
@@ -58,6 +56,9 @@ public final class DungeonApp extends GameApplication {
     private static Map<String, Map<String, String>> myDBData;
     /** */
     private static Dungeon myDungeon;
+    /** */
+    private static MapSubScene myDungeonMap;
+    /** */
     private final InventoryController myInventoryController = new InventoryController();
 
     @Override
@@ -100,6 +101,7 @@ public final class DungeonApp extends GameApplication {
                 final Bundle bundleRoomsTypes = new Bundle("roomsTypes");
                 final Bundle bundleRoomsMonsters = new Bundle("roomsMonsters");
                 final Bundle bundleInventory = new Bundle("inventory");
+                final Bundle bundleMap = new Bundle("map");
                 final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
                 bundlePlayer.put("characterName", myCharacterName);
@@ -136,10 +138,17 @@ public final class DungeonApp extends GameApplication {
                     }
                     roomArray.add(rowList);
                 }
+
                 bundleRoomsTypes.put("roomsTypes", roomsTypes);
                 bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
-                bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon());
+                bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon()); //
+
+
+                ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
+                bundleMap.put("revealedRooms", revealedRooms);
+
+
                 if (PlayerComponent.getMyInventory().hasItem("HEALTH_POTION")) {
                     bundleInventory.put("healthPots",
                             PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"));
@@ -154,6 +163,7 @@ public final class DungeonApp extends GameApplication {
                 theData.putBundle(bundleRoomsNumbers);
                 theData.putBundle(bundleRoomsTypes);
                 theData.putBundle(bundleRoomsMonsters);
+                theData.putBundle(bundleMap);
             }
 
 
@@ -165,6 +175,8 @@ public final class DungeonApp extends GameApplication {
                 final Bundle bundleRoomsNumbers = theData.getBundle("roomsNumbers");
                 final Bundle bundleRoomsTypes = theData.getBundle("roomsTypes");
                 final Bundle bundleRoomsMonsters = theData.getBundle("roomsMonsters");
+                final Bundle bundleMap = theData.getBundle("map");
+
                 set("loaded", true);
 
                 set("loadedPlayerX", bundlePlayer.get("playerX"));
@@ -173,6 +185,7 @@ public final class DungeonApp extends GameApplication {
                 set("loadedPlayerName", bundlePlayer.get("playerName"));
                 set("loadedPlayerHealth", bundlePlayer.get("curHealth"));
                 set("loadedPillarsCollected", bundlePlayer.get("pillarsCollected"));
+
 
                 if (bundleInventory.exists("healthPots")) {
                     set("loadedHealthPots", bundleInventory.get("healthPots"));
@@ -185,11 +198,13 @@ public final class DungeonApp extends GameApplication {
                 set("loadedRoomsNumbers", bundleRoomsNumbers.get("roomsNumbers"));
                 set("loadedRoomsTypes", bundleRoomsTypes.get("roomsTypes"));
                 set("loadedRoomsMonsters", bundleRoomsMonsters.get("roomsMonsters"));
+                set("loadedMap", bundleMap.get("revealedRooms"));
                 loadHelper();
                 getGameController().gotoPlay();
             }
         });
     }
+
     private void loadHelper() {
         myDungeon = new Dungeon(geto("loadedRoomsNumbers"),
                 geto("loadedRoomsTypes"),
@@ -214,6 +229,10 @@ public final class DungeonApp extends GameApplication {
         set("playerX", geti("loadedPlayerX"));
         set("playerY", geti("loadedPlayerY"));
         setRoom(geti("playerX"), geti("playerY"));
+
+        myDungeonMap = new MapSubScene(myDungeon);
+        myDungeonMap.setRevealedRoom(geto("loadedMap"));
+
 
         getGameWorld().getSingleton(EntityType.PLAYER).
                 getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
@@ -244,7 +263,7 @@ public final class DungeonApp extends GameApplication {
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
             clearInventory();
-            System.out.println(myDungeon);
+            myDungeonMap = new MapSubScene(myDungeon);
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -386,28 +405,10 @@ public final class DungeonApp extends GameApplication {
                 myPlayer.getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
-        
-        final var wrapper = new Object() {
-            Long myActionTime = 0L;
-        };
-        
-        onBtnDown(MouseButton.PRIMARY, () -> {
-            final Long currentTime = System.currentTimeMillis();
-            if (currentTime - wrapper.myActionTime > 500) {
-                myPlayer.getComponent(PlayerComponent.class).pausePlayer();
-                spawn("weapon", myPlayer.getPosition().add(40, 15));
-                wrapper.myActionTime = currentTime;
-                runOnce(() -> {
-                    myPlayer.getComponent(PlayerComponent.class).resumePlayer();
-                    return null;
-                }, Duration.millis(400));
-            }
-            return null;
-        });
 
         onKeyDown(KeyCode.O, () -> {
             final Queue<Point2D> dungeonQueue = new LinkedList<>();
-            System.out.println(myDungeon.toString());
+            myDungeon.toString();
             System.out.println(geti("playerX") + " " + geti("playerY"));
             for (DungeonRoom[] d : myDungeon.getData()) {
                 for (DungeonRoom dr : d) {
@@ -433,7 +434,8 @@ public final class DungeonApp extends GameApplication {
         });
 
         onKeyDown(KeyCode.M, () -> {
-            FXGL.getSceneService().pushSubScene(new MapSubScene(myDungeon));
+            myDungeonMap.updateMap();
+            FXGL.getSceneService().pushSubScene(myDungeonMap);
             return null;
         });
     }
@@ -473,6 +475,10 @@ public final class DungeonApp extends GameApplication {
     
     public static Map<String, Map<String, String>> getDatabase() {
         return myDBData;
+    }
+
+    public static MapSubScene getMyDungeonMap() {
+        return myDungeonMap;
     }
     
     public static void main(final String[] theArgs) {
