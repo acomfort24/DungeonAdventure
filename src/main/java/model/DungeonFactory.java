@@ -202,7 +202,7 @@ public class DungeonFactory implements EntityFactory {
         return entityBuilder()
                 .type(MONSTER)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
-                .with(new MonsterAnimationComponent(theData.get("type") + "IdleSheet.png"))
+                .with(new MonsterAnimationComponent(theData.get("type")))
                 .with(new CollidableComponent(true))
                 .with(hp)
                 .with(hpBar)

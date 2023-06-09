@@ -2,6 +2,7 @@ package model.components;
 
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.FrameData;
@@ -15,13 +16,25 @@ public class MonsterAnimationComponent extends Component {
     private final AnimatedTexture myTexture;
     /** */
     private final AnimationChannel myAnimIdle;
+
+    private final AnimationChannel myAnimWalk;
     
     public MonsterAnimationComponent(final String theImageFile) {
-        myAnimIdle = new AnimationChannel(FXGL.image(theImageFile), Duration.seconds(1), List.of(
+        myAnimIdle = new AnimationChannel(FXGL.image(theImageFile + "IdleSheet.png"), Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0,0,96,97)),
                 new Pair<>(1, new FrameData(96,0,96,97)),
                 new Pair<>(2, new FrameData(96+96,0,96,97)),
                 new Pair<>(3, new FrameData(96+96+96,0,96,97))
+        ));
+
+        myAnimWalk = new AnimationChannel(FXGL.geto(theImageFile + "RunSheet.png"),
+                Duration.seconds(1), List.of(
+                        new Pair<>(0, new FrameData(60,0,112,116)),
+                        new Pair<>(1, new FrameData(240,0,112,116)),
+                        new Pair<>(2, new FrameData(440,0,112,116)),
+                        new Pair<>(3, new FrameData(630,0,112,116)),
+                        new Pair<>(4, new FrameData(822,0,112,116)),
+                        new Pair<>(5, new FrameData(1016,0,112,116))
         ));
 
         myTexture = new AnimatedTexture(myAnimIdle);
@@ -32,5 +45,21 @@ public class MonsterAnimationComponent extends Component {
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(48,48));
         entity.getViewComponent().addChild(myTexture);
+    }
+
+    @Override
+    public void onUpdate(final double theTPF) {
+        if (FXGL.getGameWorld().getEntitiesByComponent(PlayerComponent.class)
+                .get(0).getComponent(PhysicsComponent.class).isMoving()) {
+
+            if (myTexture.getAnimationChannel() == myAnimIdle) {
+                myTexture.loopAnimationChannel(myAnimWalk);
+            }
+
+        } else {
+            if (myTexture.getAnimationChannel() == myAnimWalk) {
+                myTexture.loopAnimationChannel(myAnimIdle);
+            }
+        }
     }
 }
