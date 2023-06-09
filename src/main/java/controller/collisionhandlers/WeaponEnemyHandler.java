@@ -18,8 +18,9 @@ public class WeaponEnemyHandler extends CollisionHandler {
     private final CharacterComponent myCharComp;
     public WeaponEnemyHandler() {
         super(EntityType.WEAPON, EntityType.MONSTER);
-        final Entity player = FXGL.geto("player");
-        myCharComp = player.getComponent(PlayerComponent.class).getMyCharacterComponent();
+        
+        myCharComp = FXGL.getGameWorld().getSingleton(EntityType.PLAYER).
+                getComponent(PlayerComponent.class).getMyCharacterComponent();
     }
     
     @Override
@@ -28,7 +29,8 @@ public class WeaponEnemyHandler extends CollisionHandler {
         hp.damage(FXGLMath.random(myCharComp.getMyMinDmg(), myCharComp.getMyMaxDmg()));
         double knockback = 30;
         // Checking coordinates to determine knockback direction, needs to be modified
-        if (theW.getX() > theM.getX()) {
+        final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+        if (player.getX() > theM.getX()) {
             knockback *= -1;
         }
         

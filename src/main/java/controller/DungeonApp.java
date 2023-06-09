@@ -141,8 +141,7 @@ public final class DungeonApp extends GameApplication {
                 bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon()); //
-
-
+                
                 ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
 
                 bundleMap.put("revealedRooms", revealedRooms);
@@ -163,7 +162,6 @@ public final class DungeonApp extends GameApplication {
                 theData.putBundle(bundleRoomsTypes);
                 theData.putBundle(bundleRoomsMonsters);
                 theData.putBundle(bundleMap);
-
             }
 
 
@@ -356,6 +354,7 @@ public final class DungeonApp extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new PlayerPitHandler());
         getPhysicsWorld().addCollisionHandler(new PlayerPillarHandler(myDungeon));
         getPhysicsWorld().addCollisionHandler(new PlayerExitHandler());
+        getPhysicsWorld().addCollisionHandler(new PlayerMonsterHandler());
         getPhysicsWorld().addCollisionHandler(new WeaponEnemyHandler());
     }
 
