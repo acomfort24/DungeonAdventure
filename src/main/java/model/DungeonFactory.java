@@ -1,9 +1,11 @@
 package model;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.set;
 import static model.EntityType.*;
 
 import com.almasb.fxgl.core.math.FXGLMath;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
@@ -16,9 +18,12 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.ui.Position;
 import controller.DungeonApp;
 import java.util.Map;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.components.*;
 import model.components.PillarComponent;
 import model.components.PlayerComponent;
@@ -98,8 +103,8 @@ public class DungeonFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
-                .with(new PlayerAnimationComponent(DungeonApp.getCharacterName()))
                 .with(new CollidableComponent(true))
+                .with(new PlayerAnimationComponent(DungeonApp.getCharacterName()))
                 .with(new PlayerComponent(
                         Integer.parseInt(heroData.get("minDmg")),
                         Integer.parseInt(heroData.get("maxDmg")),
@@ -171,7 +176,7 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("pit")
     public Entity newPit(final SpawnData theData) {
             return entityBuilder()
-                    .type(EntityType.PIT)
+                    .type(PIT)
                     .bbox(new HitBox(BoundingShape.box(1052, 693)))
                     .with(new PitComponent())
                     .with(new CollidableComponent())
@@ -182,12 +187,24 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("monster")
     public Entity newMonster(final SpawnData theData) {
         final Map<String, String> monsterData = myDBData.get(theData.get("type"));
+        final PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        
+        final HealthDoubleComponent hp = new HealthDoubleComponent(
+                Double.parseDouble(monsterData.get("hitPoints")));
+        final var hpBar = new GenericBarViewComponent(0.0, -40.0, Color.RED,
+                hp.valueProperty(), 100.0, 8.0);
+        hpBar.getBar().setLabelVisible(true);
+        hpBar.getBar().setLabelFill(Color.WHITE);
+        hpBar.getBar().setLabelPosition(Position.TOP);
         
         return entityBuilder()
-                .type(EntityType.MONSTER)
+                .type(MONSTER)
                 .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .with(new MonsterAnimationComponent(theData.get("type") + "IdleSheet.png"))
                 .with(new CollidableComponent(true))
+                .with(hp)
+                .with(hpBar)
                 .at(FXGLMath.random(350, 800), FXGLMath.random(350, 550))
                 .with(new MonsterComponent(
                         Integer.parseInt(monsterData.get("minHeal")),
@@ -199,5 +216,19 @@ public class DungeonFactory implements EntityFactory {
                         Integer.parseInt(monsterData.get("hitPoints")),
                         monsterData.get("name")))
                 .build();
+    }
+    
+    @Spawns("weapon")
+    public Entity newWeapon(SpawnData data) {
+        final PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        
+        return entityBuilder(data)
+                .type(ATTACK)
+                .bbox(new HitBox(BoundingShape.box(103, 70)))
+                .with(new AttackComponent())
+                .with(new ExpireCleanComponent(Duration.seconds(0.5)))
+                .build();
+                
     }
 }

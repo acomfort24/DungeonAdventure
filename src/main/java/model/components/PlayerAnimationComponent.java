@@ -12,9 +12,11 @@ import javafx.util.Duration;
 import kotlin.Pair;
 
 public class PlayerAnimationComponent extends Component {
-
+    /** */
     private final AnimatedTexture myTexture;
+    /** */
     private final AnimationChannel myAnimIdle;
+    /** */
     private final AnimationChannel myAnimWalk;
 
     public PlayerAnimationComponent(final String theHeroType) {
@@ -61,6 +63,4 @@ public class PlayerAnimationComponent extends Component {
             }
         }
     }
-
-
 }

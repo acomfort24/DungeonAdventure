@@ -6,7 +6,7 @@ public class MonsterComponent extends Component {
     private final int myMinHeal;
     private final int myMaxHeal;
 
-    //doesn't get assigned a value here. Gets assigned through flgl
+    //doesn't get assigned a value here. Gets assigned through fxgl
     private HealerComponent myHealerComponent;
     private final CharacterComponent myCharacterComponent;
     public MonsterComponent(final int theMinHeal, final int theMaxHeal, final int theMinDmg,
