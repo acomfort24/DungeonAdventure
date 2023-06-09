@@ -130,7 +130,6 @@ public class MapSubScene extends SubScene implements Serializable {
                 // Check if the room is in the revealed room list
                 if (myRevealedRooms.contains(new Point(col, row))) {
                     // Add text to the rectangle
-                    System.out.println("reached");
                     final Text text = new Text(roomObjects(col, row));
                     text.setFill(Color.BLACK);
                     stackPane.getChildren().addAll(roomRect, text);
@@ -162,7 +161,6 @@ public class MapSubScene extends SubScene implements Serializable {
     }
 
     public void setRevealedRooms() {
-        System.out.println("trying to set rooms to reveal");
         final int playerX = FXGL.geti("playerY");
         final int playerY = FXGL.geti("playerX");
 
@@ -174,7 +172,6 @@ public class MapSubScene extends SubScene implements Serializable {
                 }
             }
         }
-        System.out.println(myRevealedRooms);
     }
 
     private boolean isValidPosition(final int theY, final int theX) {
