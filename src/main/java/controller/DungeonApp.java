@@ -244,6 +244,7 @@ public final class DungeonApp extends GameApplication {
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
             clearInventory();
+            System.out.println(myDungeon);
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -406,7 +407,7 @@ public final class DungeonApp extends GameApplication {
 
         onKeyDown(KeyCode.O, () -> {
             final Queue<Point2D> dungeonQueue = new LinkedList<>();
-            myDungeon.display();
+            System.out.println(myDungeon.toString());
             System.out.println(geti("playerX") + " " + geti("playerY"));
             for (DungeonRoom[] d : myDungeon.getData()) {
                 for (DungeonRoom dr : d) {

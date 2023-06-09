@@ -123,28 +123,6 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         }
     }
     
-    public void display() {
-        for (int i = 0; i < myHeight; i++) {
-            // draw the north edge
-            for (int j = 0; j < myWidth; j++) {
-                System.out.print((myDungeon[j][i] & 1) == 0 ? "+------" : "+      ");
-            }
-            System.out.println("+");
-            // draw the west edge
-            for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < myWidth; j++) {
-                    System.out.print((myDungeon[j][i] & 8) == 0 ? "|      " : "       ");
-                }
-                System.out.println("|");
-            }
-        }
-        // draw the bottom line
-        for (int j = 0; j < myWidth; j++) {
-            System.out.print("+------");
-        }
-        System.out.println("+");
-    }
-    
     public String getEntranceMap() {
         return myEntrance.getRoom();
     }
@@ -205,4 +183,40 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     public int[][] getMyDungeon() {
         return myDungeon;
     }
+    public String toString() {
+        final StringBuilder returnedString = new StringBuilder();
+        for (int i = 0; i < myHeight; i++) {
+            // draw the north edge
+            for (int j = 0; j < myWidth; j++) {
+                returnedString.append((myDungeon[j][i] & 1) == 0 ? "+------" : "+      ");
+            }
+            returnedString.append("+\n");
+            // draw the west edge
+            for (int k = 0; k < 2; k++) {
+                for (int j = 0; j < myWidth; j++) {
+                    final StringBuilder curLine = new StringBuilder();
+                    curLine.append((myDungeon[j][i] & 8) == 0 ? "|      " : "       ");
+                    if (k == 0 && this.get(i, j).hasMonster()) {
+                        curLine.setCharAt(1, 'M');
+                    }
+                    if (k == 0 && this.get(i, j).hasHealPot()) {
+                        curLine.setCharAt(6, 'H');
+                    }
+                    if (k == 1 && this.get(i, j).hasVisPot()) {
+                        curLine.setCharAt(1, 'V');
+                    }
+                    if (k == 1 && this.get(i, j).hasPillar()) {
+                        curLine.setCharAt(6, 'P');
+                    }
+                    returnedString.append(curLine);
+                }
+                returnedString.append("|\n");
+            }
+        }
+        // draw the bottom line
+        returnedString.append("+------".repeat(Math.max(0, myWidth)));
+        returnedString.append("+");
+        return returnedString.toString();
+    }
+
 }
