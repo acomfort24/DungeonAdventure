@@ -42,10 +42,7 @@ public class DungeonMainMenu extends FXGLMenu {
                     mySelectScreen.setVisible(true);
                     myLoadSelectScreen.setVisible(false);
                 });
-        final DungeonAdventureButton btnOptions =
-                new DungeonAdventureButton("Options", () -> {
 
-                });
         final DungeonAdventureButton btnLoad = new DungeonAdventureButton("Load", () -> {
             myLoadSelectScreen.setVisible(true);
             mySelectScreen.setVisible(false);
@@ -69,7 +66,6 @@ public class DungeonMainMenu extends FXGLMenu {
                 new DungeonAdventureButton("Quit Game", this::fireExit);
         final var box = new VBox(15,
                 btnPlayGame,
-                btnOptions,
                 btnLoad,
                 btnAbout,
                 btnQuit,
