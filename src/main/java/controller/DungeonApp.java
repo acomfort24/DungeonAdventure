@@ -136,6 +136,7 @@ public final class DungeonApp extends GameApplication {
                     }
                     roomArray.add(rowList);
                 }
+                System.out.println(roomArray);
                 bundleRoomsTypes.put("roomsTypes", roomsTypes);
                 bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
@@ -236,8 +237,7 @@ public final class DungeonApp extends GameApplication {
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
-            myDungeon = new Dungeon(5, 5);
-            //will change this when we can select class
+            myDungeon = new Dungeon(6, 1);
             myDungeonFactory = new DungeonFactory(myDBData);
             getGameWorld().addEntityFactory(myDungeonFactory);
             set("dungeon", myDungeon);
