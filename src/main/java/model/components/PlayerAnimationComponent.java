@@ -11,14 +11,33 @@ import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import kotlin.Pair;
 
+/**
+ * Represents a player animation component that handles the animation of a player entity.
+ * The component switches between idle and walk animations based on player movement.
+ *
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class PlayerAnimationComponent extends Component {
-    /** */
+    /**
+     * The animated texture representing the player's animation.
+     */
     private final AnimatedTexture myTexture;
-    /** */
+    /**
+     * The animation channel for the idle animation.
+     */
     private final AnimationChannel myAnimIdle;
-    /** */
+    /**
+     * The animation channel for the walk animation.
+     */
     private final AnimationChannel myAnimWalk;
-
+    /**
+     * Constructs a PlayerAnimationComponent with the specified hero type.
+     *
+     * @param theHeroType the hero type determining the sprite sheet to load
+     */
     public PlayerAnimationComponent(final String theHeroType) {
         super();
         myAnimIdle = new AnimationChannel(FXGL.image(theHeroType + "IdleSheet.png"),
@@ -42,13 +61,21 @@ public class PlayerAnimationComponent extends Component {
         myTexture = new AnimatedTexture(myAnimIdle);
         myTexture.loop();
     }
-
+    /**
+     * Called when this component is added to an entity.
+     * Sets the scale origin and adds the animated texture to the entity's view.
+     */
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(48, 48));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(40, 48));
         entity.getViewComponent().addChild(myTexture);
     }
-
+    /**
+     * Called on every game update tick.
+     * Switches between idle and walk animations based on player movement.
+     *
+     * @param theTPF the time per frame
+     */
     @Override
     public void onUpdate(final double theTPF) {
         if (FXGL.getGameWorld().getEntitiesByComponent(PlayerComponent.class).

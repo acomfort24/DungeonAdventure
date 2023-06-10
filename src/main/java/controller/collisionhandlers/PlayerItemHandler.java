@@ -7,15 +7,37 @@ import controller.InventoryController;
 import model.EntityType;
 import model.dungeonmap.Dungeon;
 
+/**
+ * Handles collisions between the player and items.
+ *
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class PlayerItemHandler extends CollisionHandler {
-    /** */
+    /** The dungeon object representing the game world. */
     private final Dungeon myDungeon;
-    
+    /**
+     * Constructs a PlayerItemHandler.
+     * Specifies the entity types for player and item entities.
+     *
+     * @param theEntityType the entity type for item entities
+     * @param theDungeon    the dungeon object representing the game world
+     */
     public PlayerItemHandler(final EntityType theEntityType, final Dungeon theDungeon) {
         super(EntityType.PLAYER, theEntityType);
         myDungeon = theDungeon;
     }
-    
+
+    /**
+     * Handles the beginning of a collision between the player and an item.
+     * Adds the item to the player's inventory, updates the dungeon map,
+     * and removes the item from the game world.
+     *
+     * @param theP the entity representing the player
+     * @param theI   the entity representing the item
+     */
     @Override
     protected void onCollisionBegin(final Entity theP, final Entity theI) {
         final String itemType = theI.getType().toString();
@@ -27,4 +49,5 @@ public class PlayerItemHandler extends CollisionHandler {
         }
         theI.removeFromWorld();
     }
+
 }

@@ -23,6 +23,7 @@ import com.almasb.fxgl.profile.DataFile;
 import com.almasb.fxgl.profile.SaveLoadHandler;
 import com.almasb.fxgl.ui.Position;
 import controller.collisionhandlers.*;
+
 import java.awt.*;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -40,6 +41,14 @@ import view.DungeonMainMenu;
 import view.GameMenu;
 import view.MapSubScene;
 
+/**
+ * This class represents the main application for the Dungeon Adventure game.
+ * It extends the GameApplication class provided by FXGL.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 
 public final class DungeonApp extends GameApplication {
     /** */
@@ -56,7 +65,14 @@ public final class DungeonApp extends GameApplication {
     private static Dungeon myDungeon;
     /** */
     private static MapSubScene myDungeonMap;
+    /** */
+    private final InventoryController myInventoryController = new InventoryController();
 
+    /**
+     *Initializes the game settings for the Dungeon Adventure game.
+     *
+     *@param theGameSettings The game settings to be initialized.
+     */
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
         try {
@@ -86,11 +102,20 @@ public final class DungeonApp extends GameApplication {
         });
 
     }
+    /**
+     * Performs pre-initialization tasks for the Dungeon Adventure game.
+     * Adds a save/load handler to the SaveLoadService.
+     */
     @Override
     protected void onPreInit() {
         getSaveLoadService().addHandler(new SaveLoadHandler() {
+            /**
+             * This method is called to save the game data to a DataFile.
+             *
+             * @param theData The DataFile object to which the game data will be saved.
+             */
             @Override
-            public void onSave(@NotNull final DataFile theData) {
+            public void onSave(final DataFile theData) {
                 final Bundle bundlePlayer = new Bundle("player");
                 final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
                 final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
@@ -139,9 +164,9 @@ public final class DungeonApp extends GameApplication {
                 bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon()); //
-                
-                final ArrayList<Point> revealedRooms =
-                        new ArrayList<>(myDungeonMap.getRevealedRooms());
+
+
+                ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
 
                 bundleMap.put("revealedRooms", revealedRooms);
 
@@ -161,9 +186,14 @@ public final class DungeonApp extends GameApplication {
                 theData.putBundle(bundleRoomsTypes);
                 theData.putBundle(bundleRoomsMonsters);
                 theData.putBundle(bundleMap);
+
             }
 
-
+            /**
+             * This method is called to load game data from a DataFile.
+             *
+             * @param theData The DataFile object from which the game data will be loaded.
+             */
             @Override
             public void onLoad(@NotNull final DataFile theData) {
                 final Bundle bundlePlayer = theData.getBundle("player");
@@ -247,12 +277,18 @@ public final class DungeonApp extends GameApplication {
             }
         }
     }
-    
+    /**
+     Initializes the game for the Dungeon Adventure.
+     Sets the background color of the game scene to black.
+     Creates a new dungeon, dungeon factory, and map subscene.
+     Sets up the player and clears the inventory.
+     */
     @Override
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             myDungeon = new Dungeon(5, 5);
+            //will change this when we can select class
             myDungeonFactory = new DungeonFactory(myDBData);
             getGameWorld().addEntityFactory(myDungeonFactory);
             set("dungeon", myDungeon);
@@ -265,7 +301,10 @@ public final class DungeonApp extends GameApplication {
             System.exit(0);
         }
     }
-    
+    /**
+     Clears the inventory of the player.
+     Removes all items from the inventory.
+     */
     private void clearInventory() {
         final Inventory inventory = PlayerComponent.getMyInventory();
         final Map inventoryMap = PlayerComponent.getMyInventory().getAllData();
@@ -273,7 +312,15 @@ public final class DungeonApp extends GameApplication {
             inventory.remove(item);
         }
     }
-    
+    /**
+     Sets up the player character.
+     Retrieves the hero data from the database based on the character name.
+     Sets the initial position of the player to the entrance coordinates of the dungeon.
+     Creates a health component for the player based on the hit points from the hero data.
+     Sets up the health bar view component for the player.
+     Spawns the player entity and sets it as reusable.
+     Registers listeners for the player's position changes.
+     */
     private static void playerSetUp() {
         final Map<String, String> heroData = myDBData.get(myCharacterName);
         set("playerX", myDungeon.getEntranceX());
@@ -298,15 +345,29 @@ public final class DungeonApp extends GameApplication {
         getWorldProperties().addListener("playerY", (old, now) ->
                 setRoom(geti("playerX"), (int) now));
     }
+
+    /**
+     Sets the current room based on the given coordinates.
+     Removes the player entity from the world.
+     Sets the current level based on the room's map.
+     Marks the current room as visited.
+     Spawns the entities in the current room.
+     Spawns the player entity in the new room.
+     @param theX The x-coordinate of the room.
+     @param theY The y-coordinate of the room.
+     */
     private static void setRoom(final int theX, final int theY) {
         myPlayer.removeFromWorld();
         FXGL.setLevelFromMap(myDungeon.get(theX, theY).getRoom());
         myDungeon.get(theX, theY).setVisited(true);
         spawnRoomEntities(myDungeon.get(theX, theY));
         myPlayer = spawn("player");
-        set("player", myPlayer);
     }
-    
+    /**
+     * Spawns entities in the given dungeon room based on its properties.
+     *
+     * @param theRoom The dungeon room to spawn entities in.
+     */
     private static void spawnRoomEntities(final DungeonRoom theRoom) {
         if (theRoom.hasHealPot()) {
             spawn("health potion");
@@ -321,7 +382,7 @@ public final class DungeonApp extends GameApplication {
             spawn("pillar");
         }
         if (theRoom.hasMonster()) {
-            final SpawnData monsterType = new SpawnData();
+            SpawnData monsterType = new SpawnData();
             monsterType.put("type", theRoom.getMonsterType());
             spawn("monster", monsterType);
         }
@@ -337,7 +398,11 @@ public final class DungeonApp extends GameApplication {
             }
         }
     }
-
+    /**
+     * Initializes the physics settings and collision handlers for the game.
+     * This method is called during the initialization phase.
+     * Overrides the method from the superclass.
+     */
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 0);
@@ -355,7 +420,10 @@ public final class DungeonApp extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new PlayerMonsterHandler());
         getPhysicsWorld().addCollisionHandler(new WeaponEnemyHandler());
     }
-
+    /**
+     * Initializes the input actions and event handlers for player movement and interactions.
+     * Overrides the method from the superclass.
+     */
     @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Left") {
@@ -407,7 +475,7 @@ public final class DungeonApp extends GameApplication {
         }, KeyCode.S);
         
         final var wrapper = new Object() {
-            private long myActionTime;
+            long myActionTime = 0L;
         };
         
         onBtnDown(MouseButton.PRIMARY, () -> {
@@ -464,15 +532,25 @@ public final class DungeonApp extends GameApplication {
             return null;
         });
     }
-    
+    /**
+     * Initializes the game variables with their initial values.
+     * Overrides the method from the superclass.
+     *
+     * @param vars The map to store the game variables.
+     */
     @Override
-    protected void initGameVars(final Map<String, Object> theVars) {
-        theVars.put("loaded", false);
-        theVars.put("pillars", 0);
-        theVars.put("spawnX", (double) getAppWidth() / 2 - 50);
-        theVars.put("spawnY", (double) getAppHeight() / 2 - 50);
+    protected void initGameVars(final Map<String, Object> vars) {
+        vars.put("loaded", false);
+        vars.put("pillars", 0);
+        vars.put("spawnX", (double) getAppWidth() / 2 - 50);
+        vars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
-    
+    /**
+     * Handles the game update logic.
+     * Overrides the method from the superclass.
+     *
+     * @param theTpf The time per frame.
+     */
     @Override
     protected void onUpdate(final double theTpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
@@ -482,26 +560,51 @@ public final class DungeonApp extends GameApplication {
             });
         }
     }
-  
+    /**
+     *
+     Sets the character name.
+     @param theCharacterName the name of the character
+     */
     public static void setCharacterName(final String theCharacterName) {
         myCharacterName = theCharacterName;
     }
-    
+    /**
+     *
+     Retrieves the character name.
+     @return the character name
+     */
     public static String getCharacterName() {
         return myCharacterName;
     }
-    
+    /**
+     *
+     Sets the player name.
+     @param thePlayerName the name of the player
+     */
     public static void setPlayerName(final String thePlayerName) {
         myPlayerName = thePlayerName;
     }
+    /**
+     *
+     Retrieves the player name.
+     @return the player name
+     */
     public static String getPlayerName() {
         return myPlayerName;
     }
-    
+    /**
+     *
+     Retrieves the database.
+     @return the database containing game data
+     */
     public static Map<String, Map<String, String>> getDatabase() {
         return myDBData;
     }
-
+    /**
+     *
+     Retrieves the dungeon map.
+     @return the dungeon map
+     */
     public static MapSubScene getMyDungeonMap() {
         return myDungeonMap;
     }

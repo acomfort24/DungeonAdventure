@@ -11,9 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.sqlite.SQLiteDataSource;
 
 /**
- * This is a temporary class to be cut up and used in the dungeon app.
+ * Controller class to manipulate data from an SQLite database to be used
+ * in enemy and player models
+ *
  * @author Chad Oehlschlaeger-Browne
  *
+ * @version 1.0
  */
 public final class DatabaseController {
     /** Private Constructor. */
@@ -52,6 +55,12 @@ public final class DatabaseController {
         }
         return resultMap;
     }
+    /**
+     * Retrieves all SQL data from the database.
+     *
+     * @return a map containing all the SQL data, organized by entity type and entity name
+     * @throws Exception if there is an error retrieving the SQL data
+     */
     public static Map<String, Map<String, String>> getAllSqlData() throws Exception {
         final Map<String, Map<String, String>> sqlData = new HashMap<>();
         final SQLiteDataSource ds;

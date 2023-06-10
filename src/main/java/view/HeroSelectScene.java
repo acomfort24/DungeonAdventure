@@ -10,7 +10,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-
+/**
+ * The HeroSelectScene class represents a scene for selecting a hero character in the dungeon adventure game.
+ *
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class HeroSelectScene extends HBox {
     /** */
     private final Map<String, Map<String, String>> myDBData;
@@ -24,6 +31,11 @@ public class HeroSelectScene extends HBox {
         this.setLayoutX(150);
         this.setLayoutY(250);
     }
+    /**
+     * Creates a panel button for the specified hero.
+     *
+     * @param theName The name of the hero as a string.
+     */
     private void createPanelButton(final String theName) {
         final Button button = new Button();
         button.setText(

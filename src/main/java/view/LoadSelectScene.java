@@ -15,8 +15,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-
+/**
+ * The LoadSelectScene class represents a scene for selecting a save file to load.
+ *
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class LoadSelectScene extends VBox {
+    /**
+     * Constructs a new LoadSelectScene.
+     */
     public LoadSelectScene() {
         super();
         final Text text = new Text("Choose a save");
@@ -34,6 +44,11 @@ public class LoadSelectScene extends VBox {
             System.out.println(e);
         }
     }
+    /**
+     * Creates a button to load the specified save file.
+     *
+     * @param theSaveName The name of the save file.
+     */
     private void createLoadFileButton(final String theSaveName) {
         final String save = theSaveName.substring(2, theSaveName.length() - 4);
         final Button button = new Button();
@@ -44,8 +59,12 @@ public class LoadSelectScene extends VBox {
         });
         this.getChildren().add(button);
     }
-    /*
-    searches for files with given extension starting at the given path
+    /**
+     * Searches for files with the given extension starting at the given path.
+     *
+     * @param thePath The path to search for files.
+     * @return A list of file paths with the specified extension.
+     * @throws IOException if an I/O error occurs during the search.
      */
     private static List<String> findFiles(final Path thePath)
             throws IOException {

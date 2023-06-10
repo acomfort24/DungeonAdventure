@@ -24,15 +24,38 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.components.*;
+import model.components.PillarComponent;
+import model.components.PlayerComponent;
+import model.components.PotionComponent;
 
+/**
+ * The DungeonFactory class is responsible for creating entities in the dungeon game.
+ * Each entity is created with specific properties based on the provided SpawnData.
+ *
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class DungeonFactory implements EntityFactory {
     /** */
-    private final Map<String, Map<String, String>> myDBData;
+    final Map<String, Map<String, String>> myDBData;
 
-    public DungeonFactory(final Map<String, Map<String, String>> theDBData) {
+    /**
+     * Constructs a new DungeonFactory with the specified database data.
+     *
+     * @param theDBData the database data used for entity creation
+     */
+    public DungeonFactory(Map<String, Map<String, String>> theDBData) {
         myDBData = theDBData;
     }
-    
+
+    /**
+     * Creates a new dungeon wall entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created dungeon wall entity
+     */
     @Spawns("wall")
     public Entity newDungeonWall(final SpawnData theData) {
         return entityBuilder(theData)
@@ -44,6 +67,12 @@ public class DungeonFactory implements EntityFactory {
                 .build();
     }
 
+    /**
+     * Creates a new north door entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created north door entity
+     */
     @Spawns("north door")
     public Entity newNorthDoor(final SpawnData theData) {
         return entityBuilder(theData)
@@ -54,6 +83,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+    /**
+     * Creates a new south door entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created south door entity
+     */
     @Spawns("south door")
     public Entity newSouthDoor(final SpawnData theData) {
         return entityBuilder(theData)
@@ -64,6 +99,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+    /**
+     * Creates a new west door entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created west door entity
+     */
     @Spawns("west door")
     public Entity newWestDoor(final SpawnData theData) {
         return entityBuilder(theData)
@@ -74,6 +115,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
+    /**
+     * Creates a new east door entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created east door entity
+     */
     @Spawns("east door")
     public Entity newEastDoor(final SpawnData theData) {
         return entityBuilder(theData)
@@ -84,7 +131,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .build();
     }
-    
+    /**
+     * Creates a new player entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created player entity
+     */
     @Spawns("player")
     public Entity newPlayer(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
@@ -94,7 +146,7 @@ public class DungeonFactory implements EntityFactory {
 
         return entityBuilder()
                 .type(PLAYER)
-                .bbox(new HitBox(BoundingShape.box(96, 96)))
+                .bbox(new HitBox(BoundingShape.box(80, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
                 .with(new CollidableComponent(true))
@@ -111,7 +163,12 @@ public class DungeonFactory implements EntityFactory {
                 .with((GenericBarViewComponent) geto("playerHPView"))
                 .build();
     }
-    
+    /**
+     * Creates a new health potion entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created health potion entity
+     */
     @Spawns("health potion")
     public Entity newHP(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
@@ -126,7 +183,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new PotionComponent("healthpotion.png"))
                 .build();
     }
-
+    /**
+     * Creates a new vision potion entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created vision potion entity
+     */
     @Spawns("vision potion")
     public Entity newVP(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
@@ -141,7 +203,12 @@ public class DungeonFactory implements EntityFactory {
                 .with(new PotionComponent("visionpotion.png"))
                 .build();
     }
-    
+    /**
+     * Creates a new pillar entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created pillar entity
+     */
     @Spawns("pillar")
     public Entity newPillar(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
@@ -153,9 +220,15 @@ public class DungeonFactory implements EntityFactory {
                 .at((double) getAppWidth() / 2 - 35, (double) getAppHeight() / 2 - 43)
                 .with(physics)
                 .with(new CollidableComponent(true))
+                .with(new PillarComponent())
                 .build();
     }
-    
+    /**
+     * Creates a new exit entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created exit entity
+     */
     @Spawns("exit")
     public Entity newExit(final SpawnData theData) {
         
@@ -166,25 +239,33 @@ public class DungeonFactory implements EntityFactory {
                 .with(new CollidableComponent(false))
                 .build();
     }
-
+    /**
+     * Creates a new pit entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created pit entity
+     */
     @Spawns("pit")
     public Entity newPit(final SpawnData theData) {
         
-        return entityBuilder()
-                .type(PIT)
-                .bbox(new HitBox(BoundingShape.box(1152, 864)))
-                .with(new PitAnimationComponent())
-                .with(new CollidableComponent(true))
-                .at(new Point2D(48, 123))
-                .build();
+            return entityBuilder()
+                    .type(PIT)
+                    .bbox(new HitBox(BoundingShape.box(1152, 864)))
+                    .with(new PitAnimationComponent())
+                    .with(new CollidableComponent(true))
+                    .at(new Point2D(48,123))
+                    .build();
     }
-    
+    /**
+     * Creates a new monster entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created monster entity
+     */
     @Spawns("monster")
     public Entity newMonster(final SpawnData theData) {
         final Map<String, String> monsterData = myDBData.get(theData.get("type"));
-        final PhysicsComponent physics = new PhysicsComponent();
-        physics.setBodyType(BodyType.DYNAMIC);
-        
+
         final HealthDoubleComponent hp = new HealthDoubleComponent(
                 Double.parseDouble(monsterData.get("hitPoints")));
         final var hpBar = new GenericBarViewComponent(0.0, -40.0, Color.RED,
@@ -192,11 +273,10 @@ public class DungeonFactory implements EntityFactory {
         hpBar.getBar().setLabelVisible(true);
         hpBar.getBar().setLabelFill(Color.WHITE);
         hpBar.getBar().setLabelPosition(Position.TOP);
-        
+
         return entityBuilder()
                 .type(MONSTER)
-                .bbox(new HitBox(BoundingShape.box(75, 96)))
-                //.with(physics)
+                .bbox(new HitBox(BoundingShape.box(76, 96)))
                 .with(new MonsterAnimationComponent(theData.get("type")))
                 .with(new CollidableComponent(true))
                 .with(hp)
@@ -213,9 +293,14 @@ public class DungeonFactory implements EntityFactory {
                         monsterData.get("name")))
                 .build();
     }
-    
+    /**
+     * Creates a new weapon entity.
+     *
+     * @param theData the SpawnData containing the entity's properties
+     * @return the created weapon entity
+     */
     @Spawns("weapon")
-    public Entity newWeapon(final SpawnData theData) {
+    public Entity newWeapon(SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         

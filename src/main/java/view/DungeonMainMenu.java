@@ -1,5 +1,6 @@
 package view;
 
+import com.almasb.fxgl.app.scene.FXGLDefaultMenu;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
@@ -9,15 +10,24 @@ import javafx.scene.Node;
 import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-
+/**
+ * The DungeonMainMenu class represents the main menu screen of a dungeon adventure game.
+ * It extends the FXGLMenu class, which provides a base implementation for creating game menus in FXGL.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 
 public class DungeonMainMenu extends FXGLMenu {
-    /** */
-    private final HeroSelectScene mySelectScreen =
-            new HeroSelectScene(DungeonApp.getDatabase());
-    /** */
+    /** The scene for selecting a hero. */
+    private final HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.getDatabase());
+    /** The scene for selecting a save file to load. */
     private final LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
 
+    /**
+     * Constructs a new DungeonMainMenu.
+     */
     public DungeonMainMenu() {
         super(MenuType.MAIN_MENU);
         mySelectScreen.setVisible(false);
@@ -41,25 +51,19 @@ public class DungeonMainMenu extends FXGLMenu {
             mySelectScreen.setVisible(false);
         });
 
-        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () ->
-                FXGL.getDialogService().showMessageBox("""
-                                                            Welcome to Dungeon Adventure!
-                
-                In this game you will select from three classes (Warrior, Thief, Wizard)
-                and attempt to traverse the dungeon. Along the way you'll encounter four
-                pillars, where each pillar represents one of the four main principles of
-                object-oriented programming. In order to escape the dungeon you must
-                collect all four pillars and bring them to the exit door.
-                
-                Controls:
-                Left Mouse Button - Attack
-                W - Up
-                A - Left
-                S - Down
-                D - Right
-                
-                Good luck!
-                """));
+        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () -> {
+            FXGL.getDialogService().showMessageBox("""
+                                                                Welcome to Dungeon Adventure!
+                    
+                    In this game you will select from three classes (Warrior, Thief, Wizard) and
+                    attempt to traverse the dungeon. Along the way you'll encounter four pillars, 
+                    where each pillar represents one of the four main principles of object-oriented 
+                    programming. In order to escape the dungeon you must collect all four pillars and 
+                    bring them to the exit door. 
+                    
+                    Good luck!
+                    """);
+        });
 
         final DungeonAdventureButton btnQuit =
                 new DungeonAdventureButton("Quit Game", this::fireExit);

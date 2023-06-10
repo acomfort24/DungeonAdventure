@@ -10,13 +10,29 @@ import java.util.List;
 import javafx.util.Duration;
 import kotlin.Pair;
 
+/**
+ * The AttackComponent class handles the attack animation for an entity.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class AttackComponent extends Component {
-    /** */
+    /**
+     * The animation channel for the left attack animation.
+     */
     private final AnimationChannel myAnimAttackL;
-    /** */
+    /**
+     * The animation channel for the right attack animation.
+     */
     private final AnimationChannel myAnimAttackR;
-    /** */
+    /**
+     * The player entity.
+     */
     private final Entity myPlayer;
+    /**
+     * Constructs a new AttackComponent.
+     */
     public AttackComponent() {
         super();
         myPlayer = FXGL.getWorldProperties().getObject("player");
@@ -44,7 +60,11 @@ public class AttackComponent extends Component {
                 new Pair<>(5, new FrameData(550, 0, width, height))
         ));
     }
-    
+
+    /**
+     * Called when the AttackComponent is added to an entity.
+     * Adds the attack animation to the entity's view component.
+     */
     @Override
     public void onAdded() {
         final AnimatedTexture texture;

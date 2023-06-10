@@ -2,6 +2,13 @@ package model.components;
 
 import com.almasb.fxgl.entity.component.Component;
 
+/**
+ * The CharacterComponent class represents the character attributes of an entity.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class CharacterComponent extends Component {
     /** */
     private final int myMaxDmg;
@@ -16,6 +23,16 @@ public class CharacterComponent extends Component {
     /** */
     private final String myName;
 
+    /**
+     * Constructs a new CharacterComponent with the specified attributes.
+     *
+     * @param theMinDmg   the minimum damage the character can deal
+     * @param theMaxDmg   the maximum damage the character can deal
+     * @param theAtkSpd   the attack speed of the character
+     * @param theChncHit  the chance of a successful hit by the character
+     * @param theHealth   the maximum health of the character
+     * @param theName     the name of the character
+     */
     public CharacterComponent(final int theMinDmg, final int theMaxDmg, final int theAtkSpd,
                               final double theChncHit, final int theHealth,
                               final String theName) {
@@ -28,25 +45,51 @@ public class CharacterComponent extends Component {
         myName = theName;
 
     }
+    /**
+     * Returns the minimum damage of the character.
+     *
+     * @return the minimum damage value
+     */
     public int getMyMinDmg() {
         return myMinDmg;
     }
-
+    /**
+     * Returns the maximum damage of the character.
+     *
+     * @return the maximum damage value
+     */
     public int getMyMaxDmg() {
         return myMaxDmg;
     }
-
+    /**
+     * Returns the attack speed of the character.
+     *
+     * @return the attack speed value
+     */
     public double getMyAtkSpd() {
         return myAtkSpd;
     }
-
+    /**
+     * Returns the chance of a successful hit by the character.
+     *
+     * @return the chance to hit value
+     */
     public double getMyChncHit() {
         return myChncHit;
     }
-
+    /**
+     * Returns the maximum health of the character.
+     *
+     * @return the maximum health value
+     */
     public int getMyMaxHealth() {
         return myMaxHealth;
     }
+    /**
+     * Returns the name of the character.
+     *
+     * @return the name of the character
+     */
     public String getMyName() {
         return myName;
     }
