@@ -1,6 +1,5 @@
 package view;
 
-import com.almasb.fxgl.app.scene.FXGLDefaultMenu;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
@@ -14,7 +13,8 @@ import javafx.scene.layout.VBox;
 
 public class DungeonMainMenu extends FXGLMenu {
     /** */
-    private final HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.getDatabase());
+    private final HeroSelectScene mySelectScreen =
+            new HeroSelectScene(DungeonApp.getDatabase());
     /** */
     private final LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
 

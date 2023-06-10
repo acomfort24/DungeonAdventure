@@ -6,15 +6,20 @@ import com.almasb.fxgl.entity.component.Component;
 import model.EntityType;
 
 public class MonsterComponent extends Component {
+    /** */
     private final int myMinHeal;
+    /** */
     private final int myMaxHeal;
+    /** */
     private HealerComponent myHealerComponent;
-    private final CharacterComponent myCharacterComponent;
+    /** */
+    private final CharacterComponent myCharComponent;
+    
     public MonsterComponent(final int theMinHeal, final int theMaxHeal, final int theMinDmg,
                             final int theMaxDmg, final int theAtkSpd, final Double theChncHit,
                             final int theHealth, final String theName) {
         super();
-        myCharacterComponent = new CharacterComponent(theMinDmg,
+        myCharComponent = new CharacterComponent(theMinDmg,
                 theMaxDmg, theAtkSpd, theChncHit, theHealth, theName);
         myMinHeal = theMinHeal;
         myMaxHeal = theMaxHeal;
@@ -25,17 +30,11 @@ public class MonsterComponent extends Component {
         final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
         
         if (getEntity().distance(player) > 48) {
-            getEntity().translateTowards(player.getPosition(), 3);
-        }
-        
-        if (getEntity().getX() < player.getX()) {
-            getEntity().setScaleX(1);
-        } else {
-            getEntity().setScaleX(-1);
+            getEntity().translateTowards(player.getPosition(), 2.5);
         }
     }
     
-    public CharacterComponent getMyCharacterComponent() {
-        return myCharacterComponent;
+    public CharacterComponent getMyCharComponent() {
+        return myCharComponent;
     }
 }

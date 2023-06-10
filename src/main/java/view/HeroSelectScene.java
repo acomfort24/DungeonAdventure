@@ -12,6 +12,7 @@ import javafx.scene.text.TextAlignment;
 
 
 public class HeroSelectScene extends HBox {
+    /** */
     private final Map<String, Map<String, String>> myDBData;
     public HeroSelectScene(final Map<String, Map<String, String>> theDBData) {
         super();
@@ -45,11 +46,6 @@ public class HeroSelectScene extends HBox {
                     FXGL.getGameController().startNewGame();
                     this.setVisible(false);
                 }));
-        final BackgroundImage bgImage = new BackgroundImage(FXGL.image(theName + ".png"),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                BackgroundSize.DEFAULT);
         button.setBackground(
                 new Background(
                         Collections.singletonList(new BackgroundFill(

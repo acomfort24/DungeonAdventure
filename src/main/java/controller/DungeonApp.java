@@ -56,8 +56,6 @@ public final class DungeonApp extends GameApplication {
     private static Dungeon myDungeon;
     /** */
     private static MapSubScene myDungeonMap;
-    /** */
-    private final InventoryController myInventoryController = new InventoryController();
 
     @Override
     protected void initSettings(final GameSettings theGameSettings) {
@@ -142,7 +140,8 @@ public final class DungeonApp extends GameApplication {
                 bundleRoomsBooleans.put("roomsBooleans", roomArray);
                 bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon()); //
                 
-                ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
+                final ArrayList<Point> revealedRooms =
+                        new ArrayList<>(myDungeonMap.getRevealedRooms());
 
                 bundleMap.put("revealedRooms", revealedRooms);
 
@@ -323,7 +322,7 @@ public final class DungeonApp extends GameApplication {
             spawn("pillar");
         }
         if (theRoom.hasMonster()) {
-            SpawnData monsterType = new SpawnData();
+            final SpawnData monsterType = new SpawnData();
             monsterType.put("type", theRoom.getMonsterType());
             spawn("monster", monsterType);
         }
@@ -409,7 +408,7 @@ public final class DungeonApp extends GameApplication {
         }, KeyCode.S);
         
         final var wrapper = new Object() {
-            long myActionTime = 0L;
+            private long myActionTime;
         };
         
         onBtnDown(MouseButton.PRIMARY, () -> {
@@ -468,11 +467,11 @@ public final class DungeonApp extends GameApplication {
     }
     
     @Override
-    protected void initGameVars(final Map<String, Object> vars) {
-        vars.put("loaded", false);
-        vars.put("pillars", 0);
-        vars.put("spawnX", (double) getAppWidth() / 2 - 50);
-        vars.put("spawnY", (double) getAppHeight() / 2 - 50);
+    protected void initGameVars(final Map<String, Object> theVars) {
+        theVars.put("loaded", false);
+        theVars.put("pillars", 0);
+        theVars.put("spawnX", (double) getAppWidth() / 2 - 50);
+        theVars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
     
     @Override
