@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import model.EntityType;
 import model.components.CharacterComponent;
 import model.components.PlayerComponent;
+import model.dungeonmap.Dungeon;
 
 /**
  * Handles collisions between weapons and enemies.
@@ -64,6 +65,8 @@ public class WeaponEnemyHandler extends CollisionHandler {
         
         if (hp.isZero()) {
             theM.removeFromWorld();
+            final Dungeon dungeon = FXGL.geto("dungeon");
+            dungeon.get(FXGL.geti("playerX"), FXGL.geti("playerY")).setMonster(false);
         }
     }
 }
