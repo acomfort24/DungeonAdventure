@@ -13,13 +13,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
+/**
+ * The GameMenu class represents the in-game menu screen of a dungeon adventure game.
+ * It extends the FXGLMenu class, which provides a base implementation for creating game menus in FXGL.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class GameMenu extends FXGLMenu {
-    /** */
+    /** The scroll pane for displaying flexible content. */
     private final ScrollPane myFlexBox = new ScrollPane();
-    /** */
+    /** Determines whether the inventory is currently shown or not. */
     private Boolean myShowInventory = false;
-    
+    /**
+     * Constructs a new GameMenu.
+     */
     public GameMenu() {
         super(MenuType.GAME_MENU);
         final DungeonAdventureButton btnResume = new
@@ -47,17 +56,25 @@ public class GameMenu extends FXGLMenu {
         getContentRoot().getChildren().add(buttonBox);
         getContentRoot().getChildren().add(myFlexBox);
     }
-    
+    /**
+     * Called when the menu is created.
+     * Sets the content of the flex box to the progress box.
+     */
     @Override
     public void onCreate() {
         myFlexBox.setContent(createProgressBox());
     }
-    
+    /**
+     * Called when the menu is destroyed.
+     * Resets the inventory visibility flag.
+     */
     @Override
     public void onDestroy() {
         myShowInventory = false;
     }
-    
+    /**
+     * Toggles between showing the inventory and progress box in the flexible box.
+     */
     private void toggleInventory() {
         myShowInventory = !myShowInventory;
         if (myShowInventory) {
@@ -66,7 +83,11 @@ public class GameMenu extends FXGLMenu {
             myFlexBox.setContent(createProgressBox());
         }
     }
-    
+    /**
+     * Creates a vertical box that represents the inventory.
+     *
+     * @return The created inventory VBox.
+     */
     private VBox createInventoryBox() {
         final VBox box = new VBox();
         final HashMap<String, Integer> inventory = InventoryController.getInventory();
@@ -84,7 +105,11 @@ public class GameMenu extends FXGLMenu {
         }
         return box;
     }
-    
+    /**
+     * Creates a vertical box that represents the progress.
+     *
+     * @return The created progress VBox.
+     */
     private VBox createProgressBox() {
         final ImageView heroImage =
                 new ImageView(FXGL.image(DungeonApp.getCharacterName() + ".png"));
@@ -95,6 +120,11 @@ public class GameMenu extends FXGLMenu {
         box.getChildren().add(pillarText);
         return box;
     }
+    /**
+     * Uses the specified item from the inventory.
+     *
+     * @param theItem The item to use.
+     */
     private void useItem(final String theItem) {
         InventoryController.useItem(theItem);
     }

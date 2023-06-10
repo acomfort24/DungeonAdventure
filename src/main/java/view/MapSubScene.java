@@ -16,12 +16,25 @@ import model.dungeonmap.Dungeon;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * The MapSubScene class represents a subscene that displays a map of the dungeon.
+ * It visualizes the rooms of the dungeon and provides methods to update the map and reveal rooms.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class MapSubScene extends SubScene implements Serializable {
     private final int myNumRows;
     private final int myNumColumns;
     private final Dungeon myDungeon;
     private ArrayList<Point> myRevealedRooms;
 
+    /**
+     * Constructs a new MapSubScene with the specified dungeon.
+     *
+     * @param theDungeon The dungeon to display.
+     */
     public MapSubScene(final Dungeon theDungeon) {
 
         this.myDungeon = theDungeon;
@@ -64,7 +77,12 @@ public class MapSubScene extends SubScene implements Serializable {
         getContentRoot().setTranslateX(100);
         getContentRoot().setTranslateY(50);
     }
-
+    /**
+     * Constructs a new MapSubScene with the specified dungeon and revealed rooms.
+     *
+     * @param theDungeon       The dungeon to display.
+     * @param theRevealedRooms The list of revealed rooms.
+     */
     public MapSubScene(final Dungeon theDungeon, final ArrayList<Point> theRevealedRooms) {
 
         this.myDungeon = theDungeon;
@@ -107,7 +125,9 @@ public class MapSubScene extends SubScene implements Serializable {
         getContentRoot().setTranslateX(100);
         getContentRoot().setTranslateY(50);
     }
-
+    /**
+     * Updates the map based on the current state of the dungeon and the player's position.
+     */
     public void updateMap() {
         final GridPane gridPane = (GridPane) getContentRoot().getChildren().get(0);
         gridPane.getChildren().clear();
@@ -141,7 +161,13 @@ public class MapSubScene extends SubScene implements Serializable {
             }
         }
     }
-
+    /**
+     * Returns a string representation of the objects in a room.
+     *
+     * @param theCol The column index of the room.
+     * @param theRow The row index of the room.
+     * @return A string representation of the objects in the room.
+     */
     public String roomObjects(final int theCol, final int theRow) {
         final StringBuilder sb = new StringBuilder();
 
@@ -159,7 +185,9 @@ public class MapSubScene extends SubScene implements Serializable {
         }
         return sb.toString();
     }
-
+    /**
+     * Sets the revealed rooms based on the player's current position.
+     */
     public void setRevealedRooms() {
         final int playerX = FXGL.geti("playerY");
         final int playerY = FXGL.geti("playerX");
@@ -173,15 +201,29 @@ public class MapSubScene extends SubScene implements Serializable {
             }
         }
     }
-
+    /**
+     * Checks if the specified position is a valid position in the dungeon.
+     *
+     * @param theY The y-coordinate of the position.
+     * @param theX The x-coordinate of the position.
+     * @return true if the position is valid, false otherwise.
+     */
     private boolean isValidPosition(final int theY, final int theX) {
         return theY >= 0 && theY < myNumColumns && theX >= 0 && theX < myNumRows;
     }
-
+    /**
+     * Returns the list of revealed rooms.
+     *
+     * @return The list of revealed rooms.
+     */
     public ArrayList<Point> getRevealedRooms() {
         return this.myRevealedRooms;
     }
-
+    /**
+     * Sets the list of revealed rooms.
+     *
+     * @param thePoints The list of revealed rooms.
+     */
     public void setRevealedRoom(final ArrayList<Point> thePoints) {
         this.myRevealedRooms = thePoints;
     }

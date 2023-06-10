@@ -9,15 +9,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * The DungeonAdventureButton class represents a custom button used in a dungeon adventure game.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class DungeonAdventureButton extends StackPane {
-    /** */
+    /** The color of the button when it is selected. */
     private static final Color SELECTED_COLOR = Color.WHITE;
-    /** */
+    /** The color of the button when it is not selected. */
     private static final Color NOT_SELECTED_COLOR = Color.GRAY;
-    /** */
-
-
-    /* default */
+    /**
+     * Constructs a new DungeonAdventureButton with the specified name and action.
+     *
+     * @param theName   the name of the button
+     * @param theAction the action to be executed when the button is clicked or the Enter key is pressed
+     */
     DungeonAdventureButton(final String theName,
                            final Runnable theAction) {
         super();

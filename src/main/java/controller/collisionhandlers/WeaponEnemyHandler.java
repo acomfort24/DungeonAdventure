@@ -13,16 +13,36 @@ import model.EntityType;
 import model.components.CharacterComponent;
 import model.components.PlayerComponent;
 
+/**
+ * Handles collisions between weapons and enemies.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 public class WeaponEnemyHandler extends CollisionHandler {
-    /** */
+    /** The character component of the player. */
     private final CharacterComponent myCharComp;
+    /**
+     * Constructs a new WeaponEnemyHandler.
+     * Defines the collision between weapons and enemies.
+     */
     public WeaponEnemyHandler() {
         super(EntityType.WEAPON, EntityType.MONSTER);
         
         myCharComp = FXGL.getGameWorld().getSingleton(EntityType.PLAYER).
                 getComponent(PlayerComponent.class).getMyCharacterComponent();
     }
-    
+
+    /**
+     * Handles the beginning of a collision between a weapon and an enemy.
+     * Decreases the enemy's health by a random amount between the player's minimum and maximum damage.
+     * Applies knockback to the enemy horizontally based on the player's position.
+     * If the enemy's health reaches zero, it is removed from the world.
+     *
+     * @param theW the weapon entity
+     * @param theM the enemy entity
+     */
     @Override
     protected void onCollisionBegin(final Entity theW, final Entity theM) {
         final var hp = theM.getComponent(HealthDoubleComponent.class);

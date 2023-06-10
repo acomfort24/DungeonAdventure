@@ -10,14 +10,24 @@ import javafx.scene.Node;
 import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-
+/**
+ * The DungeonMainMenu class represents the main menu screen of a dungeon adventure game.
+ * It extends the FXGLMenu class, which provides a base implementation for creating game menus in FXGL.
+ * @author Andy Comfort
+ *         Brandon Morgan
+ *         Chad Oehlschlaeger-Browne
+ * @version 1.0
+ */
 
 public class DungeonMainMenu extends FXGLMenu {
-    /** */
+    /** The scene for selecting a hero. */
     private final HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.getDatabase());
-    /** */
+    /** The scene for selecting a save file to load. */
     private final LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
 
+    /**
+     * Constructs a new DungeonMainMenu.
+     */
     public DungeonMainMenu() {
         super(MenuType.MAIN_MENU);
         mySelectScreen.setVisible(false);
