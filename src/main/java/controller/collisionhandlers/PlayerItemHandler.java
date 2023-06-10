@@ -22,7 +22,7 @@ public class PlayerItemHandler extends CollisionHandler {
             theBoxA, final HitBox theBoxB) { }
     
     @Override
-    protected void onCollisionBegin(final Entity theP, final Entity theI) {
+    public void onCollisionBegin(final Entity theP, final Entity theI) {
         final String itemType = theI.getType().toString();
         InventoryController.addItem(itemType);
         if ("VISION_POTION".equals(itemType)) {
