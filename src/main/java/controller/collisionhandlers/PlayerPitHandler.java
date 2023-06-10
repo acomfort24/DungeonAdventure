@@ -8,7 +8,8 @@ import model.EntityType;
 
 /**
  * Handles collisions between the player and pits.
- * When a collision occurs, the player's health is decreased by a random amount between 1 and 20.
+ * When a collision occurs, the player's health is
+ * decreased by a random amount between 1 and 20.
  * This handler is used to simulate damage to the player when they fall into a pit.
  *
  * @author Andy Comfort

@@ -1,9 +1,11 @@
 package view;
 
-import java.awt.*;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.scene.SubScene;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -12,9 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.dungeonmap.Dungeon;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * The MapSubScene class represents a subscene that displays a map of the dungeon.

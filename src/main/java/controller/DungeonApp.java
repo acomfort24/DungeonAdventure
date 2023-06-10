@@ -23,7 +23,6 @@ import com.almasb.fxgl.profile.DataFile;
 import com.almasb.fxgl.profile.SaveLoadHandler;
 import com.almasb.fxgl.ui.Position;
 import controller.collisionhandlers.*;
-
 import java.awt.*;
 import java.util.*;
 import javafx.geometry.Point2D;
@@ -51,7 +50,7 @@ import view.MapSubScene;
  */
 
 public final class DungeonApp extends GameApplication {
-    /** The name of the character*/
+    /** The name of the character.*/
     private static String myCharacterName;
     /** The player in the dungeon. */
     private static Entity myPlayer;
@@ -113,7 +112,7 @@ public final class DungeonApp extends GameApplication {
              * @param theData The DataFile object to which the game data will be saved.
              */
             @Override
-            public void onSave(final DataFile theData) {
+            public void onSave(@NotNull final DataFile theData) {
                 final Bundle bundlePlayer = new Bundle("player");
                 final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
                 final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");

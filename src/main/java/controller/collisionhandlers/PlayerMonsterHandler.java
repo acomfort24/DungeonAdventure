@@ -1,4 +1,5 @@
 package controller.collisionhandlers;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.animationBuilder;
 
 import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.core.math.FXGLMath;
@@ -9,7 +10,7 @@ import javafx.util.Duration;
 import model.EntityType;
 import model.components.MonsterComponent;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.animationBuilder;
+
 
 /**
  * Handles collisions between the player and monsters.

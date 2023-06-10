@@ -15,7 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 /**
  * The GameMenu class represents the in-game menu screen of a dungeon adventure game.
- * It extends the FXGLMenu class, which provides a base implementation for creating game menus in FXGL.
+ * It extends the FXGLMenu class,
+ * which provides a base implementation for creating game menus in FXGL.
  * @author Andy Comfort
  *         Brandon Morgan
  *         Chad Oehlschlaeger-Browne

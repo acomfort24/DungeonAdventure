@@ -11,7 +11,8 @@ import javafx.util.Duration;
 import kotlin.Pair;
 
 /**
- * Represents a pit animation component that adds an animated texture of spikes to a pit entity.
+ * Represents a pit animation component that adds
+ * an animated texture of spikes to a pit entity.
  *
  * @author Andy Comfort
  *         Brandon Morgan
@@ -20,11 +21,11 @@ import kotlin.Pair;
  */
 public class PitAnimationComponent extends Component {
     /**
-     * The animated texture representing the spikes animation.
+     * The animated texture representing the spikes' animation.
      */
     private final AnimatedTexture myTexture;
     /**
-     * The animation channel defining the frames and duration of the spikes animation.
+     * The animation channel defining the frames and duration of the spikes' animation.
      */
     private final AnimationChannel myAnimSpikes;
 

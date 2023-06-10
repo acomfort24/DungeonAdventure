@@ -11,7 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 /**
  * The DungeonMainMenu class represents the main menu screen of a dungeon adventure game.
- * It extends the FXGLMenu class, which provides a base implementation for creating game menus in FXGL.
+ * It extends the FXGLMenu class,
+ * which provides a base implementation for creating game menus in FXGL.
  * @author Andy Comfort
  *         Brandon Morgan
  *         Chad Oehlschlaeger-Browne
@@ -47,19 +48,18 @@ public class DungeonMainMenu extends FXGLMenu {
             mySelectScreen.setVisible(false);
         });
 
-        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () -> {
-            FXGL.getDialogService().showMessageBox("""
-                                                                Welcome to Dungeon Adventure!
-                    
-                    In this game you will select from three classes (Warrior, Thief, Wizard) and
-                    attempt to traverse the dungeon. Along the way you'll encounter four pillars, 
-                    where each pillar represents one of the four main principles of object-oriented 
-                    programming. In order to escape the dungeon you must collect all four pillars and 
-                    bring them to the exit door. 
-                    
-                    Good luck!
-                    """);
-        });
+        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () ->
+                FXGL.getDialogService().showMessageBox("""
+                                                            Welcome to Dungeon Adventure!
+                
+                In this game you will select from three classes (Warrior, Thief, Wizard) and
+                attempt to traverse the dungeon. Along the way you'll encounter four pillars, 
+                where each pillar represents one of the four main principles of object-oriented 
+                programming. In order to escape the dungeon you must collect all four pillars and 
+                bring them to the exit door. 
+                
+                Good luck!
+                """));
 
         final DungeonAdventureButton btnQuit =
                 new DungeonAdventureButton("Quit Game", this::fireExit);

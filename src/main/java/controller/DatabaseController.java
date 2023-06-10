@@ -12,7 +12,7 @@ import org.sqlite.SQLiteDataSource;
 
 /**
  * Controller class to manipulate data from an SQLite database to be used
- * in enemy and player models
+ * in enemy and player models.
  *
  * @author Chad Oehlschlaeger-Browne
  *
