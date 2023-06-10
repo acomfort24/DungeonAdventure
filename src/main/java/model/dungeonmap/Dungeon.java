@@ -16,7 +16,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     /** */
     private static final Predicate<DungeonRoom> IS_BASIC = x -> "basic".equals(x.getType());
     /** */
-    private int myWidth;
+    private final int myWidth;
     /** */
     private final int myHeight;
     /** */
@@ -34,15 +34,8 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
      */
     public Dungeon(final int theWidth, final int theHeight) {
         super(DungeonRoom.class, theWidth, theHeight);
-        if (theWidth * theHeight < 6) {
-            myWidth = 3;
-            myHeight = 3;
-            System.out.println("Defaulted width/height to 3");
-        } else {
-            myWidth = theWidth;
-            myHeight = theHeight;
-        }
-
+        myWidth = theWidth;
+        myHeight = theHeight;
         myDungeon = new int[myWidth][myHeight];
         generateDungeon(myDungeon, 0, 0);
         populate((x, y) -> {
@@ -56,7 +49,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         addMonsters();
     }
     public Dungeon(final int[][] theNumberArray, final String[][] theTypeArray,
-                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArrayList,
+                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray,
                    final String[][] theMonsterArray) {
         super(DungeonRoom.class, theNumberArray.length, theNumberArray[0].length);
         myWidth = theNumberArray.length;
@@ -65,12 +58,12 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
 
         populate((x, y) -> {
             final DungeonRoom room = new DungeonRoom(x, y,
-                    theRoomArrayList.get(x).get(y).get("hasVisPot"),
-                    theRoomArrayList.get(x).get(y).get("hasHealPot"),
-                    theRoomArrayList.get(x).get(y).get("hasPit"),
-                    theRoomArrayList.get(x).get(y).get("hasMonster"),
-                    theRoomArrayList.get(x).get(y).get("hasBeenVisited"),
-                    theRoomArrayList.get(x).get(y).get("hasPillar"));
+                    theRoomArray.get(x).get(y).get("hasVisPot"),
+                    theRoomArray.get(x).get(y).get("hasHealPot"),
+                    theRoomArray.get(x).get(y).get("hasPit"),
+                    theRoomArray.get(x).get(y).get("hasMonster"),
+                    theRoomArray.get(x).get(y).get("hasBeenVisited"),
+                    theRoomArray.get(x).get(y).get("hasPillar"));
             room.setRoom(myDungeon[x][y]);
             room.setType(theTypeArray[x][y]);
             if (theTypeArray[x][y].equalsIgnoreCase("entrance")) {
@@ -200,19 +193,19 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             returnedString.append("+\n");
             // draw the west edge
             for (int k = 0; k < 2; k++) {
-                for (int l = 0; l < myWidth; l++) {
+                for (int j = 0; j < myWidth; j++) {
                     final StringBuilder curLine = new StringBuilder();
-                    curLine.append((myDungeon[l][i] & 8) == 0 ? "|      " : "       ");
-                    if (k == 0 && this.get(l, i).hasMonster()) {
+                    curLine.append((myDungeon[j][i] & 8) == 0 ? "|      " : "       ");
+                    if (k == 0 && this.get(i, j).hasMonster()) {
                         curLine.setCharAt(1, 'M');
                     }
-                    if (k == 0 && this.get(l, i).hasHealPot()) {
+                    if (k == 0 && this.get(i, j).hasHealPot()) {
                         curLine.setCharAt(6, 'H');
                     }
-                    if (k == 1 && this.get(l, i).hasVisPot()) {
+                    if (k == 1 && this.get(i, j).hasVisPot()) {
                         curLine.setCharAt(1, 'V');
                     }
-                    if (k == 1 && this.get(l, i).hasPillar()) {
+                    if (k == 1 && this.get(i, j).hasPillar()) {
                         curLine.setCharAt(6, 'P');
                     }
                     returnedString.append(curLine);

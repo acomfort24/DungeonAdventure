@@ -253,7 +253,8 @@ public final class DungeonApp extends GameApplication {
     protected void initGame() {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
-            myDungeon = new Dungeon(6, 1);
+            myDungeon = new Dungeon(5, 5);
+            //will change this when we can select class
             myDungeonFactory = new DungeonFactory(myDBData);
             getGameWorld().addEntityFactory(myDungeonFactory);
             set("dungeon", myDungeon);
