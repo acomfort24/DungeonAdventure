@@ -24,7 +24,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.components.*;
-import model.components.PillarComponent;
 import model.components.PlayerComponent;
 import model.components.PotionComponent;
 
@@ -38,7 +37,7 @@ import model.components.PotionComponent;
  * @version 1.0
  */
 public class DungeonFactory implements EntityFactory {
-    /** */
+    /** The database storing character data. */
     final Map<String, Map<String, String>> myDBData;
 
     /**
@@ -220,7 +219,6 @@ public class DungeonFactory implements EntityFactory {
                 .at((double) getAppWidth() / 2 - 35, (double) getAppHeight() / 2 - 43)
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new PillarComponent())
                 .build();
     }
     /**

@@ -10,17 +10,17 @@ import com.almasb.fxgl.entity.component.Component;
  * @version 1.0
  */
 public class CharacterComponent extends Component {
-    /** */
+    /** The maximum amount of damage a character may deal. */
     private final int myMaxDmg;
-    /** */
+    /** The minimum amount of damage a character may deal. */
     private final int myMinDmg;
-    /** */
+    /** The attack speed of the character. */
     private final double myAtkSpd;
-    /** */
+    /** The chance to deal damage to a character. */
     private final double myChncHit;
-    /** */
+    /** The maximum health of the character. */
     private final int myMaxHealth;
-    /** */
+    /** The name of the character. */
     private final String myName;
 
     /**

@@ -19,8 +19,10 @@ import javafx.scene.text.TextAlignment;
  * @version 1.0
  */
 public class HeroSelectScene extends HBox {
-    /** */
+    /** The database of character data. */
     private final Map<String, Map<String, String>> myDBData;
+
+    /** Instantiates a new hero select scene. */
     public HeroSelectScene(final Map<String, Map<String, String>> theDBData) {
         super();
         myDBData = theDBData;

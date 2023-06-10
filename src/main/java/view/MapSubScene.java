@@ -25,9 +25,13 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class MapSubScene extends SubScene implements Serializable {
+    /** The number of rows in the map. */
     private final int myNumRows;
+    /** The number of columns in the map. */
     private final int myNumColumns;
+    /** The dungeon to be visualized. */
     private final Dungeon myDungeon;
+    /** The array of rooms the player has visited. */
     private ArrayList<Point> myRevealedRooms;
 
     /**

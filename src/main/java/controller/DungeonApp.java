@@ -51,25 +51,23 @@ import view.MapSubScene;
  */
 
 public final class DungeonApp extends GameApplication {
-    /** */
+    /** The name of the character*/
     private static String myCharacterName;
-    /** */
+    /** The player in the dungeon. */
     private static Entity myPlayer;
-    /** */
+    /** The factory used to spawn entities. */
     private static EntityFactory myDungeonFactory;
-    /** */
+    /** The name of the player. */
     private static String myPlayerName;
-    /** */
+    /** The database storing character data. */
     private static Map<String, Map<String, String>> myDBData;
-    /** */
+    /** The dungeon to be explored.  */
     private static Dungeon myDungeon;
-    /** */
+    /** The map of the dungeon. */
     private static MapSubScene myDungeonMap;
-    /** */
-    private final InventoryController myInventoryController = new InventoryController();
 
     /**
-     *Initializes the game settings for the Dungeon Adventure game.
+     * Initializes the game settings for the Dungeon Adventure game.
      *
      *@param theGameSettings The game settings to be initialized.
      */
