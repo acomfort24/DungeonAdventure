@@ -172,7 +172,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     
     private void addMonsters() {
         int count = 0;
-        while (count < 4) {
+        while (count < 23) {
             DungeonRoom dr = getRandomCell();
             if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
                 dr.setMonster(true);
@@ -183,7 +183,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     }
     
     private static String randomMonster() {
-        final String[] monsterArr = {"Skeleton", "Orc"};
+        final String[] monsterArr = {"Skeleton", "Orc", "Gremlin"};
         return FXGLMath.random(monsterArr).get();
     }
     

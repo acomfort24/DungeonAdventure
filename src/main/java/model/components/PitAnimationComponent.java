@@ -1,9 +1,6 @@
 package model.components;
 
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
@@ -12,16 +9,14 @@ import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 import kotlin.Pair;
-import model.EntityType;
 
 
-
-public class PitComponent extends Component {
+public class PitAnimationComponent extends Component {
 
     private final AnimatedTexture myTexture;
     private final AnimationChannel myAnimSpikes;
 
-    public PitComponent() {
+    public PitAnimationComponent() {
         myAnimSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"),
                 Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0, 0, 1052, 693)),
@@ -33,8 +28,6 @@ public class PitComponent extends Component {
 
         myTexture = new AnimatedTexture(myAnimSpikes);
         myTexture.play();
-        final Entity player = FXGL.geto("player");
-        player.getComponent(HealthDoubleComponent.class).damage(FXGLMath.random(1, 20));
     }
 
     @Override
@@ -42,22 +35,4 @@ public class PitComponent extends Component {
         entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
         entity.getViewComponent().addChild(myTexture);
     }
-
-    @Override
-    public void onUpdate(final double theTpf) {
-        if (FXGL.getGameWorld().getEntitiesByType(EntityType.PLAYER).get(0).isColliding(
-                FXGL.getGameWorld().getEntitiesByComponent(PitComponent.class).get(0))) {
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            myTexture.stop();
-                            cancel();
-                        }
-                    },
-                    4000
-            );
-        }
-    }
-
 }

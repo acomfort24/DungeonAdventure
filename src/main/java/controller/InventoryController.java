@@ -8,8 +8,6 @@ import model.EntityType;
 import model.components.PlayerComponent;
 
 
-
-
 public class InventoryController {
     public static void useItem(final String theItem) {
         final Inventory inventory = PlayerComponent.getMyInventory();
@@ -21,6 +19,9 @@ public class InventoryController {
         if ("HEALTH_POTION".equals(theItem)) {
             FXGL.getGameWorld().getSingleton(EntityType.PLAYER)
                     .getComponent(HealthDoubleComponent.class).restore(25);
+        }
+        if ("VISION_POTION".equals(theItem)) {
+           DungeonApp.getMyDungeonMap().setRevealedRooms();
         }
     }
     public static void addItem(final String theItem) {
