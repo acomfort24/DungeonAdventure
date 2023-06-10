@@ -162,7 +162,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     private void setPillarRooms() {
         for (int i = 0; i < PILLAR_COUNT; i++) {
             if (getRandomCell(IS_BASIC).isPresent()) {
-                DungeonRoom dr = getRandomCell(IS_BASIC).get();
+                final DungeonRoom dr = getRandomCell(IS_BASIC).get();
                 dr.setType("pillar");
                 dr.setPillar(true);
             }
@@ -173,7 +173,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         int count = 0;
         final int numMonsters = (myWidth * myHeight - 2) / 2;
         while (count < numMonsters) {
-            DungeonRoom dr = getRandomCell();
+            final DungeonRoom dr = getRandomCell();
             if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
                 dr.setMonster(true);
                 dr.setMonsterType(randomMonster());
