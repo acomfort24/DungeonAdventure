@@ -9,6 +9,7 @@ import com.almasb.fxgl.texture.FrameData;
 import java.util.List;
 import javafx.util.Duration;
 import kotlin.Pair;
+import model.EntityType;
 
 /**
  * The AttackComponent class handles the attack animation for an entity.
@@ -68,7 +69,8 @@ public class AttackComponent extends Component {
     @Override
     public void onAdded() {
         final AnimatedTexture texture;
-        if (myPlayer.getScaleX() < 0) {
+        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+        if (player.getScaleX() < 0) {
             texture = new AnimatedTexture(myAnimAttackL);
         } else {
             texture = new AnimatedTexture(myAnimAttackR);
