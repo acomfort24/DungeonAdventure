@@ -34,8 +34,9 @@ public class AttackComponent extends Component {
      * Constructs a new AttackComponent.
      */
     public AttackComponent() {
+        super();
         myPlayer = FXGL.getWorldProperties().getObject("player");
-        double attackSpeed = myPlayer.getComponent(PlayerComponent.class).getAtkSpeed();
+        final double attackSpeed = myPlayer.getComponent(PlayerComponent.class).getAtkSpeed();
         final int width = 110;
         final int height = 80;
         
@@ -66,7 +67,7 @@ public class AttackComponent extends Component {
      */
     @Override
     public void onAdded() {
-        AnimatedTexture texture;
+        final AnimatedTexture texture;
         if (myPlayer.getScaleX() < 0) {
             texture = new AnimatedTexture(myAnimAttackL);
         } else {

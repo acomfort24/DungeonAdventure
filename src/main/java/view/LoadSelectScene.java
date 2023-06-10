@@ -37,7 +37,7 @@ public class LoadSelectScene extends VBox {
             final List<String> list = findFiles(Paths.get("./"));
             list.remove(0);
             list.remove(0);
-            for (String save : list) {
+            for (final String save : list) {
                 createLoadFileButton(save);
             }
         } catch (final Exception e) {

@@ -5,7 +5,7 @@ import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import controller.DungeonApp;
 import controller.InventoryController;
-import java.util.HashMap;
+import java.util.Map;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -90,8 +90,8 @@ public class GameMenu extends FXGLMenu {
      */
     private VBox createInventoryBox() {
         final VBox box = new VBox();
-        final HashMap<String, Integer> inventory = InventoryController.getInventory();
-        for (String item : inventory.keySet()) {
+        final Map<String, Integer> inventory = InventoryController.getInventory();
+        for (final String item : inventory.keySet()) {
             final FlowPane buttonPane = new FlowPane();
             final Button itemButton = new Button(item);
             itemButton.setOnAction(actionEvent -> {
