@@ -33,8 +33,14 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
      */
     public Dungeon(final int theWidth, final int theHeight) {
         super(DungeonRoom.class, theWidth, theHeight);
-        myWidth = theWidth;
-        myHeight = theHeight;
+        if (theHeight * theWidth < 6) {
+            myWidth = 3;
+            myHeight = 3;
+            System.out.println("Height/width were set to 3");
+        } else {
+            myWidth = theWidth;
+            myHeight = theHeight;
+        }
         myDungeon = new int[myWidth][myHeight];
         generateDungeon(myDungeon, 0, 0);
         populate((x, y) -> {
@@ -164,7 +170,8 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     
     private void addMonsters() {
         int count = 0;
-        while (count < 7) {
+        final int numMonsters = (myWidth * myHeight - 2) / 2;
+        while (count < numMonsters) {
             final DungeonRoom dr = getRandomCell();
             if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
                 dr.setMonster(true);
@@ -192,19 +199,19 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             returnedString.append("+\n");
             // draw the west edge
             for (int k = 0; k < 2; k++) {
-                for (int j = 0; j < myWidth; j++) {
+                for (int l = 0; l < myWidth; l++) {
                     final StringBuilder curLine = new StringBuilder();
-                    curLine.append((myDungeon[j][i] & 8) == 0 ? "|      " : "       ");
-                    if (k == 0 && this.get(i, j).hasMonster()) {
+                    curLine.append((myDungeon[l][i] & 8) == 0 ? "|      " : "       ");
+                    if (k == 0 && this.get(l, i).hasMonster()) {
                         curLine.setCharAt(1, 'M');
                     }
-                    if (k == 0 && this.get(i, j).hasHealPot()) {
+                    if (k == 0 && this.get(l, i).hasHealPot()) {
                         curLine.setCharAt(6, 'H');
                     }
-                    if (k == 1 && this.get(i, j).hasVisPot()) {
+                    if (k == 1 && this.get(l, i).hasVisPot()) {
                         curLine.setCharAt(1, 'V');
                     }
-                    if (k == 1 && this.get(i, j).hasPillar()) {
+                    if (k == 1 && this.get(l, i).hasPillar()) {
                         curLine.setCharAt(6, 'P');
                     }
                     returnedString.append(curLine);
