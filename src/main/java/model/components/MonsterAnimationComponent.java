@@ -31,7 +31,8 @@ public class MonsterAnimationComponent extends Component {
      * @param theImageFile the file path of the monster image
      */
     public MonsterAnimationComponent(final String theImageFile) {
-        myAnimIdle = new AnimationChannel(FXGL.image(theImageFile), Duration.seconds(1), List.of(
+        myAnimIdle = new AnimationChannel(FXGL.image(theImageFile + "IdleSheet.png"),
+                Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0,0,96,97)),
                 new Pair<>(1, new FrameData(96,0,96,97)),
                 new Pair<>(2, new FrameData(96+96,0,96,97)),
@@ -59,7 +60,7 @@ public class MonsterAnimationComponent extends Component {
      */
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(48,48));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(38,48));
         entity.getViewComponent().addChild(myTexture);
     }
 
