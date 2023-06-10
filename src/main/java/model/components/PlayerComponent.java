@@ -13,13 +13,14 @@ public class PlayerComponent extends Component {
     /** */
     private int myVelocity = 325;
     /** */
-    private CharacterComponent myCharacterComponent;
+    private final CharacterComponent myCharacterComponent;
     /** */
-    private double myChncBlock;
+    private final double myChncBlock;
     
     public PlayerComponent(final int theMinDmg, final int theMaxDmg,
                            final int theAtkSpd, final double theChncHit,
-                           final int theHealth, final String theName, final double theChncBlock) {
+                           final int theHealth, final String theName,
+                           final double theChncBlock) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);

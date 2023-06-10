@@ -90,7 +90,7 @@ public final class DungeonApp extends GameApplication {
     protected void onPreInit() {
         getSaveLoadService().addHandler(new SaveLoadHandler() {
             @Override
-            public void onSave(final DataFile theData) {
+            public void onSave(@NotNull final DataFile theData) {
                 final Bundle bundlePlayer = new Bundle("player");
                 final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
                 final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
