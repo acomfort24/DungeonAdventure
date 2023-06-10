@@ -20,6 +20,7 @@ public class PlayerAnimationComponent extends Component {
     private final AnimationChannel myAnimWalk;
 
     public PlayerAnimationComponent(final String theHeroType) {
+        super();
         myAnimIdle = new AnimationChannel(FXGL.image(theHeroType + "IdleSheet.png"),
                 Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0, 0, 96, 110)),
@@ -44,21 +45,21 @@ public class PlayerAnimationComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(40, 48));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(48, 48));
         entity.getViewComponent().addChild(myTexture);
     }
 
     @Override
     public void onUpdate(final double theTPF) {
-        if (FXGL.getGameWorld().getEntitiesByComponent(PlayerComponent.class)
-                .get(0).getComponent(PhysicsComponent.class).isMoving()) {
+        if (FXGL.getGameWorld().getEntitiesByComponent(PlayerComponent.class).
+                get(0).getComponent(PhysicsComponent.class).isMoving()) {
 
-            if (myTexture.getAnimationChannel() == myAnimIdle) {
+            if (myTexture.getAnimationChannel().equals(myAnimIdle)) {
                 myTexture.loopAnimationChannel(myAnimWalk);
             }
 
         } else {
-            if (myTexture.getAnimationChannel() == myAnimWalk) {
+            if (myTexture.getAnimationChannel().equals(myAnimWalk)) {
                 myTexture.loopAnimationChannel(myAnimIdle);
             }
         }

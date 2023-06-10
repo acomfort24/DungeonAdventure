@@ -4,6 +4,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.inventory.Inventory;
 import java.util.HashMap;
+import java.util.Map;
 import model.EntityType;
 import model.components.PlayerComponent;
 
@@ -21,15 +22,15 @@ public class InventoryController {
                     .getComponent(HealthDoubleComponent.class).restore(25);
         }
         if ("VISION_POTION".equals(theItem)) {
-           DungeonApp.getMyDungeonMap().setRevealedRooms();
+            DungeonApp.getMyDungeonMap().setRevealedRooms();
         }
     }
     public static void addItem(final String theItem) {
         final Inventory inventory = PlayerComponent.getMyInventory();
         inventory.add(theItem);
     }
-    public static HashMap<String, Integer> getInventory() {
-        final HashMap<String, Integer> returnedMap = new HashMap<>();
+    public static Map<String, Integer> getInventory() {
+        final Map<String, Integer> returnedMap = new HashMap<>();
         final Inventory inventory = PlayerComponent.getMyInventory();
         if (!inventory.getAllData().isEmpty()) {
             inventory.getAllData().forEach((key, value) ->

@@ -2,7 +2,6 @@ package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Cell;
 import com.almasb.fxgl.core.math.FXGLMath;
-
 import java.io.Serializable;
 
 public class DungeonRoom extends Cell implements Serializable {
@@ -38,7 +37,7 @@ public class DungeonRoom extends Cell implements Serializable {
     public DungeonRoom(final int theX, final int theY,
                        final Boolean theHasVisPot, final Boolean theHasHealthPot,
                        final Boolean theHasPit, final Boolean theHasMonster,
-                       final Boolean theHasBeenVisited, final Boolean theHasPillar){
+                       final Boolean theHasBeenVisited, final Boolean theHasPillar) {
         super(theX, theY);
         myVisPot = theHasVisPot;
         myHealPot = theHasHealthPot;
@@ -137,6 +136,7 @@ public class DungeonRoom extends Cell implements Serializable {
     public String toString() {
         StringBuilder returnedString = new StringBuilder();
         returnedString.append("|+++++|\n");
+
         for (int k = 0; k < 2; k++) {
             final StringBuilder curLine = new StringBuilder();
             curLine.append("|     |\n");

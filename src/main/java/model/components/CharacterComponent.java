@@ -3,17 +3,23 @@ package model.components;
 import com.almasb.fxgl.entity.component.Component;
 
 public class CharacterComponent extends Component {
+    /** */
     private final int myMaxDmg;
+    /** */
     private final int myMinDmg;
-
+    /** */
     private final double myAtkSpd;
+    /** */
     private final double myChncHit;
+    /** */
     private final int myMaxHealth;
+    /** */
     private final String myName;
 
     public CharacterComponent(final int theMinDmg, final int theMaxDmg, final int theAtkSpd,
                               final double theChncHit, final int theHealth,
                               final String theName) {
+        super();
         myMinDmg = theMinDmg;
         myMaxDmg = theMaxDmg;
         myAtkSpd = (10.0 - theAtkSpd) / 10.0;

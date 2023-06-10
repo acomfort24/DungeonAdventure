@@ -2,7 +2,6 @@ package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Grid;
 import com.almasb.fxgl.core.math.FXGLMath;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,10 +71,10 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
                     theRoomArray.get(x).get(y).get("hasPillar"));
             room.setRoom(myDungeon[x][y]);
             room.setType(theTypeArray[x][y]);
-            if (theTypeArray[x][y].equalsIgnoreCase("entrance")) {
+            if ("entrance".equalsIgnoreCase(theTypeArray[x][y])) {
                 setEntrance(room);
             }
-            if (theTypeArray[x][y].equalsIgnoreCase("exit")) {
+            if ("exit".equalsIgnoreCase(theTypeArray[x][y])) {
                 setExit(room);
             }
             if (room.hasMonster()) {
@@ -144,7 +143,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         myEntrance.setType("entrance");
         myEntrance.setVisited(true);
     }
-    private void setEntrance(DungeonRoom theRoom) {
+    private void setEntrance(final DungeonRoom theRoom) {
         myEntrance = theRoom;
         myEntrance.setType("entrance");
         myEntrance.setVisited(true);
@@ -155,7 +154,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             myExit.setType("exit");
         }
     }
-    private void setExit(DungeonRoom theRoom) {
+    private void setExit(final DungeonRoom theRoom) {
         myExit = theRoom;
         myExit.setType("exit");
     }
@@ -221,8 +220,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             }
         }
         // draw the bottom line
-        returnedString.append("+------".repeat(Math.max(0, myWidth)));
-        returnedString.append("+");
+        returnedString.append("+------".repeat(Math.max(0, myWidth))).append('+');
         return returnedString.toString();
     }
 

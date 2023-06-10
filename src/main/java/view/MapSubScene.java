@@ -1,9 +1,11 @@
 package view;
 
-import java.awt.*;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.scene.SubScene;
+import java.awt.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -13,17 +15,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.dungeonmap.Dungeon;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 public class MapSubScene extends SubScene implements Serializable {
+    /** */
     private final int myNumRows;
+    /** */
     private final int myNumColumns;
+    /** */
     private final Dungeon myDungeon;
+    /** */
     private ArrayList<Point> myRevealedRooms;
 
     public MapSubScene(final Dungeon theDungeon) {
-
+        super();
         this.myDungeon = theDungeon;
         this.myNumRows = theDungeon.getHeight();
         this.myNumColumns = theDungeon.getWidth();
@@ -66,7 +69,7 @@ public class MapSubScene extends SubScene implements Serializable {
     }
 
     public MapSubScene(final Dungeon theDungeon, final ArrayList<Point> theRevealedRooms) {
-
+        super();
         this.myDungeon = theDungeon;
         this.myNumRows = theDungeon.getHeight();
         this.myNumColumns = theDungeon.getWidth();

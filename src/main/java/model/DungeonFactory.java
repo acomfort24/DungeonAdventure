@@ -24,16 +24,12 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.components.*;
-import model.components.PillarComponent;
-import model.components.PlayerComponent;
-import model.components.PotionComponent;
-
 
 public class DungeonFactory implements EntityFactory {
     /** */
-    final Map<String, Map<String, String>> myDBData;
+    private final Map<String, Map<String, String>> myDBData;
 
-    public DungeonFactory(Map<String, Map<String, String>> theDBData) {
+    public DungeonFactory(final Map<String, Map<String, String>> theDBData) {
         myDBData = theDBData;
     }
     
@@ -98,7 +94,7 @@ public class DungeonFactory implements EntityFactory {
 
         return entityBuilder()
                 .type(PLAYER)
-                .bbox(new HitBox(BoundingShape.box(80, 96)))
+                .bbox(new HitBox(BoundingShape.box(96, 96)))
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
                 .with(new CollidableComponent(true))
@@ -157,7 +153,6 @@ public class DungeonFactory implements EntityFactory {
                 .at((double) getAppWidth() / 2 - 35, (double) getAppHeight() / 2 - 43)
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new PillarComponent())
                 .build();
     }
     
@@ -175,18 +170,20 @@ public class DungeonFactory implements EntityFactory {
     @Spawns("pit")
     public Entity newPit(final SpawnData theData) {
         
-            return entityBuilder()
-                    .type(PIT)
-                    .bbox(new HitBox(BoundingShape.box(1152, 864)))
-                    .with(new PitAnimationComponent())
-                    .with(new CollidableComponent(true))
-                    .at(new Point2D(48,123))
-                    .build();
+        return entityBuilder()
+                .type(PIT)
+                .bbox(new HitBox(BoundingShape.box(1152, 864)))
+                .with(new PitAnimationComponent())
+                .with(new CollidableComponent(true))
+                .at(new Point2D(48, 123))
+                .build();
     }
     
     @Spawns("monster")
     public Entity newMonster(final SpawnData theData) {
         final Map<String, String> monsterData = myDBData.get(theData.get("type"));
+        final PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
         
         final HealthDoubleComponent hp = new HealthDoubleComponent(
                 Double.parseDouble(monsterData.get("hitPoints")));
@@ -198,7 +195,8 @@ public class DungeonFactory implements EntityFactory {
         
         return entityBuilder()
                 .type(MONSTER)
-                .bbox(new HitBox(BoundingShape.box(76, 96)))
+                .bbox(new HitBox(BoundingShape.box(75, 96)))
+                //.with(physics)
                 .with(new MonsterAnimationComponent(theData.get("type")))
                 .with(new CollidableComponent(true))
                 .with(hp)
@@ -217,11 +215,11 @@ public class DungeonFactory implements EntityFactory {
     }
     
     @Spawns("weapon")
-    public Entity newWeapon(SpawnData data) {
+    public Entity newWeapon(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         
-        return entityBuilder(data)
+        return entityBuilder(theData)
                 .type(WEAPON)
                 .bbox(new HitBox(BoundingShape.box(100, 70)))
                 .with(new CollidableComponent(true))

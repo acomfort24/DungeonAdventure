@@ -1,6 +1,5 @@
 package view;
 
-import com.almasb.fxgl.app.scene.FXGLDefaultMenu;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
@@ -14,7 +13,8 @@ import javafx.scene.layout.VBox;
 
 public class DungeonMainMenu extends FXGLMenu {
     /** */
-    private final HeroSelectScene mySelectScreen = new HeroSelectScene(DungeonApp.getDatabase());
+    private final HeroSelectScene mySelectScreen =
+            new HeroSelectScene(DungeonApp.getDatabase());
     /** */
     private final LoadSelectScene myLoadSelectScreen = new LoadSelectScene();
 
@@ -41,19 +41,25 @@ public class DungeonMainMenu extends FXGLMenu {
             mySelectScreen.setVisible(false);
         });
 
-        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () -> {
-            FXGL.getDialogService().showMessageBox("""
-                                                                Welcome to Dungeon Adventure!
-                    
-                    In this game you will select from three classes (Warrior, Thief, Wizard) and
-                    attempt to traverse the dungeon. Along the way you'll encounter four pillars, 
-                    where each pillar represents one of the four main principles of object-oriented 
-                    programming. In order to escape the dungeon you must collect all four pillars and 
-                    bring them to the exit door. 
-                    
-                    Good luck!
-                    """);
-        });
+        final DungeonAdventureButton btnAbout = new DungeonAdventureButton("About", () ->
+                FXGL.getDialogService().showMessageBox("""
+                                                            Welcome to Dungeon Adventure!
+                
+                In this game you will select from three classes (Warrior, Thief, Wizard)
+                and attempt to traverse the dungeon. Along the way you'll encounter four
+                pillars, where each pillar represents one of the four main principles of
+                object-oriented programming. In order to escape the dungeon you must
+                collect all four pillars and bring them to the exit door.
+                
+                Controls:
+                Left Mouse Button - Attack
+                W - Up
+                A - Left
+                S - Down
+                D - Right
+                
+                Good luck!
+                """));
 
         final DungeonAdventureButton btnQuit =
                 new DungeonAdventureButton("Quit Game", this::fireExit);

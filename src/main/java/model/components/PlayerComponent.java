@@ -1,27 +1,26 @@
 package model.components;
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 
 
 public class PlayerComponent extends Component {
     /** */
-    private int myVelocity = 325;
-    /** */
-    private static final Inventory myInventory = new Inventory<>(100);
-    /** */
-    private CharacterComponent myCharacterComponent;
-    /** */
-    private double myChncBlock;
+    private static final Inventory MY_INVENTORY = new Inventory<>(100);
     /** */
     protected PhysicsComponent myPhysics;
+    /** */
+    private int myVelocity = 325;
+    /** */
+    private final CharacterComponent myCharacterComponent;
+    /** */
+    private final double myChncBlock;
     
     public PlayerComponent(final int theMinDmg, final int theMaxDmg,
                            final int theAtkSpd, final double theChncHit,
-                           final int theHealth, final String theName, double theChncBlock) {
+                           final int theHealth, final String theName,
+                           final double theChncBlock) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);
@@ -59,7 +58,7 @@ public class PlayerComponent extends Component {
     }
 
     public static Inventory getMyInventory() {
-        return myInventory;
+        return MY_INVENTORY;
     }
     public String getName() {
         return myCharacterComponent.getMyName();

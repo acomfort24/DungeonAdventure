@@ -12,21 +12,21 @@ import kotlin.Pair;
 
 
 public class PitAnimationComponent extends Component {
-
+    /** */
     private final AnimatedTexture myTexture;
-    private final AnimationChannel myAnimSpikes;
-
+    
     public PitAnimationComponent() {
-        myAnimSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"),
+        super();
+        final AnimationChannel animSpikes = new AnimationChannel(FXGL.image("SpikeSheet.png"),
                 Duration.seconds(1), List.of(
                 new Pair<>(0, new FrameData(0, 0, 1052, 693)),
                 new Pair<>(1, new FrameData(1052, 0, 1052, 693)),
                 new Pair<>(2, new FrameData(2104, 0, 1052, 693)),
-                new Pair<>(3,  new FrameData(1052, 0, 1052, 693)),
-                new Pair<>(4,  new FrameData(0, 0, 1052, 693))
+                new Pair<>(3, new FrameData(1052, 0, 1052, 693)),
+                new Pair<>(4, new FrameData(0, 0, 1052, 693))
         ));
 
-        myTexture = new AnimatedTexture(myAnimSpikes);
+        myTexture = new AnimatedTexture(animSpikes);
         myTexture.play();
     }
 

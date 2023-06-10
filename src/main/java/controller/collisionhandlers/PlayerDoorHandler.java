@@ -9,7 +9,9 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import model.EntityType;
 
 public class PlayerDoorHandler extends CollisionHandler {
+    /** */
     private static final String PLAYER_Y_PROPERTY = "playerY";
+    /** */
     private static final String PLAYER_X_PROPERTY = "playerX";
 
     public PlayerDoorHandler(final EntityType theEntityType) {
