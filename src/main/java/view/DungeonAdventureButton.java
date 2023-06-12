@@ -25,7 +25,8 @@ public class DungeonAdventureButton extends StackPane {
      * Constructs a new DungeonAdventureButton with the specified name and action.
      *
      * @param theName   the name of the button
-     * @param theAction the action to be executed when the button is clicked or the Enter key is pressed
+     * @param theAction the action to be executed when the button
+     *                  is clicked or the Enter key is pressed
      */
     DungeonAdventureButton(final String theName,
                            final Runnable theAction) {

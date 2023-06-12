@@ -33,20 +33,20 @@ public class MonsterAnimationComponent extends Component {
     public MonsterAnimationComponent(final String theImageFile) {
         myAnimIdle = new AnimationChannel(FXGL.image(theImageFile + "IdleSheet.png"),
                 Duration.seconds(1), List.of(
-                new Pair<>(0, new FrameData(0,0,96,97)),
-                new Pair<>(1, new FrameData(96,0,96,97)),
-                new Pair<>(2, new FrameData(96+96,0,96,97)),
-                new Pair<>(3, new FrameData(96+96+96,0,96,97))
+                new Pair<>(0, new FrameData(0,0, 96, 97)),
+                new Pair<>(1, new FrameData(96, 0, 96, 97)),
+                new Pair<>(2, new FrameData(96 + 96, 0, 96, 97)),
+                new Pair<>(3, new FrameData(96 + 96 + 96, 0, 96, 97))
         ));
 
         myAnimWalk = new AnimationChannel(FXGL.image(theImageFile + "RunSheet.png"),
                 Duration.seconds(1), List.of(
-                new Pair<>(0, new FrameData(60,0,112,116)),
-                new Pair<>(1, new FrameData(240,0,112,116)),
-                new Pair<>(2, new FrameData(440,0,112,116)),
-                new Pair<>(3, new FrameData(630,0,112,116)),
-                new Pair<>(4, new FrameData(822,0,112,116)),
-                new Pair<>(5, new FrameData(1016,0,112,116))
+                new Pair<>(0, new FrameData(60, 0, 112, 116)),
+                new Pair<>(1, new FrameData(240, 0, 112, 116)),
+                new Pair<>(2, new FrameData(440, 0, 112, 116)),
+                new Pair<>(3, new FrameData(630, 0, 112, 116)),
+                new Pair<>(4, new FrameData(822, 0, 112, 116)),
+                new Pair<>(5, new FrameData(1016, 0, 112, 116))
         ));
 
         myTexture = new AnimatedTexture(myAnimIdle);
@@ -60,13 +60,14 @@ public class MonsterAnimationComponent extends Component {
      */
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(38,48));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(38, 48));
         entity.getViewComponent().addChild(myTexture);
     }
 
     /**
      * Called when the game state is updated.
      * Checks if the monster entity is moving and updates the animation accordingly.
+     * This will get added back later, but is not currently in use
      * @param theTPF the time per frame
      */
 

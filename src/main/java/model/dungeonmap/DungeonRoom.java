@@ -245,7 +245,7 @@ public class DungeonRoom extends Cell implements Serializable {
      * @return a string representation of the room
      */
     public String toString() {
-        StringBuilder returnedString = new StringBuilder();
+        final StringBuilder returnedString = new StringBuilder();
         returnedString.append("|+++++|\n");
 
         for (int k = 0; k < 2; k++) {

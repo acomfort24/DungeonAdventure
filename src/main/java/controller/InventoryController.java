@@ -16,7 +16,8 @@ import model.components.PlayerComponent;
  */
 public class InventoryController {
     /**
-     * Decreases the quantity of a specified item in the player's inventory and applies the item's effect.
+     * Decreases the quantity of a specified item in the player's
+     * inventory and applies the item's effect.
      *
      * @param theItem the item to be used
      */
@@ -32,7 +33,7 @@ public class InventoryController {
                     .getComponent(HealthDoubleComponent.class).restore(25);
         }
         if ("VISION_POTION".equals(theItem)) {
-           DungeonApp.getMyDungeonMap().setRevealedRooms();
+            DungeonApp.getMyDungeonMap().setRevealedRooms();
         }
     }
     /**

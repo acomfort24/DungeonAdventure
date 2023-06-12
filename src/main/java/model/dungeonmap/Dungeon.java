@@ -2,7 +2,6 @@ package model.dungeonmap;
 
 import com.almasb.fxgl.core.collection.grid.Grid;
 import com.almasb.fxgl.core.math.FXGLMath;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +11,8 @@ import java.util.function.Predicate;
 
 /**
  * Represents a dungeon composed of dungeon rooms organized in a grid.
- * The dungeon can be generated with a specified width and height, or it can be constructed from existing data.
+ * The dungeon can be generated with a specified width and height,
+ * or it can be constructed from existing data.
  * The dungeon contains an entrance, an exit, pillar rooms, and monsters.
  *
  * @author Andy Comfort
@@ -111,7 +111,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             final int nextX = theX + dir.myDX;
             final int nextY = theY + dir.myDY;
             if (between(nextX, getWidth()) && between(nextY, getHeight())
-                    && (theDungeon[nextX][nextY] == 0)) {
+                    && theDungeon[nextX][nextY] == 0) {
                 theDungeon[theX][theY] |= dir.myBit;
                 theDungeon[nextX][nextY] |= dir.myOppo.myBit;
                 generateDungeon(theDungeon, nextX, nextY);
@@ -126,7 +126,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
      * @return true if the value is between the lower and upper bounds, false otherwise
      */
     private static boolean between(final int theV, final int theUpper) {
-        return (theV >= 0) && (theV < theUpper);
+        return theV >= 0 && theV < theUpper;
     }
     /**
      * Represents the cardinal directions.
@@ -199,7 +199,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
      *
      * @param theRoom the room to set as the entrance
      */
-    private void setEntrance(DungeonRoom theRoom) {
+    private void setEntrance(final DungeonRoom theRoom) {
         myEntrance = theRoom;
         myEntrance.setType("entrance");
         myEntrance.setVisited(true);
@@ -218,7 +218,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
      *
      * @param theRoom the room to set as the exit
      */
-    private void setExit(DungeonRoom theRoom) {
+    private void setExit(final DungeonRoom theRoom) {
         myExit = theRoom;
         myExit.setType("exit");
     }
@@ -240,7 +240,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     private void addMonsters() {
         int count = 0;
         while (count < 6) {
-            final DungeonRoom dr = getRandomCell();
+            DungeonRoom dr = getRandomCell();
             if (dr != myEntrance && dr != myExit && !dr.hasMonster()) {
                 dr.setMonster(true);
                 dr.setMonsterType(randomMonster());

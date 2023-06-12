@@ -45,7 +45,7 @@ public class DungeonFactory implements EntityFactory {
      *
      * @param theDBData the database data used for entity creation
      */
-    public DungeonFactory(Map<String, Map<String, String>> theDBData) {
+    public DungeonFactory(final Map<String, Map<String, String>> theDBData) {
         myDBData = theDBData;
     }
 

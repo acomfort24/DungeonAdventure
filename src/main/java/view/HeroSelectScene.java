@@ -11,7 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 /**
- * The HeroSelectScene class represents a scene for selecting a hero character in the dungeon adventure game.
+ * The HeroSelectScene class represents a scene f
+ * or selecting a hero character in the dungeon adventure game.
  *
  * @author Andy Comfort
  *         Brandon Morgan

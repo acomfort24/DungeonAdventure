@@ -69,7 +69,7 @@ public class AttackComponent extends Component {
     @Override
     public void onAdded() {
         final AnimatedTexture texture;
-        Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
+        final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
         if (player.getScaleX() < 0) {
             texture = new AnimatedTexture(myAnimAttackL);
         } else {

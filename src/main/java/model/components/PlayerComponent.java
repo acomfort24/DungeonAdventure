@@ -17,21 +17,22 @@ import com.almasb.fxgl.physics.PhysicsComponent;
  */
 public class PlayerComponent extends Component {
     /**
-     * The velocity of the player.
-     */
-    private int myVelocity = 325;
-    /**
      * The inventory of the player.
      */
     private static final Inventory myInventory = new Inventory<>(100);
     /**
+     * The velocity of the player.
+     */
+    private int myVelocity = 325;
+
+    /**
      * The character component of the player.
      */
-    private CharacterComponent myCharacterComponent;
+    private final CharacterComponent myCharacterComponent;
     /**
      * The chance to block of the player.
      */
-    private double myChncBlock;
+    private final double myChncBlock;
     /**
      * The physics component of the player.
      */
@@ -49,7 +50,7 @@ public class PlayerComponent extends Component {
      */
     public PlayerComponent(final int theMinDmg, final int theMaxDmg,
                            final int theAtkSpd, final double theChncHit,
-                           final int theHealth, final String theName, double theChncBlock) {
+                           final int theHealth, final String theName, final double theChncBlock) {
         super();
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);

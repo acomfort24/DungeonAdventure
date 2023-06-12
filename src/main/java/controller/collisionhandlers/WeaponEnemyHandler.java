@@ -37,7 +37,8 @@ public class WeaponEnemyHandler extends CollisionHandler {
 
     /**
      * Handles the beginning of a collision between a weapon and an enemy.
-     * Decreases the enemy's health by a random amount between the player's minimum and maximum damage.
+     * Decreases the enemy's health by a random amount between the
+     * player's minimum and maximum damage.
      * Applies knockback to the enemy horizontally based on the player's position.
      * If the enemy's health reaches zero, it is removed from the world.
      *
