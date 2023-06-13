@@ -54,13 +54,11 @@ public class HeroSelectScene extends HBox {
         button.setPrefSize(250, 300);
         button.setFont(new Font(26));
         button.setTextFill(Color.WHITE);
-        button.setOnAction(e ->
-                FXGL.getDialogService().showInputBox("Enter your player name.", name -> {
-                    DungeonApp.setPlayerName(name);
-                    DungeonApp.setCharacterName(theName);
-                    FXGL.getGameController().startNewGame();
-                    this.setVisible(false);
-                }));
+        button.setOnAction(e -> {
+            DungeonApp.setCharacterType(theName);
+            FXGL.getGameController().startNewGame();
+            this.setVisible(false);
+        });
         button.setBackground(
                 new Background(
                         Collections.singletonList(new BackgroundFill(

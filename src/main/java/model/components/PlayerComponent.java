@@ -1,9 +1,14 @@
 package model.components;
 
 
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
+import com.almasb.fxgl.inventory.ItemConfig;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import javafx.scene.image.ImageView;
 
 
 /**
@@ -19,7 +24,7 @@ public class PlayerComponent extends Component {
     /**
      * The inventory of the player.
      */
-    private static final Inventory myInventory = new Inventory<>(100);
+    private static final Inventory<Entity> myInventory = new Inventory<>(100);
     /**
      * The velocity of the player.
      */
@@ -52,8 +57,24 @@ public class PlayerComponent extends Component {
                            final int theAtkSpd, final double theChncHit,
                            final int theHealth, final String theName, final double theChncBlock) {
         super();
+        Entity vpot = FXGL.getGameWorld().create("vision potion", new SpawnData());
+        ItemConfig vpic = new ItemConfig("Vision Potion", "Allows you to see surrounding rooms",
+                10, new ImageView("visionpotion.png"));
+        myInventory.add(vpot, vpic, 0);
+
+        Entity hpot = FXGL.getGameWorld().create("health potion", new SpawnData());
+        ItemConfig hpic = new ItemConfig("Health Potion", "Restores 25HP upon use",
+                10, new ImageView("healthpotion.png"));
+        myInventory.add(hpot, hpic, 0);
+
+        Entity pillar = FXGL.getGameWorld().create("pillar", new SpawnData());
+        ItemConfig pillic = new ItemConfig("Pillar", "Collect all four pillars to exit the dungeon",
+                4, new ImageView("pillar.png"));
+        myInventory.add(pillar, pillic, 0);
+
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);
+
         myChncBlock = theChncBlock;
     }
     /**
@@ -108,6 +129,10 @@ public class PlayerComponent extends Component {
      */
     public void resumePlayer() {
         myVelocity = 300;
+    }
+
+    public Inventory<Entity> getInventory() {
+        return myInventory;
     }
     /**
      * Returns the inventory of the player.

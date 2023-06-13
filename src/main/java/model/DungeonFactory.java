@@ -141,7 +141,7 @@ public class DungeonFactory implements EntityFactory {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         physics.setFixtureDef(new FixtureDef().friction(0));
-        final Map<String, String> heroData = myDBData.get(DungeonApp.getCharacterName());
+        final Map<String, String> heroData = myDBData.get(DungeonApp.getCharacterType());
 
         return entityBuilder()
                 .type(PLAYER)
@@ -149,7 +149,7 @@ public class DungeonFactory implements EntityFactory {
                 .at(getd("spawnX"), getd("spawnY"))
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new PlayerAnimationComponent(DungeonApp.getCharacterName()))
+                .with(new PlayerAnimationComponent(DungeonApp.getCharacterType()))
                 .with(new PlayerComponent(
                         Integer.parseInt(heroData.get("minDmg")),
                         Integer.parseInt(heroData.get("maxDmg")),
@@ -179,7 +179,7 @@ public class DungeonFactory implements EntityFactory {
                 .with(physics)
                 .at(430, 400)
                 .with(new CollidableComponent(true))
-                .with(new PotionComponent("healthpotion.png"))
+                .with(new PotionComponent("health"))
                 .build();
     }
     /**
@@ -199,7 +199,7 @@ public class DungeonFactory implements EntityFactory {
                 .at(670, 400)
                 .with(physics)
                 .with(new CollidableComponent(true))
-                .with(new PotionComponent("visionpotion.png"))
+                .with(new PotionComponent("vision"))
                 .build();
     }
     /**
@@ -217,6 +217,7 @@ public class DungeonFactory implements EntityFactory {
                 .type(PILLAR)
                 .viewWithBBox("pillar.png")
                 .at((double) getAppWidth() / 2 - 35, (double) getAppHeight() / 2 - 43)
+                .with(new PillarComponent())
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .build();

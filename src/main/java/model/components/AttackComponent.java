@@ -36,7 +36,7 @@ public class AttackComponent extends Component {
      */
     public AttackComponent() {
         super();
-        myPlayer = FXGL.getWorldProperties().getObject("player");
+        myPlayer = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
         final double attackSpeed = myPlayer.getComponent(PlayerComponent.class).getAtkSpeed();
         final int width = 110;
         final int height = 80;
@@ -69,8 +69,8 @@ public class AttackComponent extends Component {
     @Override
     public void onAdded() {
         final AnimatedTexture texture;
-        final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-        if (player.getScaleX() < 0) {
+
+        if (myPlayer.getScaleX() < 0) {
             texture = new AnimatedTexture(myAnimAttackL);
         } else {
             texture = new AnimatedTexture(myAnimAttackR);

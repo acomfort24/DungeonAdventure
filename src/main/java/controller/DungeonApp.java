@@ -38,6 +38,7 @@ import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
+import view.InventorySubScene;
 import view.MapSubScene;
 
 /**
@@ -64,6 +65,8 @@ public final class DungeonApp extends GameApplication {
     private static Dungeon myDungeon;
     /** The map of the dungeon. */
     private static MapSubScene myDungeonMap;
+
+    private InventorySubScene myInvSub;
 
     /**
      * Initializes the game settings for the Dungeon Adventure game.
@@ -291,6 +294,7 @@ public final class DungeonApp extends GameApplication {
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
+            myInvSub = new InventorySubScene();
             clearInventory();
             myDungeonMap = new MapSubScene(myDungeon);
         } catch (final Exception e) {
@@ -496,6 +500,18 @@ public final class DungeonApp extends GameApplication {
             return null;
         });
 
+        myInvSub.getInput().addAction(new UserAction("Close Inventory") {
+            @Override
+            protected void onActionBegin() {
+                FXGL.getSceneService().popSubScene();
+            }
+        }, KeyCode.F);
+
+        onKeyDown(KeyCode.F, "Open Inventory", () -> {
+            FXGL.getSceneService().pushSubScene(myInvSub);
+            return null;
+        });
+
         onKeyDown(KeyCode.O, () -> {
             final Queue<Point2D> dungeonQueue = new LinkedList<>();
             System.out.println(myDungeon.toString());
@@ -514,7 +530,7 @@ public final class DungeonApp extends GameApplication {
         });
 
         onKeyDown(KeyCode.P, () -> {
-            final Queue devQueue = geto("devQueue");
+            final Queue<Object> devQueue = geto("devQueue");
             final Point2D point = (Point2D) devQueue.poll();
             set("spawnX", (double) 200);
             set("spawnY", (double) 200);
@@ -562,7 +578,7 @@ public final class DungeonApp extends GameApplication {
      Sets the character name.
      @param theCharacterName the name of the character
      */
-    public static void setCharacterName(final String theCharacterName) {
+    public static void setCharacterType(final String theCharacterName) {
         myCharacterName = theCharacterName;
     }
     /**
@@ -570,24 +586,8 @@ public final class DungeonApp extends GameApplication {
      Retrieves the character name.
      @return the character name
      */
-    public static String getCharacterName() {
+    public static String getCharacterType() {
         return myCharacterName;
-    }
-    /**
-     *
-     Sets the player name.
-     @param thePlayerName the name of the player
-     */
-    public static void setPlayerName(final String thePlayerName) {
-        myPlayerName = thePlayerName;
-    }
-    /**
-     *
-     Retrieves the player name.
-     @return the player name
-     */
-    public static String getPlayerName() {
-        return myPlayerName;
     }
     /**
      *

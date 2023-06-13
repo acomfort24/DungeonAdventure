@@ -5,6 +5,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import controller.InventoryController;
 import model.EntityType;
+import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 
 /**
@@ -41,7 +42,7 @@ public class PlayerItemHandler extends CollisionHandler {
     @Override
     protected void onCollisionBegin(final Entity theP, final Entity theI) {
         final String itemType = theI.getType().toString();
-        InventoryController.addItem(itemType);
+        theP.getComponent(PlayerComponent.class).getInventory().incrementQuantity(theI, 1);
         if ("VISION_POTION".equals(itemType)) {
             myDungeon.get(FXGL.geti("playerX"), FXGL.geti("playerY")).setVisPot(false);
         } else if ("HEALTH_POTION".equals(itemType)) {
