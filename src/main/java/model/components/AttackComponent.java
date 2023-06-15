@@ -37,7 +37,7 @@ public class AttackComponent extends Component {
     public AttackComponent() {
         super();
         myPlayer = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
-        final double attackSpeed = myPlayer.getComponent(PlayerComponent.class).getAtkSpeed();
+        final double attackSpeed = myPlayer.getComponent(CharacterComponent.class).getAtkSpd();
         final int width = 110;
         final int height = 80;
         

@@ -8,9 +8,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
 import model.EntityType;
-import model.components.MonsterComponent;
-
-
+import model.components.CharacterComponent;
 
 /**
  * Handles collisions between the player and monsters.
@@ -53,10 +51,10 @@ public class PlayerMonsterHandler extends CollisionHandler {
                 .to(theMonster.getPosition().add(knockback, 0))
                 .buildAndPlay();
 
-        final double minDmg = theMonster.getComponent(MonsterComponent.class).
-                getMyCharacterComponent().getMyMinDmg();
-        final double maxDmg = theMonster.getComponent(MonsterComponent.class).
-                getMyCharacterComponent().getMyMaxDmg();
+        final double minDmg = theMonster.getComponent(
+                CharacterComponent.class).getMinDmg();
+        final double maxDmg = theMonster.getComponent(
+                CharacterComponent.class).getMaxDmg();
 
         thePlayer.getComponent(HealthDoubleComponent.class).damage(
                 FXGLMath.random(minDmg, maxDmg));

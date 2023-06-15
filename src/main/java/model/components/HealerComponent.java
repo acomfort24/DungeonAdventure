@@ -11,14 +11,22 @@ import com.almasb.fxgl.entity.component.Component;
  * @version 1.0
  */
 public class HealerComponent extends Component {
+    /** */
+    private final int myMinHeal;
+    /** */
+    private final int myMaxHeal;
+    
+    public HealerComponent(final int theMinHeal, final int theMaxHeal) {
+        super();
+        myMinHeal = theMinHeal;
+        myMaxHeal = theMaxHeal;
+    }
     /**
      * Generates a random healing value within the specified range.
      *
-     * @param theMinHeal the minimum healing value
-     * @param theMaxHeal the maximum healing value
      * @return a randomly generated healing value
      */
-    public int Heal(final int theMinHeal, final int theMaxHeal) {
-        return FXGLMath.random(theMinHeal, theMaxHeal);
+    public int heal() {
+        return FXGLMath.random(myMinHeal, myMaxHeal);
     }
 }

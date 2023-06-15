@@ -33,9 +33,9 @@ public class CharacterComponent extends Component {
      * @param theHealth   the maximum health of the character
      * @param theName     the name of the character
      */
-    public CharacterComponent(final int theMinDmg, final int theMaxDmg, final int theAtkSpd,
-                              final double theChncHit, final int theHealth,
-                              final String theName) {
+    public CharacterComponent(final int theMinDmg, final int theMaxDmg,
+                              final int theAtkSpd, final double theChncHit,
+                              final int theHealth, final String theName) {
         super();
         myMinDmg = theMinDmg;
         myMaxDmg = theMaxDmg;
@@ -50,7 +50,7 @@ public class CharacterComponent extends Component {
      *
      * @return the minimum damage value
      */
-    public int getMyMinDmg() {
+    public int getMinDmg() {
         return myMinDmg;
     }
     /**
@@ -58,7 +58,7 @@ public class CharacterComponent extends Component {
      *
      * @return the maximum damage value
      */
-    public int getMyMaxDmg() {
+    public int getMaxDmg() {
         return myMaxDmg;
     }
     /**
@@ -66,7 +66,7 @@ public class CharacterComponent extends Component {
      *
      * @return the attack speed value
      */
-    public double getMyAtkSpd() {
+    public double getAtkSpd() {
         return myAtkSpd;
     }
     /**
@@ -74,7 +74,7 @@ public class CharacterComponent extends Component {
      *
      * @return the chance to hit value
      */
-    public double getMyChncHit() {
+    public double getChncHit() {
         return myChncHit;
     }
     /**
@@ -82,7 +82,7 @@ public class CharacterComponent extends Component {
      *
      * @return the maximum health value
      */
-    public int getMyMaxHealth() {
+    public int getMaxHealth() {
         return myMaxHealth;
     }
     /**
@@ -90,7 +90,7 @@ public class CharacterComponent extends Component {
      *
      * @return the name of the character
      */
-    public String getMyName() {
+    public String getName() {
         return myName;
     }
 

@@ -1,14 +1,10 @@
 package model.components;
 
 
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.inventory.Inventory;
-import com.almasb.fxgl.inventory.ItemConfig;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import javafx.scene.image.ImageView;
 
 
 /**
@@ -29,11 +25,6 @@ public class PlayerComponent extends Component {
      * The velocity of the player.
      */
     private int myVelocity = 325;
-
-    /**
-     * The character component of the player.
-     */
-    private final CharacterComponent myCharacterComponent;
     /**
      * The chance to block of the player.
      */
@@ -45,35 +36,24 @@ public class PlayerComponent extends Component {
     /**
      * Constructs a PlayerComponent with the specified attributes.
      *
-     * @param theMinDmg    the minimum damage of the player
-     * @param theMaxDmg    the maximum damage of the player
-     * @param theAtkSpd    the attack speed of the player
-     * @param theChncHit   the chance to hit of the player
-     * @param theHealth    the health of the player
-     * @param theName      the name of the player
      * @param theChncBlock the chance to block of the player
      */
-    public PlayerComponent(final int theMinDmg, final int theMaxDmg,
-                           final int theAtkSpd, final double theChncHit,
-                           final int theHealth, final String theName, final double theChncBlock) {
+    public PlayerComponent(final double theChncBlock) {
         super();
-        Entity vpot = new Entity();
-        ItemConfig vpic = new ItemConfig("Vision Potion", "Allows you to see surrounding rooms",
-                10, new ImageView("assets/textures/visionpotion.png"));
-        myInventory.add(vpot, vpic, 1);
-
-        Entity hpot = new Entity();
-        ItemConfig hpic = new ItemConfig("Health Potion", "Restores 25HP upon use",
-                10, new ImageView("assets/textures/healthpotion.png"));
-        myInventory.add(hpot, hpic, 1);
-
-        Entity pillar = new Entity();
-        ItemConfig pillic = new ItemConfig("Pillar", "Collect all four pillars to exit the dungeon",
-                4, new ImageView("assets/textures/pillar.png"));
-        myInventory.add(pillar, pillic, 1);
-
-        myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
-                theChncHit, theHealth, theName);
+//        Entity vpot = new Entity();
+//        ItemConfig vpic = new ItemConfig("Vision Potion", "Allows you to see surrounding rooms",
+//                10, new ImageView("assets/textures/visionpotion.png"));
+//        myInventory.add(vpot, vpic, 1);
+//
+//        Entity hpot = new Entity();
+//        ItemConfig hpic = new ItemConfig("Health Potion", "Restores 25HP upon use",
+//                10, new ImageView("assets/textures/healthpotion.png"));
+//        myInventory.add(hpot, hpic, 1);
+//
+//        Entity pillar = new Entity();
+//        ItemConfig pillic = new ItemConfig("Pillar", "Collect all four pillars to exit the dungeon",
+//                4, new ImageView("assets/textures/pillar.png"));
+//        myInventory.add(pillar, pillic, 1);
 
         myChncBlock = theChncBlock;
     }
@@ -128,7 +108,7 @@ public class PlayerComponent extends Component {
      * Sets the player's velocity to the default value.
      */
     public void resumePlayer() {
-        myVelocity = 300;
+        myVelocity = 325;
     }
 
     public Inventory<Entity> getInventory() {
@@ -142,40 +122,6 @@ public class PlayerComponent extends Component {
     public static Inventory getMyInventory() {
         return myInventory;
     }
-    /**
-     * Returns the name of the player.
-     *
-     * @return the name of the player
-     */
-    public String getName() {
-        return myCharacterComponent.getMyName();
-    }
-    /**
-     * Returns the chance to block of the player.
-     *
-     * @return the chance to block of the player
-     */
-    public double getMyChncBlock() {
-        return myChncBlock;
-    }
-    /**
-     * Returns the attack speed of the player.
-     *
-     * @return the attack speed of the player
-     */
-    public double getAtkSpeed() {
-        return myCharacterComponent.getMyAtkSpd();
-    }
-    /**
-     * Returns the character component of the player.
-     *
-     * @return the character component of the player
-     */
-    public CharacterComponent getMyCharacterComponent() {
-        return myCharacterComponent;
-    }
-
-
     /**
      * Returns a string representation of the player's current status
      *

@@ -11,7 +11,6 @@ import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
 import model.EntityType;
 import model.components.CharacterComponent;
-import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 
 /**
@@ -32,7 +31,7 @@ public class WeaponEnemyHandler extends CollisionHandler {
         super(EntityType.WEAPON, EntityType.MONSTER);
         
         myCharComp = FXGL.getGameWorld().getSingleton(EntityType.PLAYER).
-                getComponent(PlayerComponent.class).getMyCharacterComponent();
+                getComponent(CharacterComponent.class);
     }
 
     /**
@@ -48,7 +47,7 @@ public class WeaponEnemyHandler extends CollisionHandler {
     @Override
     protected void onCollisionBegin(final Entity theW, final Entity theM) {
         final var hp = theM.getComponent(HealthDoubleComponent.class);
-        hp.damage(FXGLMath.random(myCharComp.getMyMinDmg(), myCharComp.getMyMaxDmg()));
+        hp.damage(FXGLMath.random(myCharComp.getMinDmg(), myCharComp.getMaxDmg()));
         double knockback = 30;
         // Checking coordinates to determine knockback direction, needs to be modified
         final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);

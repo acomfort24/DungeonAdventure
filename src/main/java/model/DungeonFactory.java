@@ -150,14 +150,15 @@ public class DungeonFactory implements EntityFactory {
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new PlayerAnimationComponent(DungeonApp.getCharacterType()))
-                .with(new PlayerComponent(
+                .with(new CharacterComponent(
                         Integer.parseInt(heroData.get("minDmg")),
                         Integer.parseInt(heroData.get("maxDmg")),
                         Integer.parseInt(heroData.get("atkSpd")),
                         Double.parseDouble(heroData.get("chncHit")),
                         Integer.parseInt(heroData.get("hitPoints")),
-                        heroData.get("name"),
-                        Double.parseDouble(heroData.get("chncBlock"))))
+                        heroData.get("name")
+                ))
+                .with(new PlayerComponent(Double.parseDouble(heroData.get("chncBlock"))))
                 .with((HealthDoubleComponent) geto("playerHP"))
                 .with((GenericBarViewComponent) geto("playerHPView"))
                 .build();
@@ -281,15 +282,19 @@ public class DungeonFactory implements EntityFactory {
                 .with(hp)
                 .with(hpBar)
                 .at(FXGLMath.random(350, 800), FXGLMath.random(350, 550))
-                .with(new MonsterComponent(
-                        Integer.parseInt(monsterData.get("minHeal")),
-                        Integer.parseInt(monsterData.get("maxHeal")),
+                .with(new CharacterComponent(
                         Integer.parseInt(monsterData.get("minDmg")),
                         Integer.parseInt(monsterData.get("maxDmg")),
                         Integer.parseInt(monsterData.get("atkSpd")),
                         Double.parseDouble(monsterData.get("chncHit")),
                         Integer.parseInt(monsterData.get("hitPoints")),
-                        monsterData.get("name")))
+                        monsterData.get("name")
+                ))
+                .with(new MonsterComponent())
+                .with(new HealerComponent(
+                        Integer.parseInt(monsterData.get("minHeal")),
+                        Integer.parseInt(monsterData.get("maxHeal"))
+                ))
                 .build();
     }
     /**
@@ -299,7 +304,7 @@ public class DungeonFactory implements EntityFactory {
      * @return the created weapon entity
      */
     @Spawns("weapon")
-    public Entity newWeapon(SpawnData theData) {
+    public Entity newWeapon(final SpawnData theData) {
         final PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
         

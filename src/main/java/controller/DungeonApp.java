@@ -21,6 +21,7 @@ import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.profile.DataFile;
 import com.almasb.fxgl.profile.SaveLoadHandler;
+import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.ui.Position;
 import controller.collisionhandlers.*;
 import java.awt.*;
@@ -32,6 +33,8 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.DungeonFactory;
 import model.EntityType;
+import model.components.CharacterComponent;
+import model.components.PlayerAnimationComponent;
 import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 import model.dungeonmap.DungeonRoom;
@@ -294,7 +297,7 @@ public final class DungeonApp extends GameApplication {
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
-            initInventory();
+//            initInventory();
             clearInventory();
             myDungeonMap = new MapSubScene(myDungeon);
         } catch (final Exception e) {
@@ -348,20 +351,20 @@ public final class DungeonApp extends GameApplication {
                 setRoom(geti("playerX"), (int) now));
     }
 
-    private void initInventory() {
-        myInvSub = new InventorySubScene();
-        myInvSub.getInput().addAction(new UserAction("Close Inventory") {
-            @Override
-            protected void onActionBegin() {
-                FXGL.getSceneService().popSubScene();
-            }
-        }, KeyCode.F);
-
-        onKeyDown(KeyCode.F, "Open Inventory", () -> {
-            FXGL.getSceneService().pushSubScene(myInvSub);
-            return null;
-        });
-    }
+//    private void initInventory() {
+//        myInvSub = new InventorySubScene();
+//        myInvSub.getInput().addAction(new UserAction("Close Inventory") {
+//            @Override
+//            protected void onActionBegin() {
+//                FXGL.getSceneService().popSubScene();
+//            }
+//        }, KeyCode.F);
+//
+//        onKeyDown(KeyCode.F, "Open Inventory", () -> {
+//            FXGL.getSceneService().pushSubScene(myInvSub);
+//            return null;
+//        });
+//    }
 
     /**
      Sets the current room based on the given coordinates.
@@ -492,13 +495,13 @@ public final class DungeonApp extends GameApplication {
         }, KeyCode.S);
         
         final var wrapper = new Object() {
-            long myActionTime = 0L;
+            private long myActionTime;
         };
         
         onBtnDown(MouseButton.PRIMARY, () -> {
             final long currentTime = System.currentTimeMillis();
             if (currentTime - wrapper.myActionTime
-                    > myPlayer.getComponent(PlayerComponent.class).getAtkSpeed() * 1000) {
+                    > myPlayer.getComponent(CharacterComponent.class).getAtkSpd() * 1000) {
                 if (myPlayer.getScaleX() < 0) {
                     myPlayer.getComponent(PlayerComponent.class).pausePlayer();
                     spawn("weapon", myPlayer.getPosition().add(-55, 15));
@@ -511,7 +514,7 @@ public final class DungeonApp extends GameApplication {
                     myPlayer.getComponent(PlayerComponent.class).resumePlayer();
                     return null;
                 }, Duration.seconds(myPlayer.getComponent(
-                        PlayerComponent.class).getAtkSpeed()));
+                        CharacterComponent.class).getAtkSpd()));
             }
             return null;
         });
@@ -553,14 +556,14 @@ public final class DungeonApp extends GameApplication {
      * Initializes the game variables with their initial values.
      * Overrides the method from the superclass.
      *
-     * @param vars The map to store the game variables.
+     * @param theVars The map to store the game variables.
      */
     @Override
-    protected void initGameVars(final Map<String, Object> vars) {
-        vars.put("loaded", false);
-        vars.put("pillars", 0);
-        vars.put("spawnX", (double) getAppWidth() / 2 - 50);
-        vars.put("spawnY", (double) getAppHeight() / 2 - 50);
+    protected void initGameVars(final Map<String, Object> theVars) {
+        theVars.put("loaded", false);
+        theVars.put("pillars", 0);
+        theVars.put("spawnX", (double) getAppWidth() / 2 - 50);
+        theVars.put("spawnY", (double) getAppHeight() / 2 - 50);
     }
     /**
      * Handles the game update logic.
@@ -571,10 +574,13 @@ public final class DungeonApp extends GameApplication {
     @Override
     protected void onUpdate(final double theTpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
-            getDialogService().showMessageBox("Game over man.", () -> {
-                FXGL.getWorldProperties().clear();
-                FXGL.getGameController().gotoMainMenu();
-            });
+            runOnce(() -> {
+                getDialogService().showMessageBox("Game over man.", () -> {
+                    FXGL.getWorldProperties().clear();
+                    FXGL.getGameController().gotoMainMenu();
+                });
+                return null;
+            }, Duration.seconds(1));
         }
     }
     /**
