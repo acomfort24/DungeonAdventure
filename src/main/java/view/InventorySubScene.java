@@ -42,5 +42,7 @@ public class InventorySubScene extends SubScene {
             }
             myInvView.getListView().refresh();
         });
+
+        this.getContentRoot().getChildren().add(useItem);
     }
 }

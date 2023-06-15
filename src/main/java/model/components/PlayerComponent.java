@@ -57,20 +57,20 @@ public class PlayerComponent extends Component {
                            final int theAtkSpd, final double theChncHit,
                            final int theHealth, final String theName, final double theChncBlock) {
         super();
-        Entity vpot = FXGL.getGameWorld().create("vision potion", new SpawnData());
+        Entity vpot = new Entity();
         ItemConfig vpic = new ItemConfig("Vision Potion", "Allows you to see surrounding rooms",
-                10, new ImageView("visionpotion.png"));
-        myInventory.add(vpot, vpic, 0);
+                10, new ImageView("assets/textures/visionpotion.png"));
+        myInventory.add(vpot, vpic, 1);
 
-        Entity hpot = FXGL.getGameWorld().create("health potion", new SpawnData());
+        Entity hpot = new Entity();
         ItemConfig hpic = new ItemConfig("Health Potion", "Restores 25HP upon use",
-                10, new ImageView("healthpotion.png"));
-        myInventory.add(hpot, hpic, 0);
+                10, new ImageView("assets/textures/healthpotion.png"));
+        myInventory.add(hpot, hpic, 1);
 
-        Entity pillar = FXGL.getGameWorld().create("pillar", new SpawnData());
+        Entity pillar = new Entity();
         ItemConfig pillic = new ItemConfig("Pillar", "Collect all four pillars to exit the dungeon",
-                4, new ImageView("pillar.png"));
-        myInventory.add(pillar, pillic, 0);
+                4, new ImageView("assets/textures/pillar.png"));
+        myInventory.add(pillar, pillic, 1);
 
         myCharacterComponent = new CharacterComponent(theMinDmg, theMaxDmg, theAtkSpd,
                 theChncHit, theHealth, theName);

@@ -294,7 +294,7 @@ public final class DungeonApp extends GameApplication {
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
-            myInvSub = new InventorySubScene();
+            initInventory();
             clearInventory();
             myDungeonMap = new MapSubScene(myDungeon);
         } catch (final Exception e) {
@@ -302,6 +302,7 @@ public final class DungeonApp extends GameApplication {
             System.exit(0);
         }
     }
+
     /**
      Clears the inventory of the player.
      Removes all items from the inventory.
@@ -345,6 +346,21 @@ public final class DungeonApp extends GameApplication {
                 setRoom((int) now, geti("playerY")));
         getWorldProperties().addListener("playerY", (old, now) ->
                 setRoom(geti("playerX"), (int) now));
+    }
+
+    private void initInventory() {
+        myInvSub = new InventorySubScene();
+        myInvSub.getInput().addAction(new UserAction("Close Inventory") {
+            @Override
+            protected void onActionBegin() {
+                FXGL.getSceneService().popSubScene();
+            }
+        }, KeyCode.F);
+
+        onKeyDown(KeyCode.F, "Open Inventory", () -> {
+            FXGL.getSceneService().pushSubScene(myInvSub);
+            return null;
+        });
     }
 
     /**
@@ -497,18 +513,6 @@ public final class DungeonApp extends GameApplication {
                 }, Duration.seconds(myPlayer.getComponent(
                         PlayerComponent.class).getAtkSpeed()));
             }
-            return null;
-        });
-
-        myInvSub.getInput().addAction(new UserAction("Close Inventory") {
-            @Override
-            protected void onActionBegin() {
-                FXGL.getSceneService().popSubScene();
-            }
-        }, KeyCode.F);
-
-        onKeyDown(KeyCode.F, "Open Inventory", () -> {
-            FXGL.getSceneService().pushSubScene(myInvSub);
             return null;
         });
 
