@@ -22,6 +22,10 @@ public class PlayerComponent extends Component {
      */
     private static final Inventory<Entity> myInventory = new Inventory<>(100);
     /**
+     * The physics component of the player.
+     */
+    protected PhysicsComponent myPhysics;
+    /**
      * The velocity of the player.
      */
     private int myVelocity = 325;
@@ -29,10 +33,7 @@ public class PlayerComponent extends Component {
      * The chance to block of the player.
      */
     private final double myChncBlock;
-    /**
-     * The physics component of the player.
-     */
-    protected PhysicsComponent myPhysics;
+    
     /**
      * Constructs a PlayerComponent with the specified attributes.
      *
@@ -114,32 +115,4 @@ public class PlayerComponent extends Component {
     public Inventory<Entity> getInventory() {
         return myInventory;
     }
-    /**
-     * Returns the inventory of the player.
-     *
-     * @return the inventory of the player
-     */
-    public static Inventory getMyInventory() {
-        return myInventory;
-    }
-    /**
-     * Returns a string representation of the player's current status
-     *
-     * @return a string representation of the player's current status
-     */
-    /*
-    Leaving this code here even though we're not allowed to override the
-    to string method in FXGL to show that we know how to do it.
-     */
-
-//    public static String toString() {
-//        String string = String.format("Name: %s\nCurrent Health: %f\nHealth Potions:
-//        %i\nVision Potions: %i\nPillars Found: ",
-//                DungeonApp.getMyPlayerName(),
-//                PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"),
-//                PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"),
-//                gets("pillars"));
-//        return string;
-//    }
 }
-

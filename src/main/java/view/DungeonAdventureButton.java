@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
- * The DungeonAdventureButton class represents a custom button used in a dungeon adventure game.
+ * The DungeonAdventureButton class represents a custom button used in the game.
  * @author Andy Comfort
  *         Brandon Morgan
  *         Chad Oehlschlaeger-Browne

@@ -32,7 +32,7 @@ public class MonsterComponent extends Component {
         final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
         
         if (getEntity().distance(player) > 48) {
-            getEntity().translateTowards(player.getPosition(), 3);
+            getEntity().translateTowards(player.getPosition(), 2.75);
         }
         
         if (getEntity().getX() < player.getX()) {

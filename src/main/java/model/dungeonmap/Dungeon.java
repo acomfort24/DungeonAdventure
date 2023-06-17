@@ -58,45 +58,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         setPillarRooms();
         addMonsters();
     }
-
-    /**
-     * Constructs a dungeon from existing data.
-     *
-     * @param theNumberArray the number array representing the dungeon layout
-     * @param theTypeArray   the type array representing the types of dungeon rooms
-     * @param theRoomArray   the room array representing the properties of dungeon rooms
-     * @param theMonsterArray the monster array representing the types of monsters in dungeon rooms
-     */
-    public Dungeon(final int[][] theNumberArray, final String[][] theTypeArray,
-                   final ArrayList<ArrayList<Map<String, Boolean>>> theRoomArray,
-                   final String[][] theMonsterArray) {
-        super(DungeonRoom.class, theNumberArray.length, theNumberArray[0].length);
-        myWidth = theNumberArray.length;
-        myHeight = theNumberArray[0].length;
-        myDungeon = theNumberArray;
-
-        populate((x, y) -> {
-            final DungeonRoom room = new DungeonRoom(x, y,
-                    theRoomArray.get(x).get(y).get("hasVisPot"),
-                    theRoomArray.get(x).get(y).get("hasHealPot"),
-                    theRoomArray.get(x).get(y).get("hasPit"),
-                    theRoomArray.get(x).get(y).get("hasMonster"),
-                    theRoomArray.get(x).get(y).get("hasBeenVisited"),
-                    theRoomArray.get(x).get(y).get("hasPillar"));
-            room.setRoom(myDungeon[x][y]);
-            room.setType(theTypeArray[x][y]);
-            if (theTypeArray[x][y].equalsIgnoreCase("entrance")) {
-                setEntrance(room);
-            }
-            if (theTypeArray[x][y].equalsIgnoreCase("exit")) {
-                setExit(room);
-            }
-            if (room.hasMonster()) {
-                room.setMonsterType(theMonsterArray[x][y]);
-            }
-            return room;
-        });
-    }
+    
     /**
      * Generates the dungeon layout recursively using a depth-first search algorithm.
      *
@@ -128,6 +90,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
     private static boolean between(final int theV, final int theUpper) {
         return theV >= 0 && theV < theUpper;
     }
+    
     /**
      * Represents the cardinal directions.
      */
@@ -194,16 +157,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         myEntrance.setType("entrance");
         myEntrance.setVisited(true);
     }
-    /**
-     * Sets the specified room as the entrance.
-     *
-     * @param theRoom the room to set as the entrance
-     */
-    private void setEntrance(final DungeonRoom theRoom) {
-        myEntrance = theRoom;
-        myEntrance.setType("entrance");
-        myEntrance.setVisited(true);
-    }
+    
     /**
      * Sets a random basic room as the exit.
      */
@@ -213,15 +167,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             myExit.setType("exit");
         }
     }
-    /**
-     * Sets the specified room as the exit.
-     *
-     * @param theRoom the room to set as the exit
-     */
-    private void setExit(final DungeonRoom theRoom) {
-        myExit = theRoom;
-        myExit.setType("exit");
-    }
+    
     /**
      * Sets a specified number of random basic rooms as pillar rooms.
      */
@@ -234,6 +180,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
             }
         }
     }
+    
     /**
      * Adds monsters to random rooms in the dungeon.
      */
@@ -257,14 +204,7 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         final String[] monsterArr = {"Skeleton", "Orc", "Gremlin"};
         return FXGLMath.random(monsterArr).get();
     }
-    /**
-     * Returns the 2D array representing the dungeon layout.
-     *
-     * @return the dungeon layout array
-     */
-    public int[][] getMyDungeon() {
-        return myDungeon;
-    }
+    
     /**
      * Returns a string representation of the dungeon.
      *
@@ -305,5 +245,4 @@ public class Dungeon extends Grid<DungeonRoom> implements Serializable {
         returnedString.append("+");
         return returnedString.toString();
     }
-
 }

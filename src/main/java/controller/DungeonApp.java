@@ -6,25 +6,19 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
-import com.almasb.fxgl.core.serialization.Bundle;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.dsl.components.HealthDoubleComponent;
 import com.almasb.fxgl.dsl.components.view.GenericBarViewComponent;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.profile.DataFile;
-import com.almasb.fxgl.profile.SaveLoadHandler;
-import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.ui.Position;
 import controller.collisionhandlers.*;
-import java.awt.*;
+
 import java.util.*;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -34,14 +28,12 @@ import javafx.util.Duration;
 import model.DungeonFactory;
 import model.EntityType;
 import model.components.CharacterComponent;
-import model.components.PlayerAnimationComponent;
 import model.components.PlayerComponent;
 import model.dungeonmap.Dungeon;
 import model.dungeonmap.DungeonRoom;
 import org.jetbrains.annotations.NotNull;
 import view.DungeonMainMenu;
 import view.GameMenu;
-import view.InventorySubScene;
 import view.MapSubScene;
 
 /**
@@ -55,21 +47,15 @@ import view.MapSubScene;
 
 public final class DungeonApp extends GameApplication {
     /** The name of the character.*/
-    private static String myCharacterName;
+    private static String myCharacterType;
     /** The player in the dungeon. */
     private static Entity myPlayer;
-    /** The factory used to spawn entities. */
-    private static EntityFactory myDungeonFactory;
-    /** The name of the player. */
-    private static String myPlayerName;
     /** The database storing character data. */
     private static Map<String, Map<String, String>> myDBData;
     /** The dungeon to be explored.  */
     private static Dungeon myDungeon;
     /** The map of the dungeon. */
     private static MapSubScene myDungeonMap;
-
-    private InventorySubScene myInvSub;
 
     /**
      * Initializes the game settings for the Dungeon Adventure game.
@@ -105,181 +91,7 @@ public final class DungeonApp extends GameApplication {
         });
 
     }
-    /**
-     * Performs pre-initialization tasks for the Dungeon Adventure game.
-     * Adds a save/load handler to the SaveLoadService.
-     */
-    @Override
-    protected void onPreInit() {
-        getSaveLoadService().addHandler(new SaveLoadHandler() {
-            /**
-             * This method is called to save the game data to a DataFile.
-             *
-             * @param theData The DataFile object to which the game data will be saved.
-             */
-            @Override
-            public void onSave(@NotNull final DataFile theData) {
-                final Bundle bundlePlayer = new Bundle("player");
-                final Bundle bundleRoomsBooleans = new Bundle("roomsBooleans");
-                final Bundle bundleRoomsNumbers = new Bundle("roomsNumbers");
-                final Bundle bundleRoomsTypes = new Bundle("roomsTypes");
-                final Bundle bundleRoomsMonsters = new Bundle("roomsMonsters");
-                final Bundle bundleInventory = new Bundle("inventory");
-                final Bundle bundleMap = new Bundle("map");
-                final Entity player = FXGL.getGameWorld().getSingleton(EntityType.PLAYER);
 
-                bundlePlayer.put("characterName", myCharacterName);
-                bundlePlayer.put("playerName", myPlayerName);
-                bundlePlayer.put("curHealth",
-                        player.getComponent(HealthDoubleComponent.class).getValue());
-                bundlePlayer.put("pillarsCollected",
-                        FXGL.getWorldProperties().getValue("pillars"));
-                bundlePlayer.put("playerX", geti("playerX"));
-                bundlePlayer.put("playerY", geti("playerY"));
-
-                final String[][] roomsMonsters =
-                        new String[myDungeon.getWidth()][myDungeon.getHeight()];
-                final String[][] roomsTypes =
-                        new String[myDungeon.getWidth()][myDungeon.getHeight()];
-                //creates a 2d arraylist of maps of the different booleans in each room
-                final ArrayList<ArrayList<Map<String, Boolean>>> roomArray = new ArrayList<>();
-
-                for (int i = 0; i < myDungeon.getWidth(); i++) {
-                    final ArrayList<Map<String, Boolean>> rowList = new ArrayList<>();
-                    for (int j = 0; j < myDungeon.getHeight(); j++) {
-                        final Map<String, Boolean> map = new HashMap<>();
-                        map.put("hasVisPot", myDungeon.get(i, j).hasVisPot());
-                        map.put("hasHealPot", myDungeon.get(i, j).hasHealPot());
-                        map.put("hasPit", myDungeon.get(i, j).hasPit());
-                        map.put("hasMonster", myDungeon.get(i, j).hasMonster());
-                        map.put("hasBeenVisited", myDungeon.get(i, j).hasBeenVisited());
-                        map.put("hasPillar", myDungeon.get(i, j).hasPillar());
-                        rowList.add(map);
-                        roomsTypes[i][j] = myDungeon.get(i, j).getType();
-                        if (map.get("hasMonster")) {
-                            roomsMonsters[i][j] = myDungeon.get(i, j).getMonsterType();
-                        }
-                    }
-                    roomArray.add(rowList);
-                }
-
-                bundleRoomsTypes.put("roomsTypes", roomsTypes);
-                bundleRoomsMonsters.put("roomsMonsters", roomsMonsters);
-                bundleRoomsBooleans.put("roomsBooleans", roomArray);
-                bundleRoomsNumbers.put("roomsNumbers", myDungeon.getMyDungeon()); //
-
-
-                ArrayList<Point> revealedRooms = new ArrayList<>(myDungeonMap.getRevealedRooms());
-
-                bundleMap.put("revealedRooms", revealedRooms);
-
-
-                if (PlayerComponent.getMyInventory().hasItem("HEALTH_POTION")) {
-                    bundleInventory.put("healthPots",
-                            PlayerComponent.getMyInventory().getItemQuantity("HEALTH_POTION"));
-                }
-                if (PlayerComponent.getMyInventory().hasItem("VISION_POTION")) {
-                    bundleInventory.put("visionPots",
-                            PlayerComponent.getMyInventory().getItemQuantity("VISION_POTION"));
-                }
-                theData.putBundle(bundlePlayer);
-                theData.putBundle(bundleInventory);
-                theData.putBundle(bundleRoomsBooleans);
-                theData.putBundle(bundleRoomsNumbers);
-                theData.putBundle(bundleRoomsTypes);
-                theData.putBundle(bundleRoomsMonsters);
-                theData.putBundle(bundleMap);
-
-            }
-
-            /**
-             * This method is called to load game data from a DataFile.
-             *
-             * @param theData The DataFile object from which the game data will be loaded.
-             */
-            @Override
-            public void onLoad(@NotNull final DataFile theData) {
-                final Bundle bundlePlayer = theData.getBundle("player");
-                final Bundle bundleInventory = theData.getBundle("inventory");
-                final Bundle bundleRoomsBooleans = theData.getBundle("roomsBooleans");
-                final Bundle bundleRoomsNumbers = theData.getBundle("roomsNumbers");
-                final Bundle bundleRoomsTypes = theData.getBundle("roomsTypes");
-                final Bundle bundleRoomsMonsters = theData.getBundle("roomsMonsters");
-                final Bundle bundleMap = theData.getBundle("map");
-
-                set("loaded", true);
-
-                set("loadedPlayerX", bundlePlayer.get("playerX"));
-                set("loadedPlayerY", bundlePlayer.get("playerY"));
-                set("loadedCharacterName", bundlePlayer.get("characterName"));
-                set("loadedPlayerName", bundlePlayer.get("playerName"));
-                set("loadedPlayerHealth", bundlePlayer.get("curHealth"));
-                set("loadedPillarsCollected", bundlePlayer.get("pillarsCollected"));
-
-
-                if (bundleInventory.exists("healthPots")) {
-                    set("loadedHealthPots", bundleInventory.get("healthPots"));
-                }
-                if (bundleInventory.exists("visionPots")) {
-                    set("loadedVisionPots", bundleInventory.get("visionPots"));
-                }
-                
-                set("loadedRoomsBooleans", bundleRoomsBooleans.get("roomsBooleans"));
-                set("loadedRoomsNumbers", bundleRoomsNumbers.get("roomsNumbers"));
-                set("loadedRoomsTypes", bundleRoomsTypes.get("roomsTypes"));
-                set("loadedRoomsMonsters", bundleRoomsMonsters.get("roomsMonsters"));
-                set("loadedMap", bundleMap.get("revealedRooms"));
-                loadHelper();
-                getGameController().gotoPlay();
-            }
-        });
-    }
-
-    private void loadHelper() {
-        myDungeon = new Dungeon(geto("loadedRoomsNumbers"),
-                geto("loadedRoomsTypes"),
-                geto("loadedRoomsBooleans"),
-                geto("loadedRoomsMonsters"));
-        myCharacterName = gets("loadedCharacterName");
-        myPlayerName = gets("loadedPlayerName");
-        set("spawnX", (double) getAppWidth() / 2 - 50);
-        set("spawnY", (double) getAppHeight() / 2 - 50);
-        set("pillars", geti("loadedPillarsCollected"));
-        
-        if (myDungeonFactory != null) {
-            getGameWorld().removeEntityFactory(myDungeonFactory);
-        }
-
-        myDungeonFactory = new DungeonFactory(myDBData);
-        getGameWorld().addEntityFactory(myDungeonFactory);
-        set("dungeon", myDungeon);
-        FXGL.setLevelFromMap(myDungeon.getEntranceMap());
-
-        playerSetUp();
-        set("playerX", geti("loadedPlayerX"));
-        set("playerY", geti("loadedPlayerY"));
-        setRoom(geti("playerX"), geti("playerY"));
-
-        myDungeonMap = new MapSubScene(myDungeon);
-        myDungeonMap.setRevealedRoom(geto("loadedMap"));
-
-
-        getGameWorld().getSingleton(EntityType.PLAYER).
-                getComponent(HealthDoubleComponent.class).setValue(getd("loadedPlayerHealth"));
-        initPhysics();
-        clearInventory();
-        
-        if (getWorldProperties().exists("loadedHealthPots")) {
-            for (int i = 0; i < geti("loadedHealthPots"); i++) {
-                InventoryController.addItem("HEALTH_POTION");
-            }
-        }
-        if (getWorldProperties().exists("loadedVisionPots")) {
-            for (int i = 0; i < geti("loadedVisionPots"); i++) {
-                InventoryController.addItem("VISION_POTION");
-            }
-        }
-    }
     /**
      Initializes the game for the Dungeon Adventure.
      Sets the background color of the game scene to black.
@@ -291,32 +103,18 @@ public final class DungeonApp extends GameApplication {
         getGameScene().setBackgroundColor(Color.BLACK);
         try {
             myDungeon = new Dungeon(5, 5);
-            //will change this when we can select class
-            myDungeonFactory = new DungeonFactory(myDBData);
-            getGameWorld().addEntityFactory(myDungeonFactory);
+            getGameWorld().addEntityFactory(new DungeonFactory(myDBData));
             set("dungeon", myDungeon);
             FXGL.setLevelFromMap(myDungeon.getEntranceMap());
             playerSetUp();
 //            initInventory();
-            clearInventory();
             myDungeonMap = new MapSubScene(myDungeon);
         } catch (final Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
-    /**
-     Clears the inventory of the player.
-     Removes all items from the inventory.
-     */
-    private void clearInventory() {
-        final Inventory inventory = PlayerComponent.getMyInventory();
-        final Map inventoryMap = PlayerComponent.getMyInventory().getAllData();
-        for (Object item : inventoryMap.keySet()) {
-            inventory.remove(item);
-        }
-    }
+    
     /**
      Sets up the player character.
      Retrieves the hero data from the database based on the character name.
@@ -327,7 +125,7 @@ public final class DungeonApp extends GameApplication {
      Registers listeners for the player's position changes.
      */
     private static void playerSetUp() {
-        final Map<String, String> heroData = myDBData.get(myCharacterName);
+        final Map<String, String> heroData = myDBData.get(myCharacterType);
         set("playerX", myDungeon.getEntranceX());
         set("playerY", myDungeon.getEntranceY());
         
@@ -344,7 +142,7 @@ public final class DungeonApp extends GameApplication {
         
         myPlayer = spawn("player");
         myPlayer.setReusable(true);
-        set("player", myPlayer);
+        
         getWorldProperties().addListener("playerX", (old, now) ->
                 setRoom((int) now, geti("playerY")));
         getWorldProperties().addListener("playerY", (old, now) ->
@@ -560,7 +358,6 @@ public final class DungeonApp extends GameApplication {
      */
     @Override
     protected void initGameVars(final Map<String, Object> theVars) {
-        theVars.put("loaded", false);
         theVars.put("pillars", 0);
         theVars.put("spawnX", (double) getAppWidth() / 2 - 50);
         theVars.put("spawnY", (double) getAppHeight() / 2 - 50);
@@ -574,22 +371,19 @@ public final class DungeonApp extends GameApplication {
     @Override
     protected void onUpdate(final double theTpf) {
         if (myPlayer.getComponent(HealthDoubleComponent.class).isZero()) {
-            runOnce(() -> {
-                getDialogService().showMessageBox("Game over man.", () -> {
-                    FXGL.getWorldProperties().clear();
-                    FXGL.getGameController().gotoMainMenu();
-                });
-                return null;
-            }, Duration.seconds(1));
+            getDialogService().showMessageBox("Game over man.", () -> {
+                FXGL.getWorldProperties().clear();
+                FXGL.getGameController().gotoMainMenu();
+            });
         }
     }
     /**
      *
      Sets the character name.
-     @param theCharacterName the name of the character
+     @param theCharacterType the name of the character
      */
-    public static void setCharacterType(final String theCharacterName) {
-        myCharacterName = theCharacterName;
+    public static void setCharacterType(final String theCharacterType) {
+        myCharacterType = theCharacterType;
     }
     /**
      *
@@ -597,7 +391,7 @@ public final class DungeonApp extends GameApplication {
      @return the character name
      */
     public static String getCharacterType() {
-        return myCharacterName;
+        return myCharacterType;
     }
     /**
      *

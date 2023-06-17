@@ -38,7 +38,7 @@ import model.components.PotionComponent;
  */
 public class DungeonFactory implements EntityFactory {
     /** The database storing character data. */
-    final Map<String, Map<String, String>> myDBData;
+    private final Map<String, Map<String, String>> myDBData;
 
     /**
      * Constructs a new DungeonFactory with the specified database data.

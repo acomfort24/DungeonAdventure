@@ -53,10 +53,10 @@ public class DungeonMainMenu extends FXGLMenu {
                                                             Welcome to Dungeon Adventure!
                 
                 In this game you will select from three classes (Warrior, Thief, Wizard) and
-                attempt to traverse the dungeon. Along the way you'll encounter four pillars, 
-                where each pillar represents one of the four main principles of object-oriented 
-                programming. In order to escape the dungeon you must collect all four pillars and 
-                bring them to the exit door. 
+                attempt to traverse the dungeon. Along the way you'll encounter four pillars,
+                where each pillar represents one of the four main principles of object-
+                oriented programming. In order to escape the dungeon you must collect all
+                four pillars and bring them to the exit door.
                 
                 Good luck!
                 """));

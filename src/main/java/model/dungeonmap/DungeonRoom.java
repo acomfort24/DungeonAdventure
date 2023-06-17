@@ -49,30 +49,7 @@ public class DungeonRoom extends Cell implements Serializable {
         myPit = FXGLMath.randomBoolean(SPAWN_CHANCE);
         myMonsterType = "none";
     }
-    /**
-     * Constructs a DungeonRoom object with the specified coordinates and properties.
-     *
-     * @param theX           the x-coordinate of the room
-     * @param theY           the y-coordinate of the room
-     * @param theHasVisPot   indicates if the room has a visibility potion
-     * @param theHasHealthPot indicates if the room has a healing potion
-     * @param theHasPit      indicates if the room has a pit
-     * @param theHasMonster  indicates if the room has a monster
-     * @param theHasBeenVisited indicates if the room has been visited
-     * @param theHasPillar   indicates if the room has a pillar
-     */
-    public DungeonRoom(final int theX, final int theY,
-                       final Boolean theHasVisPot, final Boolean theHasHealthPot,
-                       final Boolean theHasPit, final Boolean theHasMonster,
-                       final Boolean theHasBeenVisited, final Boolean theHasPillar) {
-        super(theX, theY);
-        myVisPot = theHasVisPot;
-        myHealPot = theHasHealthPot;
-        myPit = theHasPit;
-        myMonster = theHasMonster;
-        myVisit = theHasBeenVisited;
-        myPillar = theHasPillar;
-    }
+    
     /**
      * Returns the file name of the room.
      *
@@ -233,39 +210,5 @@ public class DungeonRoom extends Cell implements Serializable {
     public void setPillar(final boolean thePillar) {
         myPillar = thePillar;
     }
-
-    /**
-     * Returns a string representation of the room.
-     * The string contains characters representing the room's properties.
-     * M - Monster
-     * H - Healing Potion
-     * V - Visibility Potion
-     * P - Pillar
-     *
-     * @return a string representation of the room
-     */
-    public String toString() {
-        final StringBuilder returnedString = new StringBuilder();
-        returnedString.append("|+++++|\n");
-
-        for (int k = 0; k < 2; k++) {
-            final StringBuilder curLine = new StringBuilder();
-            curLine.append("|     |\n");
-            if (k == 0 && hasMonster()) {
-                curLine.setCharAt(1, 'M');
-            }
-            if (k == 0 && hasHealPot()) {
-                curLine.setCharAt(5, 'H');
-            }
-            if (k == 1 && hasVisPot()) {
-                curLine.setCharAt(1, 'V');
-            }
-            if (k == 1 && hasPillar()) {
-                curLine.setCharAt(5, 'P');
-            }
-            returnedString.append(curLine);
-        }
-        returnedString.append("|+++++|");
-        return returnedString.toString();
-    }
+    
 }

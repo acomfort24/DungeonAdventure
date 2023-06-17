@@ -11,7 +11,7 @@ public class PillarComponent extends Component {
     }
 
     public void use() {
-        int pillars = FXGL.geti("pillars");
+        final int pillars = FXGL.geti("pillars");
         switch (pillars) {
             case 0: getDialogService().showMessageBox("You have collected 0 pillars."
                     + " Collect 4 more pillars to activate the exit shrine!");
@@ -25,8 +25,11 @@ public class PillarComponent extends Component {
             case 3: getDialogService().showMessageBox("You have collected 3 pillar."
                     + " Collect 1 more pillar to activate the exit shrine!");
 
-            case 4: getDialogService().showMessageBox("You have collected all four pillars."
+            case 4: getDialogService().showMessageBox("You have collected all 4 pillars."
                     + " Find the exit shrine to escape the dungeon!");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + pillars);
         }
 
     }
